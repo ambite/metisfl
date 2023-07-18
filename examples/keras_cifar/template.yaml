@@ -6,7 +6,7 @@ EvaluationMetricCutoffScore: 0.5
 
 # CommunicationProtocol
 CommunicationProtocol: "Synchronous"
-EnableSSL: true
+EnableSSL: false
 
 # ModelStore 
 ModelStore: "InMemory" # Others are "InMemory", "Redis"

@@ -274,8 +274,7 @@ class MetisProtoMessages(object):
 
     @classmethod
     def construct_controller_modelhyperparams_pb(cls, batch_size, epochs):
-        return metis_pb2.ControllerParams.ModelHyperparams(batch_size=batch_size,
-                                                           epochs=epochs)
+        return metis_pb2.ControllerParams.ModelHyperparams(batch_size=batch_size, epochs=epochs)
 
     @classmethod
     def construct_no_eviction_pb(cls):

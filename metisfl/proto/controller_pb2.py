@@ -3,7 +3,6 @@
 # source: metisfl/proto/controller.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
-from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -17,33 +16,866 @@ from metisfl.proto import model_pb2 as metisfl_dot_proto_dot_model__pb2
 from metisfl.proto import service_common_pb2 as metisfl_dot_proto_dot_service__common__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x1emetisfl/proto/controller.proto\x12\x07metisfl\x1a\x19metisfl/proto/metis.proto\x1a\x19metisfl/proto/model.proto\x1a\"metisfl/proto/service_common.proto\"R\n)GetCommunityModelEvaluationLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"\x82\x01\n*GetCommunityModelEvaluationLineageResponse\x12T\n\x14\x63ommunity_evaluation\x18\x01 \x03(\x0b\x32!.metisfl.CommunityModelEvaluationR\x13\x63ommunityEvaluation\"H\n\x1fGetCommunityModelLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"f\n GetCommunityModelLineageResponse\x12\x42\n\x10\x66\x65\x64\x65rated_models\x18\x01 \x03(\x0b\x32\x17.metisfl.FederatedModelR\x0f\x66\x65\x64\x65ratedModels\"d\n\x1aGetLocalTaskLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\x12\x1f\n\x0blearner_ids\x18\x02 \x03(\tR\nlearnerIds\"\xd4\x01\n\x1bGetLocalTaskLineageResponse\x12X\n\x0clearner_task\x18\x01 \x03(\x0b\x32\x35.metisfl.GetLocalTaskLineageResponse.LearnerTaskEntryR\x0blearnerTask\x1a[\n\x10LearnerTaskEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x31\n\x05value\x18\x02 \x01(\x0b\x32\x1b.metisfl.LocalTasksMetadataR\x05value:\x02\x38\x01\"\x87\x01\n\"GetLearnerLocalModelLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\x12:\n\rserver_entity\x18\x02 \x03(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\"y\n#GetLearnerLocalModelLineageResponse\x12R\n\x13learner_local_model\x18\x01 \x03(\x0b\x32\".metisfl.LearnerLocalModelResponseR\x11learnerLocalModel\"I\n GetRuntimeMetadataLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"\x8b\x01\n!GetRuntimeMetadataLineageResponse\x12\x41\n\x08metadata\x18\x01 \x03(\x0b\x32%.metisfl.FederatedTaskRuntimeMetadataR\x08metadata\x12#\n\rjson_metadata\x18\x02 \x01(\tR\x0cjsonMetadata\"!\n\x1fGetParticipatingLearnersRequest\"X\n GetParticipatingLearnersResponse\x12\x34\n\x07learner\x18\x01 \x03(\x0b\x32\x1a.metisfl.LearnerDescriptorR\x07learner\"\x97\x01\n\x15JoinFederationRequest\x12:\n\rserver_entity\x18\x01 \x01(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\x12\x42\n\x12local_dataset_spec\x18\x02 \x01(\x0b\x32\x14.metisfl.DatasetSpecR\x10localDatasetSpec\"v\n\x16JoinFederationResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\x12\x1d\n\nlearner_id\x18\x02 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x03 \x01(\tR\tauthToken\"}\n\x19LearnerLocalModelResponse\x12:\n\rserver_entity\x18\x01 \x01(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\x12$\n\x05model\x18\x02 \x03(\x0b\x32\x0e.metisfl.ModelR\x05model\"\x8c\x01\n\x18MarkTaskCompletedRequest\x12\x1d\n\nlearner_id\x18\x01 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x02 \x01(\tR\tauthToken\x12\x32\n\x04task\x18\x03 \x01(\x0b\x32\x1e.metisfl.CompletedLearningTaskR\x04task\"B\n\x1bLearnerExecutionAuxMetadata\x12#\n\rjson_response\x18\x01 \x01(\tR\x0cjsonResponse\";\n\x19MarkTaskCompletedResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\"V\n\x16LeaveFederationRequest\x12\x1d\n\nlearner_id\x18\x01 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x02 \x01(\tR\tauthToken\"9\n\x17LeaveFederationResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\"M\n\x1cReplaceCommunityModelRequest\x12-\n\x05model\x18\x01 \x01(\x0b\x32\x17.metisfl.FederatedModelR\x05model\"?\n\x1dReplaceCommunityModelResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k2\x89\n\n\x11\x43ontrollerService\x12\x8f\x01\n\"GetCommunityModelEvaluationLineage\x12\x32.metisfl.GetCommunityModelEvaluationLineageRequest\x1a\x33.metisfl.GetCommunityModelEvaluationLineageResponse\"\x00\x12q\n\x18GetCommunityModelLineage\x12(.metisfl.GetCommunityModelLineageRequest\x1a).metisfl.GetCommunityModelLineageResponse\"\x00\x12z\n\x1bGetLearnerLocalModelLineage\x12+.metisfl.GetLearnerLocalModelLineageRequest\x1a,.metisfl.GetLearnerLocalModelLineageResponse\"\x00\x12\x62\n\x13GetLocalTaskLineage\x12#.metisfl.GetLocalTaskLineageRequest\x1a$.metisfl.GetLocalTaskLineageResponse\"\x00\x12t\n\x19GetRuntimeMetadataLineage\x12).metisfl.GetRuntimeMetadataLineageRequest\x1a*.metisfl.GetRuntimeMetadataLineageResponse\"\x00\x12q\n\x18GetParticipatingLearners\x12(.metisfl.GetParticipatingLearnersRequest\x1a).metisfl.GetParticipatingLearnersResponse\"\x00\x12n\n\x17GetServicesHealthStatus\x12\'.metisfl.GetServicesHealthStatusRequest\x1a(.metisfl.GetServicesHealthStatusResponse\"\x00\x12S\n\x0eJoinFederation\x12\x1e.metisfl.JoinFederationRequest\x1a\x1f.metisfl.JoinFederationResponse\"\x00\x12V\n\x0fLeaveFederation\x12\x1f.metisfl.LeaveFederationRequest\x1a .metisfl.LeaveFederationResponse\"\x00\x12\\\n\x11MarkTaskCompleted\x12!.metisfl.MarkTaskCompletedRequest\x1a\".metisfl.MarkTaskCompletedResponse\"\x00\x12h\n\x15ReplaceCommunityModel\x12%.metisfl.ReplaceCommunityModelRequest\x1a&.metisfl.ReplaceCommunityModelResponse\"\x00\x12\x41\n\x08ShutDown\x12\x18.metisfl.ShutDownRequest\x1a\x19.metisfl.ShutDownResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor.FileDescriptor(
+  name='metisfl/proto/controller.proto',
+  package='metisfl',
+  syntax='proto3',
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_pb=b'\n\x1emetisfl/proto/controller.proto\x12\x07metisfl\x1a\x19metisfl/proto/metis.proto\x1a\x19metisfl/proto/model.proto\x1a\"metisfl/proto/service_common.proto\"R\n)GetCommunityModelEvaluationLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"\x82\x01\n*GetCommunityModelEvaluationLineageResponse\x12T\n\x14\x63ommunity_evaluation\x18\x01 \x03(\x0b\x32!.metisfl.CommunityModelEvaluationR\x13\x63ommunityEvaluation\"H\n\x1fGetCommunityModelLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"f\n GetCommunityModelLineageResponse\x12\x42\n\x10\x66\x65\x64\x65rated_models\x18\x01 \x03(\x0b\x32\x17.metisfl.FederatedModelR\x0f\x66\x65\x64\x65ratedModels\"d\n\x1aGetLocalTaskLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\x12\x1f\n\x0blearner_ids\x18\x02 \x03(\tR\nlearnerIds\"\xd4\x01\n\x1bGetLocalTaskLineageResponse\x12X\n\x0clearner_task\x18\x01 \x03(\x0b\x32\x35.metisfl.GetLocalTaskLineageResponse.LearnerTaskEntryR\x0blearnerTask\x1a[\n\x10LearnerTaskEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x31\n\x05value\x18\x02 \x01(\x0b\x32\x1b.metisfl.LocalTasksMetadataR\x05value:\x02\x38\x01\"\x87\x01\n\"GetLearnerLocalModelLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\x12:\n\rserver_entity\x18\x02 \x03(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\"y\n#GetLearnerLocalModelLineageResponse\x12R\n\x13learner_local_model\x18\x01 \x03(\x0b\x32\".metisfl.LearnerLocalModelResponseR\x11learnerLocalModel\"I\n GetRuntimeMetadataLineageRequest\x12%\n\x0enum_backtracks\x18\x01 \x01(\x05R\rnumBacktracks\"\x8b\x01\n!GetRuntimeMetadataLineageResponse\x12\x41\n\x08metadata\x18\x01 \x03(\x0b\x32%.metisfl.FederatedTaskRuntimeMetadataR\x08metadata\x12#\n\rjson_metadata\x18\x02 \x01(\tR\x0cjsonMetadata\"!\n\x1fGetParticipatingLearnersRequest\"X\n GetParticipatingLearnersResponse\x12\x34\n\x07learner\x18\x01 \x03(\x0b\x32\x1a.metisfl.LearnerDescriptorR\x07learner\"\x97\x01\n\x15JoinFederationRequest\x12:\n\rserver_entity\x18\x01 \x01(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\x12\x42\n\x12local_dataset_spec\x18\x02 \x01(\x0b\x32\x14.metisfl.DatasetSpecR\x10localDatasetSpec\"v\n\x16JoinFederationResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\x12\x1d\n\nlearner_id\x18\x02 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x03 \x01(\tR\tauthToken\"}\n\x19LearnerLocalModelResponse\x12:\n\rserver_entity\x18\x01 \x01(\x0b\x32\x15.metisfl.ServerEntityR\x0cserverEntity\x12$\n\x05model\x18\x02 \x03(\x0b\x32\x0e.metisfl.ModelR\x05model\"\x8c\x01\n\x18MarkTaskCompletedRequest\x12\x1d\n\nlearner_id\x18\x01 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x02 \x01(\tR\tauthToken\x12\x32\n\x04task\x18\x03 \x01(\x0b\x32\x1e.metisfl.CompletedLearningTaskR\x04task\"B\n\x1bLearnerExecutionAuxMetadata\x12#\n\rjson_response\x18\x01 \x01(\tR\x0cjsonResponse\";\n\x19MarkTaskCompletedResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\"V\n\x16LeaveFederationRequest\x12\x1d\n\nlearner_id\x18\x01 \x01(\tR\tlearnerId\x12\x1d\n\nauth_token\x18\x02 \x01(\tR\tauthToken\"9\n\x17LeaveFederationResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\"M\n\x1cReplaceCommunityModelRequest\x12-\n\x05model\x18\x01 \x01(\x0b\x32\x17.metisfl.FederatedModelR\x05model\"?\n\x1dReplaceCommunityModelResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k2\x89\n\n\x11\x43ontrollerService\x12\x8f\x01\n\"GetCommunityModelEvaluationLineage\x12\x32.metisfl.GetCommunityModelEvaluationLineageRequest\x1a\x33.metisfl.GetCommunityModelEvaluationLineageResponse\"\x00\x12q\n\x18GetCommunityModelLineage\x12(.metisfl.GetCommunityModelLineageRequest\x1a).metisfl.GetCommunityModelLineageResponse\"\x00\x12z\n\x1bGetLearnerLocalModelLineage\x12+.metisfl.GetLearnerLocalModelLineageRequest\x1a,.metisfl.GetLearnerLocalModelLineageResponse\"\x00\x12\x62\n\x13GetLocalTaskLineage\x12#.metisfl.GetLocalTaskLineageRequest\x1a$.metisfl.GetLocalTaskLineageResponse\"\x00\x12t\n\x19GetRuntimeMetadataLineage\x12).metisfl.GetRuntimeMetadataLineageRequest\x1a*.metisfl.GetRuntimeMetadataLineageResponse\"\x00\x12q\n\x18GetParticipatingLearners\x12(.metisfl.GetParticipatingLearnersRequest\x1a).metisfl.GetParticipatingLearnersResponse\"\x00\x12n\n\x17GetServicesHealthStatus\x12\'.metisfl.GetServicesHealthStatusRequest\x1a(.metisfl.GetServicesHealthStatusResponse\"\x00\x12S\n\x0eJoinFederation\x12\x1e.metisfl.JoinFederationRequest\x1a\x1f.metisfl.JoinFederationResponse\"\x00\x12V\n\x0fLeaveFederation\x12\x1f.metisfl.LeaveFederationRequest\x1a .metisfl.LeaveFederationResponse\"\x00\x12\\\n\x11MarkTaskCompleted\x12!.metisfl.MarkTaskCompletedRequest\x1a\".metisfl.MarkTaskCompletedResponse\"\x00\x12h\n\x15ReplaceCommunityModel\x12%.metisfl.ReplaceCommunityModelRequest\x1a&.metisfl.ReplaceCommunityModelResponse\"\x00\x12\x41\n\x08ShutDown\x12\x18.metisfl.ShutDownRequest\x1a\x19.metisfl.ShutDownResponse\"\x00\x62\x06proto3'
+  ,
+  dependencies=[metisfl_dot_proto_dot_metis__pb2.DESCRIPTOR,metisfl_dot_proto_dot_model__pb2.DESCRIPTOR,metisfl_dot_proto_dot_service__common__pb2.DESCRIPTOR,])
 
 
 
-_GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST = DESCRIPTOR.message_types_by_name['GetCommunityModelEvaluationLineageRequest']
-_GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE = DESCRIPTOR.message_types_by_name['GetCommunityModelEvaluationLineageResponse']
-_GETCOMMUNITYMODELLINEAGEREQUEST = DESCRIPTOR.message_types_by_name['GetCommunityModelLineageRequest']
-_GETCOMMUNITYMODELLINEAGERESPONSE = DESCRIPTOR.message_types_by_name['GetCommunityModelLineageResponse']
-_GETLOCALTASKLINEAGEREQUEST = DESCRIPTOR.message_types_by_name['GetLocalTaskLineageRequest']
-_GETLOCALTASKLINEAGERESPONSE = DESCRIPTOR.message_types_by_name['GetLocalTaskLineageResponse']
-_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY = _GETLOCALTASKLINEAGERESPONSE.nested_types_by_name['LearnerTaskEntry']
-_GETLEARNERLOCALMODELLINEAGEREQUEST = DESCRIPTOR.message_types_by_name['GetLearnerLocalModelLineageRequest']
-_GETLEARNERLOCALMODELLINEAGERESPONSE = DESCRIPTOR.message_types_by_name['GetLearnerLocalModelLineageResponse']
-_GETRUNTIMEMETADATALINEAGEREQUEST = DESCRIPTOR.message_types_by_name['GetRuntimeMetadataLineageRequest']
-_GETRUNTIMEMETADATALINEAGERESPONSE = DESCRIPTOR.message_types_by_name['GetRuntimeMetadataLineageResponse']
-_GETPARTICIPATINGLEARNERSREQUEST = DESCRIPTOR.message_types_by_name['GetParticipatingLearnersRequest']
-_GETPARTICIPATINGLEARNERSRESPONSE = DESCRIPTOR.message_types_by_name['GetParticipatingLearnersResponse']
-_JOINFEDERATIONREQUEST = DESCRIPTOR.message_types_by_name['JoinFederationRequest']
-_JOINFEDERATIONRESPONSE = DESCRIPTOR.message_types_by_name['JoinFederationResponse']
-_LEARNERLOCALMODELRESPONSE = DESCRIPTOR.message_types_by_name['LearnerLocalModelResponse']
-_MARKTASKCOMPLETEDREQUEST = DESCRIPTOR.message_types_by_name['MarkTaskCompletedRequest']
-_LEARNEREXECUTIONAUXMETADATA = DESCRIPTOR.message_types_by_name['LearnerExecutionAuxMetadata']
-_MARKTASKCOMPLETEDRESPONSE = DESCRIPTOR.message_types_by_name['MarkTaskCompletedResponse']
-_LEAVEFEDERATIONREQUEST = DESCRIPTOR.message_types_by_name['LeaveFederationRequest']
-_LEAVEFEDERATIONRESPONSE = DESCRIPTOR.message_types_by_name['LeaveFederationResponse']
-_REPLACECOMMUNITYMODELREQUEST = DESCRIPTOR.message_types_by_name['ReplaceCommunityModelRequest']
-_REPLACECOMMUNITYMODELRESPONSE = DESCRIPTOR.message_types_by_name['ReplaceCommunityModelResponse']
+
+_GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST = _descriptor.Descriptor(
+  name='GetCommunityModelEvaluationLineageRequest',
+  full_name='metisfl.GetCommunityModelEvaluationLineageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_backtracks', full_name='metisfl.GetCommunityModelEvaluationLineageRequest.num_backtracks', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='numBacktracks', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=133,
+  serialized_end=215,
+)
+
+
+_GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE = _descriptor.Descriptor(
+  name='GetCommunityModelEvaluationLineageResponse',
+  full_name='metisfl.GetCommunityModelEvaluationLineageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='community_evaluation', full_name='metisfl.GetCommunityModelEvaluationLineageResponse.community_evaluation', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='communityEvaluation', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=218,
+  serialized_end=348,
+)
+
+
+_GETCOMMUNITYMODELLINEAGEREQUEST = _descriptor.Descriptor(
+  name='GetCommunityModelLineageRequest',
+  full_name='metisfl.GetCommunityModelLineageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_backtracks', full_name='metisfl.GetCommunityModelLineageRequest.num_backtracks', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='numBacktracks', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=350,
+  serialized_end=422,
+)
+
+
+_GETCOMMUNITYMODELLINEAGERESPONSE = _descriptor.Descriptor(
+  name='GetCommunityModelLineageResponse',
+  full_name='metisfl.GetCommunityModelLineageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='federated_models', full_name='metisfl.GetCommunityModelLineageResponse.federated_models', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='federatedModels', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=424,
+  serialized_end=526,
+)
+
+
+_GETLOCALTASKLINEAGEREQUEST = _descriptor.Descriptor(
+  name='GetLocalTaskLineageRequest',
+  full_name='metisfl.GetLocalTaskLineageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_backtracks', full_name='metisfl.GetLocalTaskLineageRequest.num_backtracks', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='numBacktracks', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='learner_ids', full_name='metisfl.GetLocalTaskLineageRequest.learner_ids', index=1,
+      number=2, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerIds', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=528,
+  serialized_end=628,
+)
+
+
+_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY = _descriptor.Descriptor(
+  name='LearnerTaskEntry',
+  full_name='metisfl.GetLocalTaskLineageResponse.LearnerTaskEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='metisfl.GetLocalTaskLineageResponse.LearnerTaskEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='metisfl.GetLocalTaskLineageResponse.LearnerTaskEntry.value', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=b'8\001',
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=752,
+  serialized_end=843,
+)
+
+_GETLOCALTASKLINEAGERESPONSE = _descriptor.Descriptor(
+  name='GetLocalTaskLineageResponse',
+  full_name='metisfl.GetLocalTaskLineageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='learner_task', full_name='metisfl.GetLocalTaskLineageResponse.learner_task', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerTask', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=631,
+  serialized_end=843,
+)
+
+
+_GETLEARNERLOCALMODELLINEAGEREQUEST = _descriptor.Descriptor(
+  name='GetLearnerLocalModelLineageRequest',
+  full_name='metisfl.GetLearnerLocalModelLineageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_backtracks', full_name='metisfl.GetLearnerLocalModelLineageRequest.num_backtracks', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='numBacktracks', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='server_entity', full_name='metisfl.GetLearnerLocalModelLineageRequest.server_entity', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='serverEntity', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=846,
+  serialized_end=981,
+)
+
+
+_GETLEARNERLOCALMODELLINEAGERESPONSE = _descriptor.Descriptor(
+  name='GetLearnerLocalModelLineageResponse',
+  full_name='metisfl.GetLearnerLocalModelLineageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='learner_local_model', full_name='metisfl.GetLearnerLocalModelLineageResponse.learner_local_model', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerLocalModel', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=983,
+  serialized_end=1104,
+)
+
+
+_GETRUNTIMEMETADATALINEAGEREQUEST = _descriptor.Descriptor(
+  name='GetRuntimeMetadataLineageRequest',
+  full_name='metisfl.GetRuntimeMetadataLineageRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='num_backtracks', full_name='metisfl.GetRuntimeMetadataLineageRequest.num_backtracks', index=0,
+      number=1, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='numBacktracks', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1106,
+  serialized_end=1179,
+)
+
+
+_GETRUNTIMEMETADATALINEAGERESPONSE = _descriptor.Descriptor(
+  name='GetRuntimeMetadataLineageResponse',
+  full_name='metisfl.GetRuntimeMetadataLineageResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='metadata', full_name='metisfl.GetRuntimeMetadataLineageResponse.metadata', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='metadata', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='json_metadata', full_name='metisfl.GetRuntimeMetadataLineageResponse.json_metadata', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='jsonMetadata', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1182,
+  serialized_end=1321,
+)
+
+
+_GETPARTICIPATINGLEARNERSREQUEST = _descriptor.Descriptor(
+  name='GetParticipatingLearnersRequest',
+  full_name='metisfl.GetParticipatingLearnersRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1323,
+  serialized_end=1356,
+)
+
+
+_GETPARTICIPATINGLEARNERSRESPONSE = _descriptor.Descriptor(
+  name='GetParticipatingLearnersResponse',
+  full_name='metisfl.GetParticipatingLearnersResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='learner', full_name='metisfl.GetParticipatingLearnersResponse.learner', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learner', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1358,
+  serialized_end=1446,
+)
+
+
+_JOINFEDERATIONREQUEST = _descriptor.Descriptor(
+  name='JoinFederationRequest',
+  full_name='metisfl.JoinFederationRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='server_entity', full_name='metisfl.JoinFederationRequest.server_entity', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='serverEntity', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='local_dataset_spec', full_name='metisfl.JoinFederationRequest.local_dataset_spec', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='localDatasetSpec', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1449,
+  serialized_end=1600,
+)
+
+
+_JOINFEDERATIONRESPONSE = _descriptor.Descriptor(
+  name='JoinFederationResponse',
+  full_name='metisfl.JoinFederationResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ack', full_name='metisfl.JoinFederationResponse.ack', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='learner_id', full_name='metisfl.JoinFederationResponse.learner_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='auth_token', full_name='metisfl.JoinFederationResponse.auth_token', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='authToken', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1602,
+  serialized_end=1720,
+)
+
+
+_LEARNERLOCALMODELRESPONSE = _descriptor.Descriptor(
+  name='LearnerLocalModelResponse',
+  full_name='metisfl.LearnerLocalModelResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='server_entity', full_name='metisfl.LearnerLocalModelResponse.server_entity', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='serverEntity', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='metisfl.LearnerLocalModelResponse.model', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='model', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1722,
+  serialized_end=1847,
+)
+
+
+_MARKTASKCOMPLETEDREQUEST = _descriptor.Descriptor(
+  name='MarkTaskCompletedRequest',
+  full_name='metisfl.MarkTaskCompletedRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='learner_id', full_name='metisfl.MarkTaskCompletedRequest.learner_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='auth_token', full_name='metisfl.MarkTaskCompletedRequest.auth_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='authToken', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='task', full_name='metisfl.MarkTaskCompletedRequest.task', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='task', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1850,
+  serialized_end=1990,
+)
+
+
+_LEARNEREXECUTIONAUXMETADATA = _descriptor.Descriptor(
+  name='LearnerExecutionAuxMetadata',
+  full_name='metisfl.LearnerExecutionAuxMetadata',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='json_response', full_name='metisfl.LearnerExecutionAuxMetadata.json_response', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='jsonResponse', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1992,
+  serialized_end=2058,
+)
+
+
+_MARKTASKCOMPLETEDRESPONSE = _descriptor.Descriptor(
+  name='MarkTaskCompletedResponse',
+  full_name='metisfl.MarkTaskCompletedResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ack', full_name='metisfl.MarkTaskCompletedResponse.ack', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2060,
+  serialized_end=2119,
+)
+
+
+_LEAVEFEDERATIONREQUEST = _descriptor.Descriptor(
+  name='LeaveFederationRequest',
+  full_name='metisfl.LeaveFederationRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='learner_id', full_name='metisfl.LeaveFederationRequest.learner_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='learnerId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='auth_token', full_name='metisfl.LeaveFederationRequest.auth_token', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='authToken', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2121,
+  serialized_end=2207,
+)
+
+
+_LEAVEFEDERATIONRESPONSE = _descriptor.Descriptor(
+  name='LeaveFederationResponse',
+  full_name='metisfl.LeaveFederationResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ack', full_name='metisfl.LeaveFederationResponse.ack', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2209,
+  serialized_end=2266,
+)
+
+
+_REPLACECOMMUNITYMODELREQUEST = _descriptor.Descriptor(
+  name='ReplaceCommunityModelRequest',
+  full_name='metisfl.ReplaceCommunityModelRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='model', full_name='metisfl.ReplaceCommunityModelRequest.model', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='model', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2268,
+  serialized_end=2345,
+)
+
+
+_REPLACECOMMUNITYMODELRESPONSE = _descriptor.Descriptor(
+  name='ReplaceCommunityModelResponse',
+  full_name='metisfl.ReplaceCommunityModelResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='ack', full_name='metisfl.ReplaceCommunityModelResponse.ack', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2347,
+  serialized_end=2410,
+)
+
+_GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE.fields_by_name['community_evaluation'].message_type = metisfl_dot_proto_dot_metis__pb2._COMMUNITYMODELEVALUATION
+_GETCOMMUNITYMODELLINEAGERESPONSE.fields_by_name['federated_models'].message_type = metisfl_dot_proto_dot_model__pb2._FEDERATEDMODEL
+_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY.fields_by_name['value'].message_type = metisfl_dot_proto_dot_metis__pb2._LOCALTASKSMETADATA
+_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY.containing_type = _GETLOCALTASKLINEAGERESPONSE
+_GETLOCALTASKLINEAGERESPONSE.fields_by_name['learner_task'].message_type = _GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY
+_GETLEARNERLOCALMODELLINEAGEREQUEST.fields_by_name['server_entity'].message_type = metisfl_dot_proto_dot_metis__pb2._SERVERENTITY
+_GETLEARNERLOCALMODELLINEAGERESPONSE.fields_by_name['learner_local_model'].message_type = _LEARNERLOCALMODELRESPONSE
+_GETRUNTIMEMETADATALINEAGERESPONSE.fields_by_name['metadata'].message_type = metisfl_dot_proto_dot_metis__pb2._FEDERATEDTASKRUNTIMEMETADATA
+_GETPARTICIPATINGLEARNERSRESPONSE.fields_by_name['learner'].message_type = metisfl_dot_proto_dot_metis__pb2._LEARNERDESCRIPTOR
+_JOINFEDERATIONREQUEST.fields_by_name['server_entity'].message_type = metisfl_dot_proto_dot_metis__pb2._SERVERENTITY
+_JOINFEDERATIONREQUEST.fields_by_name['local_dataset_spec'].message_type = metisfl_dot_proto_dot_metis__pb2._DATASETSPEC
+_JOINFEDERATIONRESPONSE.fields_by_name['ack'].message_type = metisfl_dot_proto_dot_service__common__pb2._ACK
+_LEARNERLOCALMODELRESPONSE.fields_by_name['server_entity'].message_type = metisfl_dot_proto_dot_metis__pb2._SERVERENTITY
+_LEARNERLOCALMODELRESPONSE.fields_by_name['model'].message_type = metisfl_dot_proto_dot_model__pb2._MODEL
+_MARKTASKCOMPLETEDREQUEST.fields_by_name['task'].message_type = metisfl_dot_proto_dot_metis__pb2._COMPLETEDLEARNINGTASK
+_MARKTASKCOMPLETEDRESPONSE.fields_by_name['ack'].message_type = metisfl_dot_proto_dot_service__common__pb2._ACK
+_LEAVEFEDERATIONRESPONSE.fields_by_name['ack'].message_type = metisfl_dot_proto_dot_service__common__pb2._ACK
+_REPLACECOMMUNITYMODELREQUEST.fields_by_name['model'].message_type = metisfl_dot_proto_dot_model__pb2._FEDERATEDMODEL
+_REPLACECOMMUNITYMODELRESPONSE.fields_by_name['ack'].message_type = metisfl_dot_proto_dot_service__common__pb2._ACK
+DESCRIPTOR.message_types_by_name['GetCommunityModelEvaluationLineageRequest'] = _GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetCommunityModelEvaluationLineageResponse'] = _GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE
+DESCRIPTOR.message_types_by_name['GetCommunityModelLineageRequest'] = _GETCOMMUNITYMODELLINEAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetCommunityModelLineageResponse'] = _GETCOMMUNITYMODELLINEAGERESPONSE
+DESCRIPTOR.message_types_by_name['GetLocalTaskLineageRequest'] = _GETLOCALTASKLINEAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetLocalTaskLineageResponse'] = _GETLOCALTASKLINEAGERESPONSE
+DESCRIPTOR.message_types_by_name['GetLearnerLocalModelLineageRequest'] = _GETLEARNERLOCALMODELLINEAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetLearnerLocalModelLineageResponse'] = _GETLEARNERLOCALMODELLINEAGERESPONSE
+DESCRIPTOR.message_types_by_name['GetRuntimeMetadataLineageRequest'] = _GETRUNTIMEMETADATALINEAGEREQUEST
+DESCRIPTOR.message_types_by_name['GetRuntimeMetadataLineageResponse'] = _GETRUNTIMEMETADATALINEAGERESPONSE
+DESCRIPTOR.message_types_by_name['GetParticipatingLearnersRequest'] = _GETPARTICIPATINGLEARNERSREQUEST
+DESCRIPTOR.message_types_by_name['GetParticipatingLearnersResponse'] = _GETPARTICIPATINGLEARNERSRESPONSE
+DESCRIPTOR.message_types_by_name['JoinFederationRequest'] = _JOINFEDERATIONREQUEST
+DESCRIPTOR.message_types_by_name['JoinFederationResponse'] = _JOINFEDERATIONRESPONSE
+DESCRIPTOR.message_types_by_name['LearnerLocalModelResponse'] = _LEARNERLOCALMODELRESPONSE
+DESCRIPTOR.message_types_by_name['MarkTaskCompletedRequest'] = _MARKTASKCOMPLETEDREQUEST
+DESCRIPTOR.message_types_by_name['LearnerExecutionAuxMetadata'] = _LEARNEREXECUTIONAUXMETADATA
+DESCRIPTOR.message_types_by_name['MarkTaskCompletedResponse'] = _MARKTASKCOMPLETEDRESPONSE
+DESCRIPTOR.message_types_by_name['LeaveFederationRequest'] = _LEAVEFEDERATIONREQUEST
+DESCRIPTOR.message_types_by_name['LeaveFederationResponse'] = _LEAVEFEDERATIONRESPONSE
+DESCRIPTOR.message_types_by_name['ReplaceCommunityModelRequest'] = _REPLACECOMMUNITYMODELREQUEST
+DESCRIPTOR.message_types_by_name['ReplaceCommunityModelResponse'] = _REPLACECOMMUNITYMODELRESPONSE
+_sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
 GetCommunityModelEvaluationLineageRequest = _reflection.GeneratedProtocolMessageType('GetCommunityModelEvaluationLineageRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST,
   '__module__' : 'metisfl.proto.controller_pb2'
@@ -206,58 +1038,142 @@ ReplaceCommunityModelResponse = _reflection.GeneratedProtocolMessageType('Replac
   })
 _sym_db.RegisterMessage(ReplaceCommunityModelResponse)
 
-_CONTROLLERSERVICE = DESCRIPTOR.services_by_name['ControllerService']
-if _descriptor._USE_C_DESCRIPTORS == False:
 
-  DESCRIPTOR._options = None
-  _GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY._options = None
-  _GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY._serialized_options = b'8\001'
-  _GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST._serialized_start=133
-  _GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST._serialized_end=215
-  _GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE._serialized_start=218
-  _GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE._serialized_end=348
-  _GETCOMMUNITYMODELLINEAGEREQUEST._serialized_start=350
-  _GETCOMMUNITYMODELLINEAGEREQUEST._serialized_end=422
-  _GETCOMMUNITYMODELLINEAGERESPONSE._serialized_start=424
-  _GETCOMMUNITYMODELLINEAGERESPONSE._serialized_end=526
-  _GETLOCALTASKLINEAGEREQUEST._serialized_start=528
-  _GETLOCALTASKLINEAGEREQUEST._serialized_end=628
-  _GETLOCALTASKLINEAGERESPONSE._serialized_start=631
-  _GETLOCALTASKLINEAGERESPONSE._serialized_end=843
-  _GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY._serialized_start=752
-  _GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY._serialized_end=843
-  _GETLEARNERLOCALMODELLINEAGEREQUEST._serialized_start=846
-  _GETLEARNERLOCALMODELLINEAGEREQUEST._serialized_end=981
-  _GETLEARNERLOCALMODELLINEAGERESPONSE._serialized_start=983
-  _GETLEARNERLOCALMODELLINEAGERESPONSE._serialized_end=1104
-  _GETRUNTIMEMETADATALINEAGEREQUEST._serialized_start=1106
-  _GETRUNTIMEMETADATALINEAGEREQUEST._serialized_end=1179
-  _GETRUNTIMEMETADATALINEAGERESPONSE._serialized_start=1182
-  _GETRUNTIMEMETADATALINEAGERESPONSE._serialized_end=1321
-  _GETPARTICIPATINGLEARNERSREQUEST._serialized_start=1323
-  _GETPARTICIPATINGLEARNERSREQUEST._serialized_end=1356
-  _GETPARTICIPATINGLEARNERSRESPONSE._serialized_start=1358
-  _GETPARTICIPATINGLEARNERSRESPONSE._serialized_end=1446
-  _JOINFEDERATIONREQUEST._serialized_start=1449
-  _JOINFEDERATIONREQUEST._serialized_end=1600
-  _JOINFEDERATIONRESPONSE._serialized_start=1602
-  _JOINFEDERATIONRESPONSE._serialized_end=1720
-  _LEARNERLOCALMODELRESPONSE._serialized_start=1722
-  _LEARNERLOCALMODELRESPONSE._serialized_end=1847
-  _MARKTASKCOMPLETEDREQUEST._serialized_start=1850
-  _MARKTASKCOMPLETEDREQUEST._serialized_end=1990
-  _LEARNEREXECUTIONAUXMETADATA._serialized_start=1992
-  _LEARNEREXECUTIONAUXMETADATA._serialized_end=2058
-  _MARKTASKCOMPLETEDRESPONSE._serialized_start=2060
-  _MARKTASKCOMPLETEDRESPONSE._serialized_end=2119
-  _LEAVEFEDERATIONREQUEST._serialized_start=2121
-  _LEAVEFEDERATIONREQUEST._serialized_end=2207
-  _LEAVEFEDERATIONRESPONSE._serialized_start=2209
-  _LEAVEFEDERATIONRESPONSE._serialized_end=2266
-  _REPLACECOMMUNITYMODELREQUEST._serialized_start=2268
-  _REPLACECOMMUNITYMODELREQUEST._serialized_end=2345
-  _REPLACECOMMUNITYMODELRESPONSE._serialized_start=2347
-  _REPLACECOMMUNITYMODELRESPONSE._serialized_end=2410
-  _CONTROLLERSERVICE._serialized_start=2413
-  _CONTROLLERSERVICE._serialized_end=3702
+_GETLOCALTASKLINEAGERESPONSE_LEARNERTASKENTRY._options = None
+
+_CONTROLLERSERVICE = _descriptor.ServiceDescriptor(
+  name='ControllerService',
+  full_name='metisfl.ControllerService',
+  file=DESCRIPTOR,
+  index=0,
+  serialized_options=None,
+  create_key=_descriptor._internal_create_key,
+  serialized_start=2413,
+  serialized_end=3702,
+  methods=[
+  _descriptor.MethodDescriptor(
+    name='GetCommunityModelEvaluationLineage',
+    full_name='metisfl.ControllerService.GetCommunityModelEvaluationLineage',
+    index=0,
+    containing_service=None,
+    input_type=_GETCOMMUNITYMODELEVALUATIONLINEAGEREQUEST,
+    output_type=_GETCOMMUNITYMODELEVALUATIONLINEAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetCommunityModelLineage',
+    full_name='metisfl.ControllerService.GetCommunityModelLineage',
+    index=1,
+    containing_service=None,
+    input_type=_GETCOMMUNITYMODELLINEAGEREQUEST,
+    output_type=_GETCOMMUNITYMODELLINEAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetLearnerLocalModelLineage',
+    full_name='metisfl.ControllerService.GetLearnerLocalModelLineage',
+    index=2,
+    containing_service=None,
+    input_type=_GETLEARNERLOCALMODELLINEAGEREQUEST,
+    output_type=_GETLEARNERLOCALMODELLINEAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetLocalTaskLineage',
+    full_name='metisfl.ControllerService.GetLocalTaskLineage',
+    index=3,
+    containing_service=None,
+    input_type=_GETLOCALTASKLINEAGEREQUEST,
+    output_type=_GETLOCALTASKLINEAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetRuntimeMetadataLineage',
+    full_name='metisfl.ControllerService.GetRuntimeMetadataLineage',
+    index=4,
+    containing_service=None,
+    input_type=_GETRUNTIMEMETADATALINEAGEREQUEST,
+    output_type=_GETRUNTIMEMETADATALINEAGERESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetParticipatingLearners',
+    full_name='metisfl.ControllerService.GetParticipatingLearners',
+    index=5,
+    containing_service=None,
+    input_type=_GETPARTICIPATINGLEARNERSREQUEST,
+    output_type=_GETPARTICIPATINGLEARNERSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetServicesHealthStatus',
+    full_name='metisfl.ControllerService.GetServicesHealthStatus',
+    index=6,
+    containing_service=None,
+    input_type=metisfl_dot_proto_dot_service__common__pb2._GETSERVICESHEALTHSTATUSREQUEST,
+    output_type=metisfl_dot_proto_dot_service__common__pb2._GETSERVICESHEALTHSTATUSRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='JoinFederation',
+    full_name='metisfl.ControllerService.JoinFederation',
+    index=7,
+    containing_service=None,
+    input_type=_JOINFEDERATIONREQUEST,
+    output_type=_JOINFEDERATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='LeaveFederation',
+    full_name='metisfl.ControllerService.LeaveFederation',
+    index=8,
+    containing_service=None,
+    input_type=_LEAVEFEDERATIONREQUEST,
+    output_type=_LEAVEFEDERATIONRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='MarkTaskCompleted',
+    full_name='metisfl.ControllerService.MarkTaskCompleted',
+    index=9,
+    containing_service=None,
+    input_type=_MARKTASKCOMPLETEDREQUEST,
+    output_type=_MARKTASKCOMPLETEDRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ReplaceCommunityModel',
+    full_name='metisfl.ControllerService.ReplaceCommunityModel',
+    index=10,
+    containing_service=None,
+    input_type=_REPLACECOMMUNITYMODELREQUEST,
+    output_type=_REPLACECOMMUNITYMODELRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='ShutDown',
+    full_name='metisfl.ControllerService.ShutDown',
+    index=11,
+    containing_service=None,
+    input_type=metisfl_dot_proto_dot_service__common__pb2._SHUTDOWNREQUEST,
+    output_type=metisfl_dot_proto_dot_service__common__pb2._SHUTDOWNRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+])
+_sym_db.RegisterServiceDescriptor(_CONTROLLERSERVICE)
+
+DESCRIPTOR.services_by_name['ControllerService'] = _CONTROLLERSERVICE
+
 # @@protoc_insertion_point(module_scope)
