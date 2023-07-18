@@ -1,5 +1,4 @@
 import yaml
-import re
 
 from metisfl import config
 from metisfl.proto import metis_pb2
@@ -39,7 +38,7 @@ class FederationEnvironment(object):
         return ssl_public_certificate, ssl_private_key
 
     def _setup_fhe(self):
-        if self.he_scheme == "CKKS":
+        if self._yaml.get("HEScheme") == "CKKS":
             fhe_crypto_context_file, fhe_key_public_file, \
                 fhe_key_private_file, fhe_key_eval_mult_file = config.get_fhe_resources()
             self._yaml["FHECryptoContextFile"] = fhe_crypto_context_file
@@ -56,6 +55,10 @@ class FederationEnvironment(object):
     def execution_time_cutoff_mins(self):
         return self._yaml.get("ExecutionCutoffTimeMins")
 
+    @property
+    def evaluation_metric(self):
+        return self._yaml.get("EvaluationMetric")
+    
     @property
     def metric_cutoff_score(self):
         return self._yaml.get("EvaluationMetricCutoffScore")
@@ -88,73 +91,30 @@ class FederationEnvironment(object):
     def lineage_length(self):
         return self._yaml.get("LineageLength", 1)
 
-    # Homomorphic encryption configuration
-    @property
-    def he_scheme(self):
-        return self._yaml.get("HEScheme")
-
-    @property
-    def he_batch_size(self):
-        return self._yaml.get("HEBatchSize")
-
-    @property
-    def he_scaling_bits(self):
-        return self._yaml.get("HEScalingBits")
-
-    # Global training configuration
-    @property
-    def aggregation_rule(self):
-        return self._yaml.get("AggregationRule")
-
-    @property
-    def scaling_factor(self):
-        return self._yaml.get("ScalingFactor")
-
-    @property
-    def stride_length(self):
-        return self._yaml.get("StrideLength")
-
-    @property
-    def particiapation_ratio(self):
-        return self._yaml.get("ParticipationRatio", 1.0)
-
-    # Local training configuration
-    @property
-    def train_batch_size(self):
-        return self._yaml.get("BatchSize")
-
-    @property
-    def evaluation_metric(self):
-        return self._yaml.get("EvaluationMetric")
-
-    @property
-    def local_epochs(self):
-        return self._yaml.get("LocalEpochs")
-
     def get_local_model_config_pb(self):
         return MetisProtoMessages.construct_controller_modelhyperparams_pb(
-            batch_size=self.train_batch_size,
-            epochs=self.local_epochs)
+            batch_size=self._yaml.get("BatchSize"),
+            epochs=self._yaml.get("LocalEpochs"))
 
     def get_global_model_config_pb(self):
         aggregation_rule_pb = MetisProtoMessages.construct_aggregation_rule_pb(
-            rule_name=self.aggregation_rule,
-            scaling_factor=self.scaling_factor,
-            stride_length=self.stride_length,
+            rule_name=self._yaml.get("AggregationRule"),
+            scaling_factor=self._yaml.get("ScalingFactor"),
+            stride_length=self._yaml.get("StrideLength"),
             he_scheme_config_pb=self.get_he_scheme_pb(entity="controller"))
         return MetisProtoMessages.construct_global_model_specs(
             aggregation_rule_pb=aggregation_rule_pb)
 
-    # @stripeli this does not make much sense in a realistic scenario.
-    # the file paths here are local to each host, yet the pb constructed here is sent to the controller.
     def get_he_scheme_pb(self, entity: str) -> metis_pb2.HESchemeConfig:
         assert entity in ["controller", "learner"]
-        if self.he_scheme == "CKKS":
+        if self._yaml.get("HEScheme") == "CKKS":
             fhe_crypto_context_file = self._yaml["FHECryptoContextFile"]
             fhe_key_public_file = self._yaml["FHEPublicKeyFile"]
             fhe_key_private_file = self._yaml["FHEPrivateKeyFile"]
             ckks_scheme_pb = metis_pb2.CKKSSchemeConfig(
-                batch_size=self.he_batch_size, scaling_factor_bits=self.he_scaling_bits)
+                batch_size=self._yaml.get("HEBatchSize"),
+                scaling_factor_bits=self._yaml.get("HEScalingBits")
+            )
             return metis_pb2.HESchemeConfig(
                 enabled=True,
                 crypto_context_file=fhe_crypto_context_file,
@@ -182,6 +142,8 @@ class FederationEnvironment(object):
             semi_sync_recompute_num_updates=semi_sync_recompute_num_updates)
 
     def get_model_store_config_pb(self):
+        model_store = self._yaml.get("ModelStore", "InMemory")
+        eviction_policy = self._yaml.get("EvictionPolicy", "LineageLengthEviction")
         eviction_policy_pb = MetisProtoMessages.construct_eviction_policy_pb(
             self.eviction_policy, self.lineage_length)
         model_store_specs_pb = MetisProtoMessages.construct_model_store_specs_pb(
@@ -191,8 +153,10 @@ class FederationEnvironment(object):
                 model_store_specs=model_store_specs_pb)
             return metis_pb2.ModelStoreConfig(in_memory_store=model_store_pb)
         elif self.model_store.upper() == "REDIS":
-            server_entity_pb = MetisProtoMessages.construct_server_entity_pb(hostname=self.model_store_hostname,
-                                                                             port=self.model_store_port)
+            model_store_hostname = self._yaml.get("ModelStoreHostname")
+            model_store_port = self._yaml.get("ModelStorePort")
+            server_entity_pb = MetisProtoMessages.construct_server_entity_pb(hostname=model_store_hostname,
+                                                                             port=model_store_port)
             return metis_pb2.RedisDBStore(model_store_specs=model_store_specs_pb,
                                           server_entity=server_entity_pb)
         else:

@@ -10,9 +10,7 @@ MODEL_STORES = ["InMemory", "Redis"]
 EVICTION_POLICIES = ["LineageLengthEviction", "NoEviction"]
 HE_SCHEMES = ["CKKS"]
 AGGREGATION_RULES = ["FedAvg", "FedRec", "FedStride", "PWA"]
-SCALING_FACTORS = ["NumTrainingExamples", "NUM_COMPLETED_BATCHES",
-                   "NUM_PARTICIPANTS", "NUM_TRAINING_EXAMPLES"]
-OPTIMIZERS = ["SGD", "Adam", "Adagrad", "Adadelta", "RMSprop"]
+SCALING_FACTORS = ["NUMCOMPLETEDBATCHES", "NUMPARTICIPANTS", "NUMTRAININGEXAMPLES"]
 
 
 def _existing_file(s):

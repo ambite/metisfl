@@ -30,22 +30,20 @@ LocalEpochs: 4
 
 # ControllerConfig:
 Controller:
-  ProjectHome: "/metisfl"
+  ProjectHome: "/home/panoskyriakis/metisfl"
   Hostname: "localhost"
-  Username: "root"
-  Password: "root"
+  Username: "panoskyriakis"
+  KeyFilename: "/home/panoskyriakis/.ssh/id_rsa"
   OnLoginCommand: "source /etc/profile;"
   GRPCServicerHostname: "localhost"
   GRPCServicerPort: 50051
-  SSLPrivateKey: "/metisfl/metisfl/resources/ssl_config/default/server-key.pem"
-  SSLPublicCertificate: "/metisfl/metisfl/resources/ssl_config/default/server-cert.pem"
 
 # LearnersConfig:
 Learners:
-  - ProjectHome: "/metisfl"
+  - ProjectHome: "/home/panoskyriakis/metisfl"
     Hostname: "localhost"
-    Username: "root"
-    Password: "root"
+    Username: "panoskyriakis"
+    KeyFilename: "/home/panoskyriakis/.ssh/id_rsa"
     OnLoginCommand: "source /etc/profile;"
     GRPCServicerHostname: "localhost"
     GRPCServicerPort: 50052

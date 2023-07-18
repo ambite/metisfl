@@ -10,8 +10,6 @@ EnableSSL: true
 
 # ModelStore 
 ModelStore: "InMemory" # Others are "InMemory", "Redis"
-ModelStoreHostname: "localhost"
-ModelStorePort: 6379
 EvictionPolicy: "LineageLengthEviction" # Others are "NoEviction", "LineageLengthEviction"
 LineageLength: 1 # This field is only applicable if EvictionPolicy is set to "LineageLengthEviction"
 
@@ -22,7 +20,7 @@ LineageLength: 1 # This field is only applicable if EvictionPolicy is set to "Li
 
 # GlobalTrainingConfig:
 AggregationRule: "FedAvg" # Others are FedAvg, FedStride, FedStride, PWA
-ScalingFactor: "NumTrainingExamples" 
+ScalingFactor: "NUMTRAININGEXAMPLES" 
 StrideLength: 2
 
 # LocalTrainingConfig:

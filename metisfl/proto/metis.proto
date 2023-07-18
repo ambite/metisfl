@@ -179,121 +179,34 @@ message ControllerParams {
   GlobalModelSpecs global_model_specs = 2;
   CommunicationSpecs communication_specs = 3;
   ModelStoreConfig model_store_config = 4;
-
-  message ModelHyperparams {
-    // TODO(stripeli): Shall we replace (batch_size, optimizer) with Hyperparameters message?
-    uint32 batch_size = 1;
-
-    uint32 epochs = 2;
-  }
-
   ModelHyperparams model_hyperparams = 5;
 }
 
-
-
-message ModelStoreConfig {
-  // Model cache config shall never be extended. It is just wrapper over the cache configuration.
-  // It contains only a single member, the cache that needs to be configured: oneof.
-  // Only one cache can be set and used by the controller.
-  oneof config {
-    InMemoryStore in_memory_store = 1;
-    RedisDBStore redis_db_store = 2;
-  }
+message GlobalModelSpecs{
+    string aggregation_rule = 1;
+    string scaling_factor = 2;
+    string stride_length = 3;
+    string he_batch_size = 4;
+    string he_scaling_factor_bits = 5;
+    string he_crypto_context_file = 6;
+}
+ 
+message CommunicationSpecs{
+    string protocol = 1;
+    string semi_sync_lambda = 2;
+    string semi_sync_recompute_num_updates = 3;
 }
 
-message InMemoryStore {
-  ModelStoreSpecs model_store_specs = 1;
+message ModelStoreConfig{
+    string model_store = 1;
+    string eviction_policy = 2;
+    string model_store_hostname = 3;
+    string model_store_port = 4;
 }
 
-message RedisDBStore {
-  ModelStoreSpecs model_store_specs = 1;
-  ServerEntity server_entity = 2;
-}
-
-message NoEviction {}
-
-message LineageLengthEviction {
-  uint32 lineage_length = 1; // The number of models the store to preserve per learner (i.e., history per learner). If we exceed this number we remove the least frequently used (lfu) model.
-}
-
-message ModelStoreSpecs {
-  oneof eviction_policy {
-    NoEviction no_eviction = 1; // Controller keeps all submitted models from all learners.
-    LineageLengthEviction lineage_length_eviction = 2; // Controller keeps only the last k submitted models of each learner. This is similar to LRU; we only keep the most recent k models.
-  }
-}
-
-message AggregationRule {
-  oneof rule {
-    FedAvg fed_avg = 1;
-    FedStride fed_stride = 2;
-    FedRec fed_rec = 3;
-    PWA pwa = 4;
-  }
-  AggregationRuleSpecs aggregation_rule_specs = 5;
-}
-
-message AggregationRuleSpecs {
-  enum ScalingFactor {
-    UNKNOWN = 0;
-    NUM_COMPLETED_BATCHES = 1;
-    NUM_PARTICIPANTS = 2;
-    NUM_TRAINING_EXAMPLES = 3;
-  }
-  ScalingFactor scaling_factor = 1;
-}
-
-message FedAvg {}
-
-message FedStride {
-  uint32 stride_length = 1;
-}
-
-message FedRec {}
-
-message HESchemeConfig {
-  bool enabled = 1;
-  string crypto_context_file = 2;
-  string public_key_file = 3;
-  string private_key_file = 4;
-
-  oneof config {
-    EmptySchemeConfig empty_scheme_config = 5;
-    CKKSSchemeConfig ckks_scheme_config = 6;
-  }
-}
-
-message EmptySchemeConfig {}
-
-message CKKSSchemeConfig {
+message ModelHyperparams {
   uint32 batch_size = 1;
-  uint32 scaling_factor_bits = 2;
-}
-
-message PWA {
-  HESchemeConfig he_scheme_config = 1;
-}
-
-message GlobalModelSpecs {
-  AggregationRule aggregation_rule = 1;
-}
-
-message CommunicationSpecs {
-  enum Protocol {
-    UNKNOWN = 0;
-    SYNCHRONOUS = 1;
-    ASYNCHRONOUS = 2;
-    SEMI_SYNCHRONOUS = 3;
-  }
-  Protocol protocol = 1;
-  ProtocolSpecs protocol_specs = 2;
-}
-
-message ProtocolSpecs {
-  // Parameters specific to the semi-synchronous protocol.
-  int32 semi_sync_lambda = 1;
-  bool semi_sync_recompute_num_updates = 2;
+  uint32 num_epochs = 2;
 }
 
 message LearnerDescriptor {
