@@ -71,12 +71,11 @@ fake_label = 0.
 ## 💾 Dataset
 
 <div align="center">
-  <img src="https://mmlab.ie.cuhk.edu.hk/projects/CelebA/intro.png" width="500px" />
+  <img src="https://mmlab.ie.cuhk.edu.hk/projects/CelebA/intro.png" width="800px" />
 </div>
 
 The dataset used in this example is the well-known Celeba dataset which contains more than 200k images of celebrities. The dataset is available [here](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html). 
-
- The dataset is partitioned into 3 chunks and each chunk is stored in a separate directory. The partitioning is done using the `iid_partition_dir` function from the `metisfl.utils` module. The `iid_partition_dir` function takes as input the path to the directory containing the dataset, the file extension of the images and the number of chunks. The function will create a new directory for each chunk, shuffle the images and copy them to the corresponding chunk directory.
+The dataset is partitioned into 3 chunks and each chunk is stored in a separate directory. The partitioning is done using the `iid_partition_dir` function from the `metisfl.utils` module. A subtle thing to notice here is that in each chunk dir there should be a sub-directory which contains the actual images. This is because the `ImageFolder` class from the `torchvision.datasets` module expects the images to be partitioned into a sub-directory depending on their class. In our case, we have only one class we can just create a sub-directory `img` in each chunk dir and move all the images there.  
 
 ```python
 def get_dataloaders(num_learners: int) -> List[torch.utils.data.DataLoader]:
@@ -87,7 +86,7 @@ def get_dataloaders(num_learners: int) -> List[torch.utils.data.DataLoader]:
         assert len(chunk_dirs) == num_learners, "Number of learners must match the number of chunks"
     else:
         print("Partitioning data into {} chunks".format(num_learners))
-        iid_partition_dir(cfg.dataroot, 'jpg', num_learners)
+        iid_partition_dir(cfg.dataroot, 'jpg', num_learners, "img")
         chunk_dirs = glob.glob(cfg.dataroot + '/chunk*')    
     
     dataloaders = []
@@ -114,21 +113,114 @@ def get_dataloader(learner_index: int, num_learners: int) -> torch.utils.data.Da
 
 ## 🧠 Model
 
+```python
+class Generator(nn.Module):
+    def __init__(self, ngpu):
+        super(Generator, self).__init__()
+        self.ngpu = ngpu
+        self.main = nn.Sequential(
+            # input is Z, going into a convolution
+            nn.ConvTranspose2d(cfg.nz, cfg.ngf * 8, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(cfg.ngf * 8),
+            nn.ReLU(True),
+            # state size. ``(ngf*8) x 4 x 4``
+            nn.ConvTranspose2d(cfg.ngf * 8, cfg.ngf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ngf * 4),
+            nn.ReLU(True),
+            # state size. ``(ngf*4) x 8 x 8``
+            nn.ConvTranspose2d(cfg.ngf * 4, cfg.ngf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ngf * 2),
+            nn.ReLU(True),
+            # state size. ``(ngf*2) x 16 x 16``
+            nn.ConvTranspose2d(cfg.ngf * 2, cfg.ngf, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ngf),
+            nn.ReLU(True),
+            # state size. ``(ngf) x 32 x 32``
+            nn.ConvTranspose2d(cfg.ngf, cfg.nc, 4, 2, 1, bias=False),
+            nn.Tanh()
+            # state size. ``(nc) x 64 x 64``
+        )
+
+    def forward(self, input):
+        return self.main(input)
+```
+
+```python
+class Discriminator(nn.Module):
+    def __init__(self, ngpu):
+        super(Discriminator, self).__init__()
+        self.ngpu = ngpu
+        self.main = nn.Sequential(
+            # input is ``(nc) x 64 x 64``
+            nn.Conv2d(cfg.nc, cfg.ndf, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. ``(ndf) x 32 x 32``
+            nn.Conv2d(cfg.ndf, cfg.ndf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ndf * 2),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. ``(ndf*2) x 16 x 16``
+            nn.Conv2d(cfg.ndf * 2, cfg.ndf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ndf * 4),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. ``(ndf*4) x 8 x 8``
+            nn.Conv2d(cfg.ndf * 4, cfg.ndf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(cfg.ndf * 8),
+            nn.LeakyReLU(0.2, inplace=True),
+            # state size. ``(ndf*8) x 4 x 4``
+            nn.Conv2d(cfg.ndf * 8, 1, 4, 1, 0, bias=False),
+            nn.Sigmoid()
+        )
+
+    def forward(self, input):
+        return self.main(input)
+```
+
 ## 👨‍💻 MetisFL Learner
 
 The main abstraction of the client is called MetisFL Learner. The MetisFL Learner is responsible for training the model on the local dataset and communicating with the server. Following the [class](https://github.com/NevronAI/metisfl/blob/main/metisfl/learner/learner.py) that must be implemented by the learner, we first start by the `get_weights` and `set_weights` methods. These methods are used by the Controller to get and set the model parameters. The `get_weights` method returns a list of numpy arrays and the `set_weights` method takes a list of numpy arrays as input.
 
 ```python
+def set_weights_helper(model, parameters):
+    params = zip(model.state_dict().keys(), parameters)
+    state_dict = OrderedDict(
+        {k: torch.from_numpy(v.copy()) for k, v in params})
+    model.load_state_dict(state_dict, strict=True)
+
 def get_weights(self):
-    return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
+    weightsG = [val.cpu().numpy() for _, val in self.netG.state_dict().items()]
+    weightsD = [val.cpu().numpy() for _, val in self.netD.state_dict().items()]
+    return weightsG + weightsD
 
 def set_weights(self, parameters):
-    params = zip(self.model.state_dict().keys(), parameters)
-    state_dict = OrderedDict({k: torch.Tensor(v) for k, v in params})
-    self.model.load_state_dict(state_dict, strict=True)
+    weightsG = parameters[:self.index]
+    weightsD = parameters[self.index:]
+    set_weights_helper(self.netG, weightsG)
+    set_weights_helper(self.netD, weightsD)
 ```
 
-Then, we implement the `train` and `evaluate` methods. Both of them take the model weights and a dictionary of configuration parameters as input. The `train` method returns the updated model weights, a dictionary of metrics and a dictionary of metadata. The `evaluate` method returns a dictionary of metrics.
+```python
+def train(self, parameters, config):
+    self.fed_round += 1
+    self.set_weights(parameters)
+    num_epochs = config["num_epochs"] if "num_epochs" in config else 2
+    G_losses, D_losses, imgs = train(self.netG, self.netD, self.dataloader, num_epochs)
+    fname = "output_train_fr_{}_lid_{}.png".format(self.fed_round, self.learner_id)
+    vutils.save_image(imgs, fname, normalize=True)
+    weights = self.get_weights()
+    metrics = {"G_losses": G_losses, "D_losses": D_losses}
+    return weights, metrics, {"num_training_examples": len(self.dataloader.dataset)}
+    
+
+def evaluate(self, parameters, config):
+    with torch.no_grad():
+        self.set_weights(parameters)
+        fake = self.netG(cfg.fixed_noise).detach().cpu()
+        fake = vutils.make_grid(fake, padding=2, normalize=True)
+        fname = "output_eval_fr_{}_lid_{}.png".format(self.fed_round, self.learner_id)
+        vutils.save_image(fake, fname, normalize=True)
+        return {}
+```
+
 
 ## 🎛️ MetisFL Controller
 

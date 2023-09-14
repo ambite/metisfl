@@ -17,7 +17,7 @@ def get_dataloaders(num_learners: int) -> List[torch.utils.data.DataLoader]:
         assert len(chunk_dirs) == num_learners, "Number of learners must match the number of chunks"
     else:
         print("Partitioning data into {} chunks".format(num_learners))
-        iid_partition_dir(cfg.dataroot, 'jpg', num_learners)
+        iid_partition_dir(cfg.dataroot, 'jpg', num_learners, "img")
         chunk_dirs = glob.glob(cfg.dataroot + '/chunk*')    
     
     dataloaders = []

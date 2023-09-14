@@ -44,10 +44,10 @@ class TFLearner(Learner):
         set_weights_helper(self.netD, weightsD)
 
     def train(self, parameters, config):
+        self.fed_round += 1
         self.set_weights(parameters)
         num_epochs = config["num_epochs"] if "num_epochs" in config else 2
         G_losses, D_losses, imgs = train(self.netG, self.netD, self.dataloader, num_epochs)
-        
         fname = "output_train_fr_{}_lid_{}.png".format(self.fed_round, self.learner_id)
         vutils.save_image(imgs, fname, normalize=True)
         weights = self.get_weights()
@@ -62,7 +62,7 @@ class TFLearner(Learner):
             fake = vutils.make_grid(fake, padding=2, normalize=True)
             fname = "output_eval_fr_{}_lid_{}.png".format(self.fed_round, self.learner_id)
             vutils.save_image(fake, fname, normalize=True)
-            return self.get_weights(), {"fake": fake}
+            return {}
 
 def get_learner_server_params(learner_index, max_learners):
     """A helper function to get the server parameters for a learner. """
