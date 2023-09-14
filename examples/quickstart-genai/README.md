@@ -15,66 +15,62 @@ The default installation of MetisFL does not include any backend. This example u
 pip install torch torchvision
 ```
 
+## 📝 Overview & Configuration
+
+```python
+# Number of GPUs available. Use 0 for CPU mode.
+ngpu = 1
+
+# Decide which device we want to run on
+device = torch.device("cuda:0" if (
+    torch.cuda.is_available() and ngpu > 0) else "cpu")
+
+# Root directory for dataset
+dataroot = "celeba"
+
+# Number of workers for dataloader
+workers = 2
+
+# Batch size during training
+batch_size = 128
+
+# Spatial size of training images. All images will be resized to this
+#   size using a transformer.
+image_size = 64
+
+# Number of channels in the training images. For color images this is 3
+nc = 3
+
+# Size of z latent vector (i.e. size of generator input)
+nz = 100
+
+# Size of feature maps in generator
+ngf = 64
+
+# Size of feature maps in discriminator
+ndf = 64
+
+# Number of training epochs
+num_epochs = 5
+
+# Learning rate for optimizers
+lr = 0.0002
+
+# Beta1 hyperparameter for Adam optimizers
+beta1 = 0.5
+
+# Create batch of latent vectors that we will use to visualize
+#  the progression of the generator
+fixed_noise = torch.randn(64, nz, 1, 1, device=device)
+
+# Establish convention for real and fake labels during training
+real_label = 1.
+fake_label = 0.
+```
+
 ## 💾 Dataset
 
-The dataset we use is the CIFAR10 and the example is based on the model training example in the [Pytorch documentation](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html). First, we load the dataset and split it into `num_learners` chunks.
-
-```python
-def load_data(num_learners: int) -> Tuple:
-    """Load CIFAR-10  and partition it into num_learners clients, iid."""
-
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize(
-            (0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
-    )
-
-    trainset = CIFAR10(".", train=True, download=True, transform=transform)
-    testset = CIFAR10(".", train=False, download=True, transform=transform)
-
-    x_chunks, y_chunks = iid_partition(
-        x_train=trainset.data, y_train=trainset.targets, num_partitions=num_learners)
-
-    # Convert the numpy arrays to torch tensors and make it channels first
-    x_chunks = [torch.Tensor(x).permute(0, 3, 1, 2) for x in x_chunks]
-    y_chunks = [torch.Tensor(y).long() for y in y_chunks]
-    trainset_chunks = [TensorDataset(x, y) for x, y in zip(x_chunks, y_chunks)]
-
-    # Same for the test set
-    test_data = torch.Tensor(testset.data).permute(0, 3, 1, 2)
-    test_labels = torch.Tensor(testset.targets).long()
-    testset = TensorDataset(test_data, test_labels)
-
-    return trainset_chunks, testset
-```
-
-To split the dataset we user the `iid_partition` function from the `metisfl.common.utils` module. This function takes the dataset and splits it into `num_partitions` chunks. The optional `seed` parameter is used to control the randomness of the split and can be used to reproduce the same split. It produces independent and identically distributed (IID) chunks of the dataset. Note that the data are transformed channels first (NCHW) as expected by Pytorch.
-
 ## 🧠 Model
-
-The model used in this example is a simple CNN and is defined in the `model.py` file.
-
-```python
-class Model(nn.Module):
-    """A simple CNN for CIFAR-10."""
-
-    def __init__(self) -> None:
-        super(Model, self).__init__()
-        self.conv1 = nn.Conv2d(3, 6, 5)
-        self.pool = nn.MaxPool2d(2, 2)
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 16 * 5 * 5)
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-```
 
 ## 👨‍💻 MetisFL Learner
 
@@ -91,59 +87,6 @@ def set_weights(self, parameters):
 ```
 
 Then, we implement the `train` and `evaluate` methods. Both of them take the model weights and a dictionary of configuration parameters as input. The `train` method returns the updated model weights, a dictionary of metrics and a dictionary of metadata. The `evaluate` method returns a dictionary of metrics.
-
-```python
-def train(self, parameters, config):
-    self.set_weights(parameters)
-    epochs = config["epochs"] if "epochs" in config else 1
-    losses = []
-    accs = []
-    for _ in range(epochs):
-        for images, labels in self.trainloader:
-            images, labels = images.to(DEVICE), labels.to(DEVICE)
-            self.optimizer.zero_grad()
-            outputs = self.model(images)
-            loss = self.criterion(outputs, labels)
-            loss.backward()
-            self.optimizer.step()
-
-            _, predicted = torch.max(outputs.data, 1)
-            total = labels.size(0)
-            correct = (predicted == labels).sum().item()
-            accuracy = correct / total
-
-            losses.append(loss.item())
-            accs.append(accuracy)
-
-    metrics = {
-        "accuracy": np.mean(accs),
-        "loss": np.mean(losses),
-    }
-    metadata = {
-        "num_training_examples": len(self.trainset),
-    }
-    return self.get_weights(), metrics, metadata
-```
-
-```python
-def evaluate(self, parameters, config):
-    self.set_weights(parameters)
-
-    correct, total, loss = 0, 0, 0.0
-    with torch.no_grad():
-        for data in self.testloader:
-            images, labels = data[0].to(DEVICE), data[1].to(DEVICE)
-            outputs = self.model(images)
-            loss += self.criterion(outputs, labels).item()
-            _, predicted = torch.max(outputs.data, 1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-
-    accuracy = correct / total
-    loss = loss / total
-
-    return {"accuracy": float(accuracy), "loss": float(loss)}
-```
 
 ## 🎛️ MetisFL Controller
 

@@ -98,6 +98,3 @@ def train(netG, netD, dataloader, num_epochs):
 
             iters += 1
 
-
-netG, netD = get_models()
-train(netG, netD, dataloader, cfg.num_epochs)
