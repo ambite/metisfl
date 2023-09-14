@@ -90,3 +90,4 @@ def get_models() -> Tuple[nn.Module, nn.Module]:
     netD.apply(weights_init)
 
     return netG, netD
+

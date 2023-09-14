@@ -1,6 +1,4 @@
 import torch
-import torch.nn as nn
-import torch.optim as optim
 
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
@@ -13,10 +11,10 @@ device = torch.device("cuda:0" if (
 dataroot = "celeba"
 
 # Number of workers for dataloader
-workers = 2
+workers = 1
 
 # Batch size during training
-batch_size = 32
+batch_size = 256
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.

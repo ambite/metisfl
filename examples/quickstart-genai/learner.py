@@ -27,13 +27,12 @@ class TFLearner(Learner):
         super().__init__()
         self.dataloader = dataloader
         self.netG, self.netD = get_models()
-        self.index = None
+        self.index = len(self.netG.state_dict())
 
     def get_weights(self):
-        weightsG = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
-        weightsD = [val.cpu().numpy() for _, val in self.model.state_dict().items()]
-        self.index = len(weightsG)
-        return weightsG.extend(weightsD)        
+        weightsG = [val.cpu().numpy() for _, val in self.netG.state_dict().items()]
+        weightsD = [val.cpu().numpy() for _, val in self.netD.state_dict().items()]
+        return weightsG + weightsD
 
     def set_weights(self, parameters):
         weightsG = parameters[:self.index]
@@ -42,8 +41,12 @@ class TFLearner(Learner):
         set_weights_helper(self.netD, weightsD)
 
     def train(self, parameters, config):
+        self.set_weights(parameters)
         num_epochs = config["num_epochs"] if "num_epochs" in config else 5
-        train(self.netG, self.netD, self.dataloader, num_epochs)
+        G_losses, D_losses = train(self.netG, self.netD, self.dataloader, num_epochs)
+        weights = self.get_weights()
+        metrics = {"G_losses": G_losses, "D_losses": D_losses}
+        return weights, metrics, {}
         
 
     def evaluate(self, parameters, config):
@@ -74,7 +77,7 @@ if __name__ == "__main__":
     dataloader = get_dataloader(learner_index=index, num_learners=max_learners)
 
     # Setup the Learner and the server parameters based on the given index
-    learner = TFLearner(x_chunks[index], y_chunks[index], x_test, y_test)
+    learner = TFLearner(dataloader)
     server_params = get_learner_server_params(index, max_learners)
 
     # Setup the client parameters based on the controller parameters
@@ -83,7 +86,7 @@ if __name__ == "__main__":
         port=controller_params.port,
         root_certificate=controller_params.root_certificate,
     )
-
+    
     # Start the app
     app(
         learner=learner,
