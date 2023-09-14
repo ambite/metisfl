@@ -7,7 +7,6 @@ import torch.optim as optim
 import torchvision.utils as vutils
 from torch.utils.data import DataLoader
 
-# Initialize the ``BCELoss`` function
 criterion = nn.BCELoss()
 
 
@@ -16,7 +15,7 @@ def train(
     netD: nn.Module,
     dataloader: DataLoader,
     num_epochs: int = 5
-) -> Tuple[List[float], List[float]]:
+) -> Tuple[List[float], List[float], List[torch.Tensor]]:
     
     optimizerD = optim.Adam(netD.parameters(), lr=cfg.lr,
                             betas=(cfg.beta1, 0.999))
@@ -82,4 +81,4 @@ def train(
 
             iters += 1
 
-    return G_losses, D_losses
+    return G_losses, D_losses, img_list

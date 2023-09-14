@@ -11,10 +11,10 @@ device = torch.device("cuda:0" if (
 dataroot = "celeba"
 
 # Number of workers for dataloader
-workers = 1
+workers = 2
 
 # Batch size during training
-batch_size = 256
+batch_size = 512
 
 # Spatial size of training images. All images will be resized to this
 #   size using a transformer.

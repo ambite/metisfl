@@ -70,6 +70,48 @@ fake_label = 0.
 
 ## 💾 Dataset
 
+<div align="center">
+  <img src="https://mmlab.ie.cuhk.edu.hk/projects/CelebA/intro.png" width="500px" />
+</div>
+
+The dataset used in this example is the well-known Celeba dataset which contains more than 200k images of celebrities. The dataset is available [here](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html). 
+
+ The dataset is partitioned into 3 chunks and each chunk is stored in a separate directory. The partitioning is done using the `iid_partition_dir` function from the `metisfl.utils` module. The `iid_partition_dir` function takes as input the path to the directory containing the dataset, the file extension of the images and the number of chunks. The function will create a new directory for each chunk, shuffle the images and copy them to the corresponding chunk directory.
+
+```python
+def get_dataloaders(num_learners: int) -> List[torch.utils.data.DataLoader]:
+    """Partitions the files under the cfg.dataroot into num_learners chunks."""
+    chunk_dirs = glob.glob(cfg.dataroot + '/chunk*')
+    
+    if len(chunk_dirs) > 0:   
+        assert len(chunk_dirs) == num_learners, "Number of learners must match the number of chunks"
+    else:
+        print("Partitioning data into {} chunks".format(num_learners))
+        iid_partition_dir(cfg.dataroot, 'jpg', num_learners)
+        chunk_dirs = glob.glob(cfg.dataroot + '/chunk*')    
+    
+    dataloaders = []
+    for chunk_dir in chunk_dirs:        
+        dataset = dset.ImageFolder(root=chunk_dir,
+                                transform=transforms.Compose([
+                                    transforms.Resize(cfg.image_size),
+                                    transforms.CenterCrop(cfg.image_size),
+                                    transforms.ToTensor(),
+                                    transforms.Normalize(
+                                        (0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+                                ]))
+        dataloader = torch.utils.data.DataLoader(dataset, batch_size=cfg.batch_size,
+                                                shuffle=True, num_workers=cfg.workers)
+        dataloaders.append(dataloader)
+        
+    return dataloaders
+
+def get_dataloader(learner_index: int, num_learners: int) -> torch.utils.data.DataLoader:
+    """Returns the dataloader for the learner with index learner_index."""
+    dataloaders = get_dataloaders(num_learners)
+    return dataloaders[learner_index]
+```
+
 ## 🧠 Model
 
 ## 👨‍💻 MetisFL Learner
