@@ -17,6 +17,8 @@ pip install torch torchvision
 
 ## 📝 Overview & Configuration
 
+In contrast to the previous, simpler examples, the configuration of this one is more complex. Therefore, we bundle all configuration parameters in the `config.py` file. 
+
 ```python
 # Number of GPUs available. Use 0 for CPU mode.
 ngpu = 1
@@ -113,6 +115,8 @@ def get_dataloader(learner_index: int, num_learners: int) -> torch.utils.data.Da
 
 ## 🧠 Model
 
+The model is a typical Generative Adversarial Network (GAN) with convolutional layers for feature extraction. The generator maps a latent input vector to an image via a cascade of transpose convolutional layers. The discriminator maps an image to a probability of being real or fake via a cascade of convolutional layers. The architecture of both of them are shown below. Notice that several hyperparameters are defined in the in the aforementioned `config.py` file and can be easily changed.
+
 ```python
 class Generator(nn.Module):
     def __init__(self, ngpu):
@@ -177,7 +181,8 @@ class Discriminator(nn.Module):
 
 ## 👨‍💻 MetisFL Learner
 
-The main abstraction of the client is called MetisFL Learner. The MetisFL Learner is responsible for training the model on the local dataset and communicating with the server. Following the [class](https://github.com/NevronAI/metisfl/blob/main/metisfl/learner/learner.py) that must be implemented by the learner, we first start by the `get_weights` and `set_weights` methods. These methods are used by the Controller to get and set the model parameters. The `get_weights` method returns a list of numpy arrays and the `set_weights` method takes a list of numpy arrays as input.
+The MetisFL Learner is responsible for training the model on the local dataset and communicating with the server. Following the [class](https://github.com/NevronAI/metisfl/blob/main/metisfl/learner/learner.py) that must be implemented by the learner, we first start by the `get_weights` and `set_weights` methods. These methods are used by the Controller to get and set the model parameters. The `get_weights` method returns a list of numpy arrays and the `set_weights` method takes a list of numpy arrays as input.
+
 
 ```python
 def set_weights_helper(model, parameters):
@@ -197,6 +202,10 @@ def set_weights(self, parameters):
     set_weights_helper(self.netG, weightsG)
     set_weights_helper(self.netD, weightsD)
 ```
+
+An important difference compared to the previous examples is that is this case we have two neural networks, the generator and the discriminator. Therefore, we need to make sure that the weights of both networks are sent to the Controller. To do that, we use the `index` variable which is initialized in the `__init__` method of the Learner. The `index` variable is used to split the model parameters into two parts, one for the generator and one for the discriminator. 
+
+Then, we implement the main training and evaluation methods. The actual training loop is implemented in a separate file `train.py` and the `train` method of the learner is just a wrapper around it. During training, both of these methods will periodically save the output of the generated in a png file in the current directory. This can be useful to monitor the improvement of the generated images over time. 
 
 ```python
 def train(self, parameters, config):
@@ -295,10 +304,8 @@ Finally, start the Driver.
 python driver.py
 ```
 
-The Driver will start the training process and each terminal will show the progress. The experiment will run for 5 federation rounds and then stop. The logs will be saved in the `results.json` file in the current directory.
+The Driver will start the training process and each terminal will show the progress. The experiment will run for 5 federation rounds and then stop. The logs will be saved in the `results.json` file in the current directory. Also, the progress of the training process will be saved in the `output_train_fr_X_lid_Y.png` and `output_eval_fr_X_lid_Y.png` files where `X` is the federation round and `Y` is the learner id, as mentioned above. The training may take a while to progress and finish as the dataloaders have to process a huge number of images. 
 
 ## 🚀 Next steps
 
-Congratulations 👏 you have successfully run your first MetisFL federated learning experiment using Pytorch! And you should see an output similar to the image on the top of this page. You may notice that the performance of the model is not that good. You can try to improve it by experimenting both the the federated learning parameters (e.g., the number of learners, federation rounds, aggregation rule) as well as with the typical machine learning parameters (e.g., learning rate, batch size, number of epochs, model architecture).
-
-Please share your results with us or ask any questions that you might have on our [Slack channel](https://nevronai.slack.com/archives/C05E9HCG0DB). We would love to hear from you!
+Congratulations 👏 you have successfully run your and advanced MetisFL example for a Generative AI task. Try experimenting with different hyperparameters, different number of learner as well as different aggregation rules. As always, please share your results with us or ask any questions that you might have on our [Slack channel](https://nevronai.slack.com/archives/C05E9HCG0DB). We would love to hear from you!
