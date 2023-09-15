@@ -97,7 +97,7 @@ class HashMapModelStore(ModelStore):
         Returns
         -------
         Dict[str, List[model_pb2.Model]]
-            A dictionary of learner id to list of models.    
+            A dictionary of learner_ids to list of models.    
         """
 
         result = {}

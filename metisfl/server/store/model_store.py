@@ -56,18 +56,18 @@ class ModelStore(ABC):
     @abstractmethod
     def select(
         self,
-        learner_ids: List[Tuple[str, int]]
-    ) -> Dict[Tuple[str, model_pb2.Model]]:
-        """Selects the given number of models for each learner id. 
+        pairs: List[Tuple[str, int]]
+    ) -> Dict[str, List[model_pb2.Model]]:
+        """Selects given number of models for each learner id.
 
         Parameters
         ----------
-        learner_ids : List[Tuple[str, int]]
-            A list of (learner_id, num_models) pairs.
+        pairs : List[Tuple[str, int]]
+            A list of (learner_id, number of models) pairs.
 
         Returns
         -------
-        Dict[Tuple[str, model_pb2.Model]]
-            A dictionary of (learner_id, model) pairs.
+        Dict[str, List[model_pb2.Model]]
+            A dictionary of learner id to list of models.    
         """
         pass

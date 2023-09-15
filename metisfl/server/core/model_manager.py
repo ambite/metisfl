@@ -88,14 +88,35 @@ class ModelManager:
             The learners ids.
         """
         selected_ids = self.selector.select(to_schedule, learner_ids)
-        scaling_factors = self.compute_scaling_factor(learner_ids)
+        scaling_factors = self.compute_scaling_factor(selected_ids)
         stride_length = self.get_stride_length(len(learner_ids))
 
         update_id = self.init_metadata()
         aggregation_start_time = time.time()
-
-        # FIXME: continue this
-
+        
+        to_select_block = []
+        
+        for learner_id in learner_ids:
+            
+            lineage_length = self.get_lineage_length(learner_id)
+            to_select_block.append((learner_id, lineage_length))
+            block_size = len(to_select_block)
+            
+            if block_size == stride_length or learner_id == learner_ids[-1]:
+                
+                selected_models = self.select_models(update_id, to_select_block)
+                
+                to_aggregate_block = self.get_aggregation_pairs(
+                    selected_models, scaling_factors
+                )
+                
+                self.model = self.aggregate(update_id, to_aggregate_block)
+                self.model_store.re
+                # TODO: C++ had a "RecordBlockSize" methon; not sure if needed
+        
+        self.record_aggregation_time(update_id, aggregation_start_time)
+        self.aggregator.reset()        
+                
     def erase_models(self, learner_ids: List[str]) -> None:
         """Erases the models of the learners.
 
@@ -160,7 +181,10 @@ class ModelManager:
         int
             The lineage length for the given learner id.
         """
-        pass
+        lineage_length = self.model_store.get_lineage_length(learner_id)
+        required_lineage_length = self.aggregator.required_lineage_length()
+        return min(lineage_length, required_lineage_length)
+        
 
     def compute_scaling_factor(
         self,
@@ -202,13 +226,27 @@ class ModelManager:
         scaling_factors: Dict[str, float],
     ) -> List[List[Tuple[model_pb2.Model, float]]]:
         """Returns the aggregation pairs. """
+        
+        to_aggregate_block: List[List[Tuple[model_pb2.Model, float]]] = []
+        tmp: List[Tuple[model_pb2.Model, float]] = []
+        
+        for learner_id, models in selected_models.items():
+            scaling_factor = scaling_factors[learner_id]
+            
+            for model in models:
+                tmp.append((model, scaling_factor))
+            
+            to_aggregate_block.append(tmp)
+            tmp = []
+        
+        return to_aggregate_block
 
     def aggregate(
         self,
         update_id: str,
         to_aggregate_block: List[List[Tuple[model_pb2.Model, float]]],
-    ) -> None:
-        """Aggregates the models.
+    ) -> model_pb2.Modell:
+        """Aggregates the models and keeps track of the aggregation time.
 
         Parameters
         ----------
@@ -216,8 +254,19 @@ class ModelManager:
             The update id.
         to_aggregate_block : List[List[Tuple[model_pb2.Model, float]]]
             The models to be aggregated.
+            
+        Returns
+        -------
+        model_pb2.Model
+            The aggregated model.
         """
-        pass
+        start_time = time()
+        model = self.aggregator.aggregate(to_aggregate_block)
+        end_time = time()
+        self.metadata[update_id].aggregation_block_duration_ms.append(
+            end_time - start_time
+        )
+        return model
 
     def record_block_size(self, update_id: str, block_size: int) -> None:
         """Records the block size.
@@ -241,14 +290,34 @@ class ModelManager:
         start_time : float
             The start time.
         """
-        pass
+        end_time = time()
+        self.metadata[update_id].aggregation_duration_ms = end_time - start_time
 
-    def record_model_size(self, update_id: str) -> None:
-        """Records the model size.
+
+    def select_models(
+        self,
+        update_id: str,
+        to_select_block: List[Tuple[str, int]],
+    ) -> Dict[str, List[model_pb2.Model]]:
+        """Selects the models.
 
         Parameters
         ----------
         update_id : str
             The update id.
+        to_select_block : List[Tuple[str, int]]
+            The models to be selected.
+
+        Returns
+        -------
+        Dict[str, List[model_pb2.Model]]
+            The selected models.
         """
-        pass
+        start_time = time()
+        selected_models = self.model_store.select(to_select_block)
+        end_time = time()
+        self.metadata[update_id].selection_block_duration_ms.append(
+            end_time - start_time
+        )
+
+        return selected_models
