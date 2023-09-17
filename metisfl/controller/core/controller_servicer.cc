@@ -44,10 +44,10 @@ void ControllerServicer::StartService() {
   server_ = builder.BuildAndStart();
 
   if (ssl_enable)
-    PLOG(INFO) << "Controller listening on " << server_address
-               << " with SSL enabled.";
+    LOG(INFO) << "Controller listening on " << server_address
+              << " with SSL enabled.";
   else
-    PLOG(INFO) << "Controller listening on " << server_address << ".";
+    LOG(INFO) << "Controller listening on " << server_address << ".";
 }
 
 void ControllerServicer::WaitService() {
@@ -65,7 +65,7 @@ void ControllerServicer::ShutdownServer() {
   if (server_ == nullptr) return;
 
   server_->Shutdown();
-  PLOG(INFO) << "Controller shut down.";
+  LOG(INFO) << "Controller shut down.";
 }
 
 bool ControllerServicer::ShutdownRequestReceived() { return shutdown_; }
@@ -80,8 +80,7 @@ Status ControllerServicer::GetHealthStatus(ServerContext *context,
 Status ControllerServicer::JoinFederation(ServerContext *context,
                                           const Learner *learner,
                                           LearnerId *learnerId) {
-  if (learner->hostname().empty() || learner->port() <= 0 ||
-      learner->num_training_examples() <= 0) {
+  if (learner->hostname().empty() || learner->port() <= 0) {
     return {StatusCode::INVALID_ARGUMENT,
             "Must provide a valid hostname, port and number of training "
             "examples."};
@@ -100,7 +99,7 @@ Status ControllerServicer::JoinFederation(ServerContext *context,
   } else
     learnerId->set_id(learner_id.value());
 
-  PLOG(INFO) << "Learner " << learner_id.value() << " joined Federation.";
+  LOG(INFO) << "Learner " << learner_id.value() << " joined Federation.";
   return Status::OK;
 }
 
@@ -108,11 +107,12 @@ Status ControllerServicer::SetInitialModel(ServerContext *context,
                                            const Model *model, Ack *ack) {
   auto status = controller_->SetInitialModel(*model);
   if (status.ok()) {
-    PLOG(INFO) << "Received Initial Model.";
+    LOG(INFO) << "Received Initial Model.";
     ack->set_status(true);
     return Status::OK;
   }
-  PLOG(ERROR) << "Couldn't Replace Initial Model.";
+  // TODO: better error handling
+  LOG(ERROR) << "Couldn't Replace Initial Model.";
   return {StatusCode::INVALID_ARGUMENT, std::string(status.message())};
 }
 
@@ -120,7 +120,7 @@ Status ControllerServicer::StartTraining(ServerContext *context,
                                          const Empty *request, Ack *ack) {
   const auto status = controller_->StartTraining();
   if (status.ok()) {
-    PLOG(INFO) << "Started Training.";
+    LOG(INFO) << "Started Training.";
     ack->set_status(true);
     return Status::OK;
   } else {
@@ -140,7 +140,7 @@ Status ControllerServicer::LeaveFederation(ServerContext *context,
   const auto del_status = controller_->RemoveLearner(learnerId->id());
 
   if (del_status.ok()) {
-    PLOG(INFO) << "Learner " << learnerId->id() << " left Federation.";
+    LOG(INFO) << "Learner " << learnerId->id() << " left Federation.";
     ack->set_status(true);
     return Status::OK;
   } else {
@@ -152,8 +152,11 @@ Status ControllerServicer::LeaveFederation(ServerContext *context,
 Status ControllerServicer::TrainDone(ServerContext *context,
                                      const TrainDoneRequest *request,
                                      Ack *ack) {
-  PLOG(INFO) << "Received Completed Task By " << request->learner_id();
+  LOG(INFO) << "Received Completed Task from Learner "
+            << controller_->GetLearnerId(request->task().id());
+
   const auto status = controller_->TrainDone(*request);
+
   if (!status.ok()) {
     switch (status.code()) {
       case absl::StatusCode::kInvalidArgument:
@@ -173,21 +176,30 @@ Status ControllerServicer::TrainDone(ServerContext *context,
 
 Status ControllerServicer::GetLogs(ServerContext *context, const Empty *request,
                                    Logs *logs) {
-  auto training_metadata = controller_->GetTrainingMetadata();
-  auto evaluation_metadata = controller_->GetEvaluationMetadata();
+  auto tasks_map = controller_->GetTaskMap();
+  auto train_results = controller_->GetTrainResults();
+  auto evaluation_results = controller_->GetEvaluationResults();
   auto model_metadata = controller_->GetModelMetadata();
 
-  *logs->mutable_training_metadata() =
-      google::protobuf::Map<std::string, TrainingMetadata>(
-          training_metadata.begin(), training_metadata.end());
-  *logs->mutable_evaluation_metadata() =
-      google::protobuf::Map<std::string, EvaluationMetadata>(
-          evaluation_metadata.begin(), evaluation_metadata.end());
+  auto global_iteration = controller_->GetGlobalIteration();
+  if (global_iteration > 0) logs->set_global_iteration(global_iteration);
+
+  for (auto &task : tasks_map) {
+    auto *task_proto = logs->add_tasks();
+    *task_proto = task.second;
+  }
+
+  *logs->mutable_train_results() =
+      google::protobuf::Map<std::string, TrainResults>(train_results.begin(),
+                                                       train_results.end());
+
+  *logs->mutable_evaluation_results() =
+      google::protobuf::Map<std::string, EvaluationResults>(
+          evaluation_results.begin(), evaluation_results.end());
+
   *logs->mutable_model_metadata() =
       google::protobuf::Map<std::string, ModelMetadata>(model_metadata.begin(),
                                                         model_metadata.end());
-
-  // TODO : Implement this
   return Status::OK;
 }
 

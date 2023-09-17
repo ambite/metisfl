@@ -9,7 +9,7 @@ namespace metisfl::controller {
 
 class Scheduler {
  protected:
-  int global_iteration_;
+  int global_iteration_ = 0;  // only makes sense for synchronous schedulers
 
  public:
   virtual ~Scheduler() = default;
@@ -31,7 +31,7 @@ class Scheduler {
    *
    * @return int The global iteration.
    */
-  inline int global_iteration() { return global_iteration_; }
+  int GetGlobalIteration() { return global_iteration_; }
 };
 
 }  // namespace metisfl::controller

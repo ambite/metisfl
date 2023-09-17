@@ -6,17 +6,18 @@
 namespace metisfl::controller {
 
 HashMapModelStore::HashMapModelStore(const int lineage_length)
-    : ModelStore(lineage_length) {
-  PLOG(INFO) << "Using InMemoryStore (HashMapStore) as model store backend.";
+    : ModelStore(lineage_length), m_model_store_cache_mutex() {
+  LOG(INFO) << "Using InMemory Model Store.";
 }
 
 void HashMapModelStore::Expunge() {
-  // This will clear all
+  std::lock_guard<std::mutex> lock(m_model_store_cache_mutex);
   m_model_store_cache.clear();
 }
 
 void HashMapModelStore::EraseModels(
     const std::vector<std::string> &learner_ids) {
+  std::lock_guard<std::mutex> lock(m_model_store_cache_mutex);
   for (auto &learner_id : learner_ids) {
     m_model_store_cache[learner_id].clear();
   }
@@ -44,7 +45,7 @@ void HashMapModelStore::InsertModel(
     learner_pairs -> multiple learners.
     learner_pair -> pair for one learner.
   */
-
+  std::lock_guard<std::mutex> lock(m_model_store_cache_mutex);
   for (auto &learner_pair : learner_pairs) {
     std::string learner_id = learner_pair.first;
     auto model = learner_pair.second;
@@ -54,11 +55,10 @@ void HashMapModelStore::InsertModel(
         m_model_store_cache.find(learner_id) != m_model_store_cache.end()) {
       if (m_model_store_cache[learner_id].size() >= m_lineage_length) {
         auto itr_first_elem = m_model_store_cache[learner_id].begin();
-        PLOG(INFO) << "Reached max limit. Erasing oldest model.";
+        LOG(INFO) << "Reached max limit. Erasing oldest model.";
         m_model_store_cache[learner_id].erase(itr_first_elem);
       }
     }
-
     m_model_store_cache[learner_id].push_back(model);
   }
 }
@@ -70,6 +70,8 @@ void HashMapModelStore::ResetState() {
 std::map<std::string, std::vector<const Model *>>
 HashMapModelStore::SelectModels(
     std::vector<std::pair<std::string, int>> learner_pairs) {
+  std::lock_guard<std::mutex> lock(m_model_store_cache_mutex);
+
   // Order of insertion expected {old, old, old, new}
   std::map<std::string, std::vector<const Model *>> reply_models;
 
@@ -82,13 +84,10 @@ HashMapModelStore::SelectModels(
         learner_pair.second;  // The number of models to select from store.
     int history_size = GetLearnerLineageLength(learner_id);
 
-    PLOG(INFO) << "Select models for learner_id: " << learner_id
-               << " index: " << index;
-
     // Check if index is less than size of lineage
     // return empty models.
     if (index > m_model_store_cache[learner_id].size()) {
-      PLOG(WARNING) << "Index larger than lineage size";
+      LOG(WARNING) << "Index larger than lineage size";
       reply_models[learner_id].clear();
       continue;
     }

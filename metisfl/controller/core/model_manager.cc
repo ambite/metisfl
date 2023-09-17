@@ -3,11 +3,12 @@
 namespace metisfl::controller {
 
 // Constructor
-ModelManager::ModelManager(const GlobalTrainParams &global_train_params,
+ModelManager::ModelManager(LearnerManager *learner_manager, Selector *selector,
+                           const GlobalTrainParams &global_train_params,
                            const ModelStoreParams &model_store_params)
-    : model_store_mutex_(),
-      model_(),
-      global_train_params_(global_train_params) {
+    : model_(), global_train_params_(global_train_params) {
+  learner_manager_ = learner_manager;
+  selector_ = selector;
   model_store_ = CreateModelStore(model_store_params);
   aggregator_ = CreateAggregator(global_train_params);
 }
@@ -18,28 +19,26 @@ absl::Status ModelManager::SetInitialModel(const Model &model) {
   if (is_initialized_)
     return absl::FailedPreconditionError("Model is already initialized.");
 
-  PLOG(INFO) << "Received initial model.";
   model_ = model;
   is_initialized_ = true;
   return absl::OkStatus();
 }
 
-void ModelManager::InsertModel(std::string learner_id, const Model &model) {
-  std::lock_guard<std::mutex> model_store_guard(model_store_mutex_);
-
+void ModelManager::InsertModel(std::string &learner_id, const Model &model) {
   model_store_->InsertModel(std::vector<std::pair<std::string, Model>>{
       std::pair<std::string, Model>(learner_id, model)});
 }
 
-void ModelManager::EraseModels(std::vector<std::string> learner_id) {
-  std::lock_guard<std::mutex> model_store_guard(model_store_mutex_);
+void ModelManager::EraseModels(std::vector<std::string> &learner_id) {
   model_store_->EraseModels(learner_id);
 }
 
-void ModelManager::UpdateModel(
-    std::vector<std::string> learner_ids,
-    absl::flat_hash_map<std::string, double> scaling_factors) {
-  std::lock_guard<std::mutex> model_store_guard(model_store_mutex_);
+void ModelManager::UpdateModel(std::vector<std::string> &to_schedule,
+                               std::vector<std::string> &learner_ids) {
+  std::vector<std::string> selected_ids =
+      selector_->Select(to_schedule, learner_ids);
+
+  auto scaling_factors = ComputeScalingFactors(selected_ids);
 
   auto update_id = InitializeMetadata();
   int stride_length = GetStrideLength(learner_ids.size());
@@ -69,11 +68,29 @@ void ModelManager::UpdateModel(
   }
 
   RecordAggregationTime(update_id, start_time_aggregation);
-  RecordModelSize(update_id);
   aggregator_->Reset();
 }
 
 void ModelManager::Shutdown() { model_store_->Shutdown(); }
+
+absl::flat_hash_map<std::string, double> ModelManager::ComputeScalingFactors(
+    const std::vector<std::string> &selected_ids) const {
+  auto scaling_factor = global_train_params_.scaling_factor;
+
+  if (scaling_factor == "NumCompletedBatches") {
+    auto num_completed_batches =
+        learner_manager_->GetNumCompletedBatches(selected_ids);
+    return Scaling::GetBatchesScalingFactors(num_completed_batches);
+  } else if (scaling_factor == "NumParticipants") {
+    return Scaling::GetParticipantsScalingFactors(selected_ids);
+  } else if (scaling_factor == "NumTrainingExamples") {
+    auto num_training_examples =
+        learner_manager_->GetNumTrainingExamples(selected_ids);
+    return Scaling::GetDatasetScalingFactors(num_training_examples);
+  } else {
+    LOG(FATAL) << "Unsupported scaling factor.";
+  }
+}
 
 std::string ModelManager::InitializeMetadata() {
   auto update_id = metisfl::controller::GenerateRadnomId();
@@ -93,7 +110,7 @@ int ModelManager::GetStrideLength(int num_learners) const {
   return stride_length;
 }
 
-int ModelManager::GetLineageLength(std::string learner_id) const {
+int ModelManager::GetLineageLength(std::string &learner_id) const {
   const auto lineage_length = model_store_->GetLearnerLineageLength(learner_id);
 
   auto required_lineage_length = aggregator_->RequiredLearnerLineageLength();
@@ -102,8 +119,8 @@ int ModelManager::GetLineageLength(std::string learner_id) const {
 }
 
 std::map<std::string, std::vector<const Model *>> ModelManager::SelectModels(
-    std::string update_id,
-    std::vector<std::pair<std::string, int>> to_select_block) {
+    std::string &update_id,
+    std::vector<std::pair<std::string, int>> &to_select_block) {
   auto start_time_selection = std::chrono::high_resolution_clock::now();
 
   std::map<std::string, std::vector<const Model *>> selected_models =
@@ -122,8 +139,8 @@ std::map<std::string, std::vector<const Model *>> ModelManager::SelectModels(
 
 std::vector<std::vector<std::pair<const Model *, double>>>
 ModelManager::GetAggregationPairs(
-    std::map<std::string, std::vector<const Model *>> selected_models,
-    absl::flat_hash_map<std::string, double> scaling_factors) const {
+    std::map<std::string, std::vector<const Model *>> &selected_models,
+    absl::flat_hash_map<std::string, double> &scaling_factors) const {
   std::vector<std::vector<std::pair<const Model *, double>>> to_aggregate_block;
 
   std::vector<std::pair<const Model *, double>> to_aggregate_learner_models_tmp;
@@ -144,9 +161,9 @@ ModelManager::GetAggregationPairs(
 }
 
 void ModelManager::Aggregate(
-    std::string update_id,
+    std::string &update_id,
     std::vector<std::vector<std::pair<const Model *, double>>>
-        to_aggregate_block) {
+        &to_aggregate_block) {
   auto start_time_block_aggregation = std::chrono::high_resolution_clock::now();
 
   model_ = aggregator_->Aggregate(to_aggregate_block);
@@ -160,7 +177,7 @@ void ModelManager::Aggregate(
       elapsed_time_block_aggregation.count();
 }
 
-void ModelManager::RecordBlockSize(std::string update_id, int block_size) {
+void ModelManager::RecordBlockSize(std::string &update_id, int block_size) {
   *metadata_[update_id].mutable_aggregation_block_size()->Add() = block_size;
   long block_memory = GetTotalMemory();
   *metadata_[update_id].mutable_aggregation_block_memory_kb()->Add() =
@@ -168,15 +185,11 @@ void ModelManager::RecordBlockSize(std::string update_id, int block_size) {
 }
 
 void ModelManager::RecordAggregationTime(
-    std::string update_id,
-    std::chrono::time_point<std::chrono::system_clock> start) {
+    std::string &update_id,
+    std::chrono::time_point<std::chrono::system_clock> &start) {
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> elapsed = end - start;
   metadata_[update_id].set_aggregation_duration_ms(elapsed.count());
-}
-
-void ModelManager::RecordModelSize(std::string &update_id) {
-  // TODO:
 }
 
 };  // namespace metisfl::controller

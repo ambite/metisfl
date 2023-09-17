@@ -27,8 +27,6 @@ message Learner {
   string hostname = 1;
   uint32 port = 2;
   string root_certificate_bytes = 3;
-  string public_certificate_bytes = 4;
-  uint32 num_training_examples = 5;
 }
 
 message LearnerId {
@@ -36,38 +34,30 @@ message LearnerId {
 }
 
 message TrainDoneRequest {
-  string learner_id = 1;
-  string task_id = 2;
+  Task task = 1;
   Model model = 3;
-  TrainingMetadata metadata = 4;
+  TrainResults results = 4;
 }
 
-message TrainingMetadata {
-  map<string, string> metrics = 1;
-  float completed_epochs =  2;
-  uint32 completed_batches = 3;
-  uint32 batch_size = 4;
-  float processing_ms_per_epoch = 5;
-  float processing_ms_per_batch = 6;
+message TrainResults {
+  string metrics = 1; // string representation of a JSON object
+  map<string, double> metadata = 2;
 }
 
 message Logs {
-  // task_id -> learner_id
-  map<string, string> task_learner_map = 1;
+  optional int32 global_iteration = 1;
+  repeated Task tasks = 2;
 
   // Indexed by task_id
-  map<string, TrainingMetadata> training_metadata = 2;
-  map<string, EvaluationMetadata> evaluation_metadata = 3;
-  map<string, ModelMetadata> model_metadata = 4;
+  map<string, TrainResults> train_results = 4;
+  map<string, EvaluationResults> evaluation_results = 5;
+  map<string, ModelMetadata> model_metadata = 6;
 }
 
-// TODO: record task stard/end time
-
 message ModelMetadata {
-  double selection_duration_ms = 2;
-  double aggregation_duration_ms = 3;
-  repeated double aggregation_block_size = 15;
-  repeated double aggregation_block_memory_kb = 16;
-  repeated double aggregation_block_duration_ms = 17;
-  repeated TensorQuantifier tensor_quantifiers = 18;
+  double selection_duration_ms = 1;
+  double aggregation_duration_ms = 2;
+  repeated double aggregation_block_size = 3;
+  repeated double aggregation_block_memory_kb = 4;
+  repeated double aggregation_block_duration_ms = 5;
 }

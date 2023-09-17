@@ -3,13 +3,14 @@ package metisfl;
 
 import "metisfl/proto/model.proto";
 import "metisfl/proto/service_common.proto";
+import "google/protobuf/timestamp.proto";
 
 service LearnerService {
   rpc GetHealthStatus (Empty) returns (Ack) {}
 
   rpc GetModel (Empty) returns (Model) {}
 
-  rpc SetInitialWeights (Model) returns (Ack) {}
+  rpc SetInitialModel (Model) returns (Ack) {}
 
   rpc Train (TrainRequest) returns (Ack) {}
 
@@ -18,21 +19,31 @@ service LearnerService {
   rpc ShutDown (Empty) returns (Ack) {}
 }
 
+message Task {
+  string id = 1;
+  string learner_id = 2;
+  google.protobuf.Timestamp sent_at = 3;
+  google.protobuf.Timestamp received_at = 4;
+  google.protobuf.Timestamp completed_at = 5;
+}
+
 message TrainRequest {
-  string task_id = 1;
+  Task task = 1;
   Model model = 2;
   TrainParams params = 3;
 }
 
 message TrainParams {
-  uint32 batch_size = 2;
-  uint32 epochs = 3;
-  uint32 num_local_updates = 4;
-  repeated string metrics = 5;
+  uint32 batch_size = 1;
+  uint32 epochs = 2;
+  uint32 num_local_updates = 3;
+  // Metrics and metadata to be collected during training. Learner must return
+  repeated string metrics = 4;
+  repeated string metadata = 5;
 }
 
 message EvaluateRequest {
-  string task_id = 1;
+  Task task = 1;
   Model model = 2;
   EvaluationParams params = 3;
 }
@@ -43,10 +54,10 @@ message EvaluationParams {
 }
 
 message EvaluateResponse {
-  string task_id = 1;
-  EvaluationMetadata metadata = 2;
+  Task task = 1;
+  EvaluationResults results = 2;
 }
 
-message EvaluationMetadata {
+message EvaluationResults {
   map<string, float> metrics = 1;
 }

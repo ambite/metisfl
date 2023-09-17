@@ -17,7 +17,7 @@ typedef struct ServerParams {
 
 typedef struct GlobalTrainParams {
   std::string aggregation_rule;
-  std::string communication_protocol;
+  std::string scheduler;
   std::string scaling_factor;
   float participation_ratio;
   int stride_length;
@@ -40,18 +40,14 @@ typedef struct ModelStoreParams {
 typedef std::unique_ptr<metisfl::LearnerService::Stub> LearnerStub;
 
 // Indexed by learner_id
-typedef absl::flat_hash_map<std::string, LearnerStub> LearnerStubMap;
 typedef absl::flat_hash_map<std::string, Learner> LearnersMap;
 typedef absl::flat_hash_map<std::string, TrainParams> TrainParamsMap;
 typedef absl::flat_hash_map<std::string, EvaluationParams> EvaluationParamsMap;
 
-// Indexed by task_id
-typedef absl::flat_hash_map<std::string, std::string>
-    TaskLearnerMap;  // task_id -> learner_id
-typedef absl::flat_hash_map<std::string, TrainingMetadata> TrainingMetadataMap;
-typedef absl::flat_hash_map<std::string, EvaluationMetadata>
-    EvaluationMetadataMap;
-// FIXME: figure out correct index for this
+typedef absl::flat_hash_map<std::string, Task> TaskMap;  // task_id -> Task
+typedef absl::flat_hash_map<std::string, TrainResults> TrainResultsMap;
+typedef absl::flat_hash_map<std::string, EvaluationResults>
+    EvaluationResultsMap;
 typedef absl::flat_hash_map<std::string, ModelMetadata> ModelMetadataMap;
 
 // GRPC Async Calls types

@@ -18,7 +18,6 @@
 #include "metisfl/controller/core/learner_manager.h"
 #include "metisfl/controller/core/model_manager.h"
 #include "metisfl/controller/core/types.h"
-#include "metisfl/controller/scaling/scaling.h"
 
 using google::protobuf::util::TimeUtil;
 
@@ -31,24 +30,37 @@ class Controller {
   std::unique_ptr<Scheduler> scheduler_;
   std::unique_ptr<Selector> selector_;
 
+  std::mutex model_manager_mutex_;
+  std::mutex learner_manager_mutex_;
+
  public:
   Controller(const GlobalTrainParams &global_train_params,
              const ModelStoreParams &model_store_params);
 
   ~Controller() = default;
 
-  TrainingMetadataMap GetTrainingMetadata() {
-    return learner_manager_->GetTrainingMetadata();
+  // Getters
+  int GetGlobalIteration() { return scheduler_->GetGlobalIteration(); }
+
+  TaskMap GetTaskMap() { return learner_manager_->GetTaskMap(); }
+
+  TrainResultsMap GetTrainResults() {
+    return learner_manager_->GetTrainResults();
   }
 
-  EvaluationMetadataMap GetEvaluationMetadata() {
-    return learner_manager_->GetEvaluationMetadata();
+  EvaluationResultsMap GetEvaluationResults() {
+    return learner_manager_->GetEvaluationResults();
   }
 
   ModelMetadataMap GetModelMetadata() {
     return model_manager_->GetModelMetadata();
   }
 
+  std::string GetLearnerId(std::string task_id) {
+    return learner_manager_->GetLearnerId(task_id);
+  }
+
+  // Public methods
   absl::StatusOr<std::string> AddLearner(const Learner &learner);
 
   absl::Status SetInitialModel(const Model &model);
@@ -62,8 +74,7 @@ class Controller {
   void Shutdown();
 
  private:
-  absl::flat_hash_map<std::string, double> ComputeScalingFactors(
-      const std::vector<std::string> &selected_learners);
+  void UpdateTrainParams(const std::vector<std::string> &learner_ids);
 };
 
 }  // namespace metisfl::controller

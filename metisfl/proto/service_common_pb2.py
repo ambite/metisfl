@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\"metisfl/proto/service_common.proto\x12\x07metisfl\x1a\x1fgoogle/protobuf/timestamp.proto\"q\n\x03\x41\x63k\x12\x16\n\x06status\x18\x01 \x01(\x08R\x06status\x12\x38\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12\x18\n\x07message\x18\x03 \x01(\tR\x07message\"F\n\x14HealthStatusResponse\x12.\n\x06status\x18\x01 \x01(\x0e\x32\x16.metisfl.ServingStatusR\x06status\"\x18\n\x16GetHealthStatusRequest\"9\n\x17GetHealthStatusResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k\"\x07\n\x05\x45mpty\"2\n\x10ShutDownResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63k*:\n\rServingStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SERVING\x10\x01\x12\x0f\n\x0bNOT_SERVING\x10\x02\x62\x06proto3'
+  serialized_pb=b'\n\"metisfl/proto/service_common.proto\x12\x07metisfl\x1a\x1fgoogle/protobuf/timestamp.proto\"U\n\x03\x41\x63k\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07message\x18\x03 \x01(\t\">\n\x14HealthStatusResponse\x12&\n\x06status\x18\x01 \x01(\x0e\x32\x16.metisfl.ServingStatus\"\x18\n\x16GetHealthStatusRequest\"4\n\x17GetHealthStatusResponse\x12\x19\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.Ack\"\x07\n\x05\x45mpty\"-\n\x10ShutDownResponse\x12\x19\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.Ack*:\n\rServingStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SERVING\x10\x01\x12\x0f\n\x0bNOT_SERVING\x10\x02\x62\x06proto3'
   ,
   dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
@@ -50,8 +50,8 @@ _SERVINGSTATUS = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=413,
-  serialized_end=471,
+  serialized_start=367,
+  serialized_end=425,
 )
 _sym_db.RegisterEnumDescriptor(_SERVINGSTATUS)
 
@@ -76,21 +76,21 @@ _ACK = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='status', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='timestamp', full_name='metisfl.Ack.timestamp', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='timestamp', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='message', full_name='metisfl.Ack.message', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='message', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -104,7 +104,7 @@ _ACK = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=80,
-  serialized_end=193,
+  serialized_end=165,
 )
 
 
@@ -122,7 +122,7 @@ _HEALTHSTATUSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='status', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -135,8 +135,8 @@ _HEALTHSTATUSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=195,
-  serialized_end=265,
+  serialized_start=167,
+  serialized_end=229,
 )
 
 
@@ -160,8 +160,8 @@ _GETHEALTHSTATUSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=267,
-  serialized_end=291,
+  serialized_start=231,
+  serialized_end=255,
 )
 
 
@@ -179,7 +179,7 @@ _GETHEALTHSTATUSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -192,8 +192,8 @@ _GETHEALTHSTATUSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=293,
-  serialized_end=350,
+  serialized_start=257,
+  serialized_end=309,
 )
 
 
@@ -217,8 +217,8 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=352,
-  serialized_end=359,
+  serialized_start=311,
+  serialized_end=318,
 )
 
 
@@ -236,7 +236,7 @@ _SHUTDOWNRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='ack', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -249,8 +249,8 @@ _SHUTDOWNRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=361,
-  serialized_end=411,
+  serialized_start=320,
+  serialized_end=365,
 )
 
 _ACK.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP

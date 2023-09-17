@@ -13,6 +13,7 @@ _sym_db = _symbol_database.Default()
 
 from metisfl.proto import model_pb2 as metisfl_dot_proto_dot_model__pb2
 from metisfl.proto import service_common_pb2 as metisfl_dot_proto_dot_service__common__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
@@ -21,42 +22,56 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x1bmetisfl/proto/learner.proto\x12\x07metisfl\x1a\x19metisfl/proto/model.proto\x1a\"metisfl/proto/service_common.proto\"{\n\x0cTrainRequest\x12\x17\n\x07task_id\x18\x01 \x01(\tR\x06taskId\x12$\n\x05model\x18\x02 \x01(\x0b\x32\x0e.metisfl.ModelR\x05model\x12,\n\x06params\x18\x03 \x01(\x0b\x32\x14.metisfl.TrainParamsR\x06params\"\x8a\x01\n\x0bTrainParams\x12\x1d\n\nbatch_size\x18\x02 \x01(\rR\tbatchSize\x12\x16\n\x06\x65pochs\x18\x03 \x01(\rR\x06\x65pochs\x12*\n\x11num_local_updates\x18\x04 \x01(\rR\x0fnumLocalUpdates\x12\x18\n\x07metrics\x18\x05 \x03(\tR\x07metrics\"\x83\x01\n\x0f\x45valuateRequest\x12\x17\n\x07task_id\x18\x01 \x01(\tR\x06taskId\x12$\n\x05model\x18\x02 \x01(\x0b\x32\x0e.metisfl.ModelR\x05model\x12\x31\n\x06params\x18\x03 \x01(\x0b\x32\x19.metisfl.EvaluationParamsR\x06params\"K\n\x10\x45valuationParams\x12\x1d\n\nbatch_size\x18\x01 \x01(\rR\tbatchSize\x12\x18\n\x07metrics\x18\x02 \x03(\tR\x07metrics\"d\n\x10\x45valuateResponse\x12\x17\n\x07task_id\x18\x01 \x01(\tR\x06taskId\x12\x37\n\x08metadata\x18\x02 \x01(\x0b\x32\x1b.metisfl.EvaluationMetadataR\x08metadata\"\x94\x01\n\x12\x45valuationMetadata\x12\x42\n\x07metrics\x18\x01 \x03(\x0b\x32(.metisfl.EvaluationMetadata.MetricsEntryR\x07metrics\x1a:\n\x0cMetricsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\x02R\x05value:\x02\x38\x01\x32\xc5\x02\n\x0eLearnerService\x12\x31\n\x0fGetHealthStatus\x12\x0e.metisfl.Empty\x1a\x0c.metisfl.Ack\"\x00\x12,\n\x08GetModel\x12\x0e.metisfl.Empty\x1a\x0e.metisfl.Model\"\x00\x12\x33\n\x11SetInitialWeights\x12\x0e.metisfl.Model\x1a\x0c.metisfl.Ack\"\x00\x12.\n\x05Train\x12\x15.metisfl.TrainRequest\x1a\x0c.metisfl.Ack\"\x00\x12\x41\n\x08\x45valuate\x12\x18.metisfl.EvaluateRequest\x1a\x19.metisfl.EvaluateResponse\"\x00\x12*\n\x08ShutDown\x12\x0e.metisfl.Empty\x1a\x0c.metisfl.Ack\"\x00\x62\x06proto3'
+  serialized_pb=b'\n\x1bmetisfl/proto/learner.proto\x12\x07metisfl\x1a\x19metisfl/proto/model.proto\x1a\"metisfl/proto/service_common.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb6\x01\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nlearner_id\x18\x02 \x01(\t\x12+\n\x07sent_at\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12/\n\x0breceived_at\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x63ompleted_at\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"p\n\x0cTrainRequest\x12\x1b\n\x04task\x18\x01 \x01(\x0b\x32\r.metisfl.Task\x12\x1d\n\x05model\x18\x02 \x01(\x0b\x32\x0e.metisfl.Model\x12$\n\x06params\x18\x03 \x01(\x0b\x32\x14.metisfl.TrainParams\"o\n\x0bTrainParams\x12\x12\n\nbatch_size\x18\x01 \x01(\r\x12\x0e\n\x06\x65pochs\x18\x02 \x01(\r\x12\x19\n\x11num_local_updates\x18\x03 \x01(\r\x12\x0f\n\x07metrics\x18\x04 \x03(\t\x12\x10\n\x08metadata\x18\x05 \x03(\t\"x\n\x0f\x45valuateRequest\x12\x1b\n\x04task\x18\x01 \x01(\x0b\x32\r.metisfl.Task\x12\x1d\n\x05model\x18\x02 \x01(\x0b\x32\x0e.metisfl.Model\x12)\n\x06params\x18\x03 \x01(\x0b\x32\x19.metisfl.EvaluationParams\"7\n\x10\x45valuationParams\x12\x12\n\nbatch_size\x18\x01 \x01(\r\x12\x0f\n\x07metrics\x18\x02 \x03(\t\"\\\n\x10\x45valuateResponse\x12\x1b\n\x04task\x18\x01 \x01(\x0b\x32\r.metisfl.Task\x12+\n\x07results\x18\x02 \x01(\x0b\x32\x1a.metisfl.EvaluationResults\"}\n\x11\x45valuationResults\x12\x38\n\x07metrics\x18\x01 \x03(\x0b\x32\'.metisfl.EvaluationResults.MetricsEntry\x1a.\n\x0cMetricsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x02:\x02\x38\x01\x32\xc3\x02\n\x0eLearnerService\x12\x31\n\x0fGetHealthStatus\x12\x0e.metisfl.Empty\x1a\x0c.metisfl.Ack\"\x00\x12,\n\x08GetModel\x12\x0e.metisfl.Empty\x1a\x0e.metisfl.Model\"\x00\x12\x31\n\x0fSetInitialModel\x12\x0e.metisfl.Model\x1a\x0c.metisfl.Ack\"\x00\x12.\n\x05Train\x12\x15.metisfl.TrainRequest\x1a\x0c.metisfl.Ack\"\x00\x12\x41\n\x08\x45valuate\x12\x18.metisfl.EvaluateRequest\x1a\x19.metisfl.EvaluateResponse\"\x00\x12*\n\x08ShutDown\x12\x0e.metisfl.Empty\x1a\x0c.metisfl.Ack\"\x00\x62\x06proto3'
   ,
-  dependencies=[metisfl_dot_proto_dot_model__pb2.DESCRIPTOR,metisfl_dot_proto_dot_service__common__pb2.DESCRIPTOR,])
+  dependencies=[metisfl_dot_proto_dot_model__pb2.DESCRIPTOR,metisfl_dot_proto_dot_service__common__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 
 
 
 
-_TRAINREQUEST = _descriptor.Descriptor(
-  name='TrainRequest',
-  full_name='metisfl.TrainRequest',
+_TASK = _descriptor.Descriptor(
+  name='Task',
+  full_name='metisfl.Task',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='metisfl.TrainRequest.task_id', index=0,
+      name='id', full_name='metisfl.Task.id', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='taskId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='model', full_name='metisfl.TrainRequest.model', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      name='learner_id', full_name='metisfl.Task.learner_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='model', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='params', full_name='metisfl.TrainRequest.params', index=2,
+      name='sent_at', full_name='metisfl.Task.sent_at', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='params', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='received_at', full_name='metisfl.Task.received_at', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='completed_at', full_name='metisfl.Task.completed_at', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -69,8 +84,54 @@ _TRAINREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=103,
-  serialized_end=226,
+  serialized_start=137,
+  serialized_end=319,
+)
+
+
+_TRAINREQUEST = _descriptor.Descriptor(
+  name='TrainRequest',
+  full_name='metisfl.TrainRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  create_key=_descriptor._internal_create_key,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='task', full_name='metisfl.TrainRequest.task', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='model', full_name='metisfl.TrainRequest.model', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='params', full_name='metisfl.TrainRequest.params', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=321,
+  serialized_end=433,
 )
 
 
@@ -84,32 +145,39 @@ _TRAINPARAMS = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='batch_size', full_name='metisfl.TrainParams.batch_size', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='epochs', full_name='metisfl.TrainParams.epochs', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='batchSize', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='epochs', full_name='metisfl.TrainParams.epochs', index=1,
+      name='num_local_updates', full_name='metisfl.TrainParams.num_local_updates', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='epochs', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='num_local_updates', full_name='metisfl.TrainParams.num_local_updates', index=2,
-      number=4, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='numLocalUpdates', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='metrics', full_name='metisfl.TrainParams.metrics', index=3,
+      number=4, type=9, cpp_type=9, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+    _descriptor.FieldDescriptor(
+      name='metadata', full_name='metisfl.TrainParams.metadata', index=4,
       number=5, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='metrics', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -122,8 +190,8 @@ _TRAINPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=229,
-  serialized_end=367,
+  serialized_start=435,
+  serialized_end=546,
 )
 
 
@@ -136,26 +204,26 @@ _EVALUATEREQUEST = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='metisfl.EvaluateRequest.task_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='task', full_name='metisfl.EvaluateRequest.task', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='taskId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='model', full_name='metisfl.EvaluateRequest.model', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='model', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='params', full_name='metisfl.EvaluateRequest.params', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='params', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -168,8 +236,8 @@ _EVALUATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=370,
-  serialized_end=501,
+  serialized_start=548,
+  serialized_end=668,
 )
 
 
@@ -187,14 +255,14 @@ _EVALUATIONPARAMS = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='batchSize', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='metrics', full_name='metisfl.EvaluationParams.metrics', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='metrics', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -207,8 +275,8 @@ _EVALUATIONPARAMS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=503,
-  serialized_end=578,
+  serialized_start=670,
+  serialized_end=725,
 )
 
 
@@ -221,19 +289,19 @@ _EVALUATERESPONSE = _descriptor.Descriptor(
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='task_id', full_name='metisfl.EvaluateResponse.task_id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      name='task', full_name='metisfl.EvaluateResponse.task', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='taskId', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metadata', full_name='metisfl.EvaluateResponse.metadata', index=1,
+      name='results', full_name='metisfl.EvaluateResponse.results', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='metadata', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -246,33 +314,33 @@ _EVALUATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=580,
-  serialized_end=680,
+  serialized_start=727,
+  serialized_end=819,
 )
 
 
-_EVALUATIONMETADATA_METRICSENTRY = _descriptor.Descriptor(
+_EVALUATIONRESULTS_METRICSENTRY = _descriptor.Descriptor(
   name='MetricsEntry',
-  full_name='metisfl.EvaluationMetadata.MetricsEntry',
+  full_name='metisfl.EvaluationResults.MetricsEntry',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='metisfl.EvaluationMetadata.MetricsEntry.key', index=0,
+      name='key', full_name='metisfl.EvaluationResults.MetricsEntry.key', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='key', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='metisfl.EvaluationMetadata.MetricsEntry.value', index=1,
+      name='value', full_name='metisfl.EvaluationResults.MetricsEntry.value', index=1,
       number=2, type=2, cpp_type=6, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -285,29 +353,29 @@ _EVALUATIONMETADATA_METRICSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=773,
-  serialized_end=831,
+  serialized_start=900,
+  serialized_end=946,
 )
 
-_EVALUATIONMETADATA = _descriptor.Descriptor(
-  name='EvaluationMetadata',
-  full_name='metisfl.EvaluationMetadata',
+_EVALUATIONRESULTS = _descriptor.Descriptor(
+  name='EvaluationResults',
+  full_name='metisfl.EvaluationResults',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metrics', full_name='metisfl.EvaluationMetadata.metrics', index=0,
+      name='metrics', full_name='metisfl.EvaluationResults.metrics', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='metrics', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
-  nested_types=[_EVALUATIONMETADATA_METRICSENTRY, ],
+  nested_types=[_EVALUATIONRESULTS_METRICSENTRY, ],
   enum_types=[
   ],
   serialized_options=None,
@@ -316,24 +384,38 @@ _EVALUATIONMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=683,
-  serialized_end=831,
+  serialized_start=821,
+  serialized_end=946,
 )
 
+_TASK.fields_by_name['sent_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TASK.fields_by_name['received_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TASK.fields_by_name['completed_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_TRAINREQUEST.fields_by_name['task'].message_type = _TASK
 _TRAINREQUEST.fields_by_name['model'].message_type = metisfl_dot_proto_dot_model__pb2._MODEL
 _TRAINREQUEST.fields_by_name['params'].message_type = _TRAINPARAMS
+_EVALUATEREQUEST.fields_by_name['task'].message_type = _TASK
 _EVALUATEREQUEST.fields_by_name['model'].message_type = metisfl_dot_proto_dot_model__pb2._MODEL
 _EVALUATEREQUEST.fields_by_name['params'].message_type = _EVALUATIONPARAMS
-_EVALUATERESPONSE.fields_by_name['metadata'].message_type = _EVALUATIONMETADATA
-_EVALUATIONMETADATA_METRICSENTRY.containing_type = _EVALUATIONMETADATA
-_EVALUATIONMETADATA.fields_by_name['metrics'].message_type = _EVALUATIONMETADATA_METRICSENTRY
+_EVALUATERESPONSE.fields_by_name['task'].message_type = _TASK
+_EVALUATERESPONSE.fields_by_name['results'].message_type = _EVALUATIONRESULTS
+_EVALUATIONRESULTS_METRICSENTRY.containing_type = _EVALUATIONRESULTS
+_EVALUATIONRESULTS.fields_by_name['metrics'].message_type = _EVALUATIONRESULTS_METRICSENTRY
+DESCRIPTOR.message_types_by_name['Task'] = _TASK
 DESCRIPTOR.message_types_by_name['TrainRequest'] = _TRAINREQUEST
 DESCRIPTOR.message_types_by_name['TrainParams'] = _TRAINPARAMS
 DESCRIPTOR.message_types_by_name['EvaluateRequest'] = _EVALUATEREQUEST
 DESCRIPTOR.message_types_by_name['EvaluationParams'] = _EVALUATIONPARAMS
 DESCRIPTOR.message_types_by_name['EvaluateResponse'] = _EVALUATERESPONSE
-DESCRIPTOR.message_types_by_name['EvaluationMetadata'] = _EVALUATIONMETADATA
+DESCRIPTOR.message_types_by_name['EvaluationResults'] = _EVALUATIONRESULTS
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), {
+  'DESCRIPTOR' : _TASK,
+  '__module__' : 'metisfl.proto.learner_pb2'
+  # @@protoc_insertion_point(class_scope:metisfl.Task)
+  })
+_sym_db.RegisterMessage(Task)
 
 TrainRequest = _reflection.GeneratedProtocolMessageType('TrainRequest', (_message.Message,), {
   'DESCRIPTOR' : _TRAINREQUEST,
@@ -370,23 +452,23 @@ EvaluateResponse = _reflection.GeneratedProtocolMessageType('EvaluateResponse', 
   })
 _sym_db.RegisterMessage(EvaluateResponse)
 
-EvaluationMetadata = _reflection.GeneratedProtocolMessageType('EvaluationMetadata', (_message.Message,), {
+EvaluationResults = _reflection.GeneratedProtocolMessageType('EvaluationResults', (_message.Message,), {
 
   'MetricsEntry' : _reflection.GeneratedProtocolMessageType('MetricsEntry', (_message.Message,), {
-    'DESCRIPTOR' : _EVALUATIONMETADATA_METRICSENTRY,
+    'DESCRIPTOR' : _EVALUATIONRESULTS_METRICSENTRY,
     '__module__' : 'metisfl.proto.learner_pb2'
-    # @@protoc_insertion_point(class_scope:metisfl.EvaluationMetadata.MetricsEntry)
+    # @@protoc_insertion_point(class_scope:metisfl.EvaluationResults.MetricsEntry)
     })
   ,
-  'DESCRIPTOR' : _EVALUATIONMETADATA,
+  'DESCRIPTOR' : _EVALUATIONRESULTS,
   '__module__' : 'metisfl.proto.learner_pb2'
-  # @@protoc_insertion_point(class_scope:metisfl.EvaluationMetadata)
+  # @@protoc_insertion_point(class_scope:metisfl.EvaluationResults)
   })
-_sym_db.RegisterMessage(EvaluationMetadata)
-_sym_db.RegisterMessage(EvaluationMetadata.MetricsEntry)
+_sym_db.RegisterMessage(EvaluationResults)
+_sym_db.RegisterMessage(EvaluationResults.MetricsEntry)
 
 
-_EVALUATIONMETADATA_METRICSENTRY._options = None
+_EVALUATIONRESULTS_METRICSENTRY._options = None
 
 _LEARNERSERVICE = _descriptor.ServiceDescriptor(
   name='LearnerService',
@@ -395,8 +477,8 @@ _LEARNERSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=834,
-  serialized_end=1159,
+  serialized_start=949,
+  serialized_end=1272,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetHealthStatus',
@@ -419,8 +501,8 @@ _LEARNERSERVICE = _descriptor.ServiceDescriptor(
     create_key=_descriptor._internal_create_key,
   ),
   _descriptor.MethodDescriptor(
-    name='SetInitialWeights',
-    full_name='metisfl.LearnerService.SetInitialWeights',
+    name='SetInitialModel',
+    full_name='metisfl.LearnerService.SetInitialModel',
     index=2,
     containing_service=None,
     input_type=metisfl_dot_proto_dot_model__pb2._MODEL,

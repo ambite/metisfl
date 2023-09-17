@@ -19,66 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x19metisfl/proto/model.proto\x12\x07metisfl\"\xbb\x01\n\x10TensorQuantifier\x12-\n\x10tensor_non_zeros\x18\x01 \x01(\rH\x00R\x0etensorNonZeros\x88\x01\x01\x12&\n\x0ctensor_zeros\x18\x02 \x01(\rH\x01R\x0btensorZeros\x88\x01\x01\x12*\n\x11tensor_size_bytes\x18\x03 \x01(\rR\x0ftensorSizeBytesB\x13\n\x11_tensor_non_zerosB\x0f\n\r_tensor_zeros\"V\n\x06Tensor\x12\x16\n\x06length\x18\x01 \x01(\rR\x06length\x12\x1e\n\ndimensions\x18\x02 \x03(\x03R\ndimensions\x12\x14\n\x05value\x18\x03 \x01(\x0cR\x05value\"P\n\x05Model\x12\x1c\n\tencrypted\x18\x01 \x01(\x08R\tencrypted\x12)\n\x07tensors\x18\x02 \x03(\x0b\x32\x0f.metisfl.TensorR\x07tensorsb\x06proto3'
+  serialized_pb=b'\n\x19metisfl/proto/model.proto\x12\x07metisfl\";\n\x06Tensor\x12\x0e\n\x06length\x18\x01 \x01(\r\x12\x12\n\ndimensions\x18\x02 \x03(\x03\x12\r\n\x05value\x18\x03 \x01(\x0c\"<\n\x05Model\x12\x11\n\tencrypted\x18\x01 \x01(\x08\x12 \n\x07tensors\x18\x02 \x03(\x0b\x32\x0f.metisfl.Tensorb\x06proto3'
 )
 
 
-
-
-_TENSORQUANTIFIER = _descriptor.Descriptor(
-  name='TensorQuantifier',
-  full_name='metisfl.TensorQuantifier',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='tensor_non_zeros', full_name='metisfl.TensorQuantifier.tensor_non_zeros', index=0,
-      number=1, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='tensorNonZeros', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='tensor_zeros', full_name='metisfl.TensorQuantifier.tensor_zeros', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='tensorZeros', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='tensor_size_bytes', full_name='metisfl.TensorQuantifier.tensor_size_bytes', index=2,
-      number=3, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='tensorSizeBytes', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='_tensor_non_zeros', full_name='metisfl.TensorQuantifier._tensor_non_zeros',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_tensor_zeros', full_name='metisfl.TensorQuantifier._tensor_zeros',
-      index=1, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=39,
-  serialized_end=226,
-)
 
 
 _TENSOR = _descriptor.Descriptor(
@@ -95,21 +39,21 @@ _TENSOR = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='length', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='dimensions', full_name='metisfl.Tensor.dimensions', index=1,
       number=2, type=3, cpp_type=2, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='dimensions', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='value', full_name='metisfl.Tensor.value', index=2,
       number=3, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=b"",
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='value', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -122,8 +66,8 @@ _TENSOR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=228,
-  serialized_end=314,
+  serialized_start=38,
+  serialized_end=97,
 )
 
 
@@ -141,14 +85,14 @@ _MODEL = _descriptor.Descriptor(
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='encrypted', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='tensors', full_name='metisfl.Model.tensors', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, json_name='tensors', file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
   ],
   extensions=[
   ],
@@ -161,28 +105,14 @@ _MODEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=316,
-  serialized_end=396,
+  serialized_start=99,
+  serialized_end=159,
 )
 
-_TENSORQUANTIFIER.oneofs_by_name['_tensor_non_zeros'].fields.append(
-  _TENSORQUANTIFIER.fields_by_name['tensor_non_zeros'])
-_TENSORQUANTIFIER.fields_by_name['tensor_non_zeros'].containing_oneof = _TENSORQUANTIFIER.oneofs_by_name['_tensor_non_zeros']
-_TENSORQUANTIFIER.oneofs_by_name['_tensor_zeros'].fields.append(
-  _TENSORQUANTIFIER.fields_by_name['tensor_zeros'])
-_TENSORQUANTIFIER.fields_by_name['tensor_zeros'].containing_oneof = _TENSORQUANTIFIER.oneofs_by_name['_tensor_zeros']
 _MODEL.fields_by_name['tensors'].message_type = _TENSOR
-DESCRIPTOR.message_types_by_name['TensorQuantifier'] = _TENSORQUANTIFIER
 DESCRIPTOR.message_types_by_name['Tensor'] = _TENSOR
 DESCRIPTOR.message_types_by_name['Model'] = _MODEL
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
-TensorQuantifier = _reflection.GeneratedProtocolMessageType('TensorQuantifier', (_message.Message,), {
-  'DESCRIPTOR' : _TENSORQUANTIFIER,
-  '__module__' : 'metisfl.proto.model_pb2'
-  # @@protoc_insertion_point(class_scope:metisfl.TensorQuantifier)
-  })
-_sym_db.RegisterMessage(TensorQuantifier)
 
 Tensor = _reflection.GeneratedProtocolMessageType('Tensor', (_message.Message,), {
   'DESCRIPTOR' : _TENSOR,
