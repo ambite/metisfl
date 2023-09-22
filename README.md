@@ -7,11 +7,11 @@
 
 MetisFL - The First Open Federated Learning Framework implemented in C++ and Python3.
 
-[![BSD-3 License](https://badgen.net/badge/License/BSD-3-Clause/green?icon=github)](https://github.com/MetisFL-AI/MetisFL/blob/main/LICENSE)
+[![BSD-3 License](https://badgen.net/badge/License/BSD-3-Clause/green?icon=github)](https://github.com/NevronAI/MetisFL/blob/main/LICENSE)
 [![PyPI - Python Version](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)](https://pypi.org/project/metisfl/)
-[![Documentation](https://badgen.net/badge/Read/Documentation/orange?icon=buymeacoffee)](https://docs.metisfl.ai)
+<!-- [![Documentation](https://badgen.net/badge/Read/Documentation/orange?icon=buymeacoffee)](https://docs.metisfl.ai)
 [![Blog](https://badgen.net/badge/Mentions/Blog?icon=awesome)](https://blog.metisfl.ai)
-[![Slack Community](https://img.shields.io/badge/JoinSlack-@metisfl-brightgreen.svg?logo=slack)](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ)
+[![Slack Community](https://img.shields.io/badge/JoinSlack-@metisfl-brightgreen.svg?logo=slack)](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ) -->
 [![Citation](https://img.shields.io/badge/cite-citation-brightgreen)](https://arxiv.org/pdf/2205.05249.pdf)
 
 </div>
@@ -20,11 +20,11 @@ MetisFL - The First Open Federated Learning Framework implemented in C++ and Pyt
 MetisFL is a federated learning framework that allows developers to federate their machine learning workflows and train their models across distributed datasets without having to collect the data in a centralized location. Currently, the project is transitioning from a private, experimental version to a public, beta phase. We are actively encouraging developers, researchers and data scientists to experiment with the framework and contribute to the codebase.
 
 
-Homepage: https://metisfl.ai/ \
+<!-- Homepage: https://metisfl.ai/ \
 Github: https://github.com/MetisFL-AI \
-Docs: https://docs.metisfl.ai/ \
-Slack: [https://metisfl.slack.com](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ) \
-Contact: [support@metisfl.ai](support@metisfl.ai)
+Docs: https://docs.metisfl.ai/ \ -->
+<!-- Slack: [https://metisfl.slack.com](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ) \ -->
+<!-- Contact: [support@metisfl.ai](support@metisfl.ai) -->
 
 MetisFL sprung up from the Information and Science Institute (ISI) in the University of Southern California (USC). It is backed by several years of Ph.D. and Post-Doctoral research and several publications in top-tier machine learning and system conferences. It is being developed with the following guiding principles in mind:
 
