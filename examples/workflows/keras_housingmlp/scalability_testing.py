@@ -84,7 +84,6 @@ if __name__ == "__main__":
         learners_num=args.learners_num,
         gpu_devices=[-1])
         
-
     """ Load training and test data. """
     required_training_samples = int(
         args.learners_num * args.train_samples_per_learner)
@@ -111,7 +110,7 @@ if __name__ == "__main__":
     x_chunks, y_chunks = np.split(x_train, args.learners_num), np.split(
         y_train, args.learners_num)
     
-    datasets_path = os.path.join(script_cwd, "datasets/housing/")
+    datasets_path = os.path.join(script_cwd, "datasets/")
     if not os.path.exists(datasets_path):
         os.makedirs(datasets_path)
     

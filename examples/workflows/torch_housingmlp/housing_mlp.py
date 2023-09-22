@@ -1,52 +1,44 @@
+import pandas as pd
+import numpy as np
+
 import torch
 
-from torch.nn import Linear
-from torch.nn import ReLU
-from torch.nn import Sigmoid
-from torch.nn.init import kaiming_uniform_
-from torch.nn.init import xavier_uniform_
-from torch.nn import BCELoss
+from torch.nn import MSELoss
 from torch.optim import SGD
 from typing import Dict
-
 from numpy import vstack
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error
 
 
-class MLP(torch.nn.Module):
+class HousingMLP(torch.nn.Module):
+    def __init__(self, params_per_layer=10, hidden_layers_num=1, learning_rate=0.0, data_type="float64"):
+        super(HousingMLP, self).__init__()
+        self.params_per_layer = params_per_layer
+        self.hidden_layers_num = hidden_layers_num
 
-    # define model elements
-    def __init__(self, n_inputs):
-        super(MLP, self).__init__()
-        # input to first hidden layer
-        self.hidden1 = Linear(n_inputs, 10)
-        kaiming_uniform_(self.hidden1.weight, nonlinearity='relu')
-        self.act1 = ReLU()
-        # second hidden layer
-        self.hidden2 = Linear(10, 8)
-        kaiming_uniform_(self.hidden2.weight, nonlinearity='relu')
-        self.act2 = ReLU()
-        # third hidden layer and output
-        self.hidden3 = Linear(8, 1)
-        xavier_uniform_(self.hidden3.weight)
-        self.act3 = Sigmoid()
+        if data_type == "float32":
+            self.data_type = torch.float32
+        elif data_type == "float64":
+            self.data_type = torch.float64
+        else:
+            raise RuntimeError("Not a supported data type. Please pass float32 or float64")
 
-    # forward propagate input
-    def forward(self, X):
-        # input to first hidden layer
-        X = self.hidden1(X)
-        X = self.act1(X)
-        # second hidden layer
-        X = self.hidden2(X)
-        X = self.act2(X)
-        # third hidden layer and output
-        X = self.hidden3(X)
-        X = self.act3(X)
-        return X
+        layers = list()
+        layers.append(torch.nn.Linear(13, self.params_per_layer, dtype=self.data_type))
+        layers.append(torch.nn.ReLU())
+        for i in range(self.hidden_layers_num):
+            layers.append(torch.nn.Linear(self.params_per_layer, self.params_per_layer, dtype=self.data_type))
+            layers.append(torch.nn.ReLU())
+        layers.append(torch.nn.Linear(self.params_per_layer, 1, dtype=self.data_type))
+        self.model = torch.nn.Sequential(*layers)
+
+    def forward(self, x):
+        output = self.model(x)
+        return output
 
     def fit(self, dataset, epochs, *args, **kwargs) -> Dict:
         # define the optimization
-        criterion = BCELoss()
+        criterion = MSELoss()
         optimizer = SGD(self.parameters(), lr=0.01, momentum=0.9)
         # enumerate epochs
         for epoch in range(epochs):
@@ -80,6 +72,6 @@ class MLP(torch.nn.Module):
             predictions.append(yhat)
             actuals.append(actual)
         predictions, actuals = vstack(predictions), vstack(actuals)
-        # calculate accuracy
-        acc = accuracy_score(actuals, predictions)
-        return {"accuracy": acc}
+        # calculate MSE
+        mse = mean_squared_error(actuals, predictions)
+        return {"mse": mse}

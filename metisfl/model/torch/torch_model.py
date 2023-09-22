@@ -22,7 +22,7 @@ class MetisModelTorch(MetisModel):
         assert hasattr(model, "evaluate"), "MetisModelTorch requires an .evaluate method"
 
         self._backend_model = model
-        self.nn_engine = config.PYTORCH_NN_ENGINE
+        self._nn_engine = config.PYTORCH_NN_ENGINE
 
     @staticmethod
     def get_paths(model_dir):

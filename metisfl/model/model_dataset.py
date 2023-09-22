@@ -1,4 +1,5 @@
 import tensorflow as tf
+import torch
 
 from metisfl.common.logger import MetisLogger
 
@@ -16,10 +17,11 @@ class ModelDataset(object):
         :param y: output
         """
         self._x = x
+        self._y = y
         if isinstance(x, tf.data.Dataset):
-            MetisLogger.info("Model dataset input is a tf.data.Dataset; ignoring fed y values.")
-        else: 
-            self._y = y
+            MetisLogger.info("Model dataset input is a tf.data.Dataset; ignoring y values.")
+        elif isinstance(x, torch.utils.data.DataLoader):
+            MetisLogger.info("Model dataset input is a torch.utils.data.DataLoader; ignoring y values.")            
         self._size = size
 
     def get_x(self):
