@@ -1,8 +1,10 @@
 import argparse
 
 import metisfl.proto.metis_pb2 as metis_pb2
+
+from metisfl.common.logger import MetisLogger
 from metisfl.controller.controller_instance import Controller
-from metisfl.utils.logger import MetisLogger
+
 
 def _get_pb_from_hexadecimal_str(hexadecimal_str, pb_class):
     pb = pb_class()

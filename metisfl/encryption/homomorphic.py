@@ -1,10 +1,10 @@
 from typing import Any, List
 
-from metisfl.encryption.encryption_scheme import EncryptionScheme
-from metisfl.proto.proto_messages_factory import MetisProtoMessages
-from metisfl.utils.logger import MetisLogger
+from metisfl.common.logger import MetisLogger
 from metisfl.encryption import fhe
+from metisfl.encryption.encryption_scheme import EncryptionScheme
 from metisfl.proto import metis_pb2
+from metisfl.proto.proto_messages_factory import MetisProtoMessages
 
 
 class Homomorphic(EncryptionScheme):

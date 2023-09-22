@@ -1,21 +1,23 @@
 import gc
 import multiprocessing as mp
 import queue
-from typing import Callable
+
+import metisfl.config as config
 
 from pebble import ProcessPool
+from typing import Callable
 
-from metisfl import config
 from metisfl.learner.learner_task import LearnerTask
 from metisfl.proto import metis_pb2
 
 
 class LearnerExecutor(object):
 
-    def __init__(self, learner_task: LearnerTask, recreate_queue_task_worker=False):
+    def __init__(self, 
+                 learner_task: LearnerTask, 
+                 recreate_queue_task_worker=False):
         self._learner_task = learner_task
         self._init_tasks_pools(recreate_queue_task_worker)
-
 
     def run_evaluation_task(self, block=False, **kwargs):
         future = self._run_task(

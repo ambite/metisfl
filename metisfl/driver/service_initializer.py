@@ -4,13 +4,14 @@ import inspect
 import os
 import tarfile
 
+import metisfl.config as config
+
 from fabric import Connection
 from typing import Callable, Dict, List, Tuple
 
-from metisfl import config
-from metisfl.models.metis_model import MetisModel
-from metisfl.utils.fedenv import FederationEnvironment, RemoteHost
-from metisfl.utils.logger import MetisLogger
+from metisfl.model.metis_model import MetisModel
+from metisfl.common.config import FederationEnvironment, RemoteHost
+from metisfl.common.logger import MetisLogger
 
 
 class ServiceInitializer:

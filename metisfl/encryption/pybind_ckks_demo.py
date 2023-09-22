@@ -2,7 +2,7 @@ import numpy as np
 import tempfile
 
 from metisfl.encryption.fhe import CKKS
-from metisfl.utils.logger import MetisLogger
+from metisfl.common.logger import MetisLogger
 
 
 def encrypt(crypto_params, ckks_scheme, data, file_based_api):    

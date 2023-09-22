@@ -27,7 +27,6 @@ DEFAULT_CONTROLLER_PORT = 50051
 DEFAULT_LEARNER_HOST = "[::]"
 DEFAULT_LEARNER_PORT = 50052
 
-# FIXME(@panoskyriakis): merge tasks_keys and taks
 TRAIN = "train"
 VALIDATION = "validation"
 TEST = "test"
@@ -43,10 +42,6 @@ DATASET_RECIPE_FILENAMES = {
     "test": "model_test_dataset_ops.pkl"
 }
 
-# TRAIN = LEARNING
-# VALIDATION = EVALUATION
-# TEST = INFERENCE
-# @stripeli @panoskyriakis verify this and change the names accordingly
 LEARNING_TASK = "learning"
 EVALUATION_TASK = "evaluation"
 INFERENCE_TASK = "inference"

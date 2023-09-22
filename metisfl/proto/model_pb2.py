@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19metisfl/proto/model.proto\x12\x07metisfl\"\xce\x02\n\x05\x44Type\x12\'\n\x04type\x18\x01 \x01(\x0e\x32\x13.metisfl.DType.TypeR\x04type\x12\x37\n\nbyte_order\x18\x02 \x01(\x0e\x32\x18.metisfl.DType.ByteOrderR\tbyteOrder\x12#\n\rfortran_order\x18\x03 \x01(\x08R\x0c\x66ortranOrder\"z\n\x04Type\x12\x08\n\x04INT8\x10\x00\x12\t\n\x05INT16\x10\x01\x12\t\n\x05INT32\x10\x02\x12\t\n\x05INT64\x10\x03\x12\t\n\x05UINT8\x10\x04\x12\n\n\x06UINT16\x10\x05\x12\n\n\x06UINT32\x10\x06\x12\n\n\x06UINT64\x10\x07\x12\x0b\n\x07\x46LOAT32\x10\x08\x12\x0b\n\x07\x46LOAT64\x10\t\"B\n\tByteOrder\x12\x06\n\x02NA\x10\x00\x12\x14\n\x10\x42IG_ENDIAN_ORDER\x10\x01\x12\x17\n\x13LITTLE_ENDIAN_ORDER\x10\x02\"\xbb\x01\n\x10TensorQuantifier\x12-\n\x10tensor_non_zeros\x18\x01 \x01(\rH\x00R\x0etensorNonZeros\x88\x01\x01\x12&\n\x0ctensor_zeros\x18\x02 \x01(\rH\x01R\x0btensorZeros\x88\x01\x01\x12*\n\x11tensor_size_bytes\x18\x03 \x01(\rR\x0ftensorSizeBytesB\x13\n\x11_tensor_non_zerosB\x0f\n\r_tensor_zeros\"~\n\nTensorSpec\x12\x16\n\x06length\x18\x01 \x01(\rR\x06length\x12\x1e\n\ndimensions\x18\x02 \x03(\x03R\ndimensions\x12\"\n\x04type\x18\x03 \x01(\x0b\x32\x0e.metisfl.DTypeR\x04type\x12\x14\n\x05value\x18\x04 \x01(\x0cR\x05value\"G\n\x0fPlaintextTensor\x12\x34\n\x0btensor_spec\x18\x01 \x01(\x0b\x32\x13.metisfl.TensorSpecR\ntensorSpec\"H\n\x10\x43iphertextTensor\x12\x34\n\x0btensor_spec\x18\x01 \x01(\x0b\x32\x13.metisfl.TensorSpecR\ntensorSpec\"\x98\x02\n\x05Model\x12\x35\n\tvariables\x18\x01 \x03(\x0b\x32\x17.metisfl.Model.VariableR\tvariables\x1a\xd7\x01\n\x08Variable\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12\x1c\n\ttrainable\x18\x02 \x01(\x08R\ttrainable\x12\x45\n\x10plaintext_tensor\x18\x03 \x01(\x0b\x32\x18.metisfl.PlaintextTensorH\x00R\x0fplaintextTensor\x12H\n\x11\x63iphertext_tensor\x18\x04 \x01(\x0b\x32\x19.metisfl.CiphertextTensorH\x00R\x10\x63iphertextTensorB\x08\n\x06tensor\"\x8c\x01\n\x0e\x46\x65\x64\x65ratedModel\x12)\n\x10num_contributors\x18\x01 \x01(\rR\x0fnumContributors\x12)\n\x10global_iteration\x18\x02 \x01(\rR\x0fglobalIteration\x12$\n\x05model\x18\x03 \x01(\x0b\x32\x0e.metisfl.ModelR\x05model\"\x9e\x01\n\x0fOptimizerConfig\x12\x12\n\x04name\x18\x01 \x01(\tR\x04name\x12<\n\x06params\x18\x02 \x03(\x0b\x32$.metisfl.OptimizerConfig.ParamsEntryR\x06params\x1a\x39\n\x0bParamsEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\tR\x05value:\x02\x38\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19metisfl/proto/model.proto\x12\x07metisfl\"\xaf\x02\n\x05\x44Type\x12!\n\x04type\x18\x01 \x01(\x0e\x32\x13.metisfl.DType.Type\x12,\n\nbyte_order\x18\x02 \x01(\x0e\x32\x18.metisfl.DType.ByteOrder\x12\x15\n\rfortran_order\x18\x03 \x01(\x08\"z\n\x04Type\x12\x08\n\x04INT8\x10\x00\x12\t\n\x05INT16\x10\x01\x12\t\n\x05INT32\x10\x02\x12\t\n\x05INT64\x10\x03\x12\t\n\x05UINT8\x10\x04\x12\n\n\x06UINT16\x10\x05\x12\n\n\x06UINT32\x10\x06\x12\n\n\x06UINT64\x10\x07\x12\x0b\n\x07\x46LOAT32\x10\x08\x12\x0b\n\x07\x46LOAT64\x10\t\"B\n\tByteOrder\x12\x06\n\x02NA\x10\x00\x12\x14\n\x10\x42IG_ENDIAN_ORDER\x10\x01\x12\x17\n\x13LITTLE_ENDIAN_ORDER\x10\x02\"\x8d\x01\n\x10TensorQuantifier\x12\x1d\n\x10tensor_non_zeros\x18\x01 \x01(\rH\x00\x88\x01\x01\x12\x19\n\x0ctensor_zeros\x18\x02 \x01(\rH\x01\x88\x01\x01\x12\x19\n\x11tensor_size_bytes\x18\x03 \x01(\rB\x13\n\x11_tensor_non_zerosB\x0f\n\r_tensor_zeros\"]\n\nTensorSpec\x12\x0e\n\x06length\x18\x01 \x01(\r\x12\x12\n\ndimensions\x18\x02 \x03(\x03\x12\x1c\n\x04type\x18\x03 \x01(\x0b\x32\x0e.metisfl.DType\x12\r\n\x05value\x18\x04 \x01(\x0c\";\n\x0fPlaintextTensor\x12(\n\x0btensor_spec\x18\x01 \x01(\x0b\x32\x13.metisfl.TensorSpec\"<\n\x10\x43iphertextTensor\x12(\n\x0btensor_spec\x18\x01 \x01(\x0b\x32\x13.metisfl.TensorSpec\"\xd9\x01\n\x05Model\x12*\n\tvariables\x18\x01 \x03(\x0b\x32\x17.metisfl.Model.Variable\x1a\xa3\x01\n\x08Variable\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\ttrainable\x18\x02 \x01(\x08\x12\x34\n\x10plaintext_tensor\x18\x03 \x01(\x0b\x32\x18.metisfl.PlaintextTensorH\x00\x12\x36\n\x11\x63iphertext_tensor\x18\x04 \x01(\x0b\x32\x19.metisfl.CiphertextTensorH\x00\x42\x08\n\x06tensor\"c\n\x0e\x46\x65\x64\x65ratedModel\x12\x18\n\x10num_contributors\x18\x01 \x01(\r\x12\x18\n\x10global_iteration\x18\x02 \x01(\r\x12\x1d\n\x05model\x18\x03 \x01(\x0b\x32\x0e.metisfl.Model\"\x84\x01\n\x0fOptimizerConfig\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x06params\x18\x02 \x03(\x0b\x32$.metisfl.OptimizerConfig.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x62\x06proto3')
 
 
 
@@ -108,27 +108,27 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _OPTIMIZERCONFIG_PARAMSENTRY._options = None
   _OPTIMIZERCONFIG_PARAMSENTRY._serialized_options = b'8\001'
   _DTYPE._serialized_start=39
-  _DTYPE._serialized_end=373
-  _DTYPE_TYPE._serialized_start=183
-  _DTYPE_TYPE._serialized_end=305
-  _DTYPE_BYTEORDER._serialized_start=307
-  _DTYPE_BYTEORDER._serialized_end=373
-  _TENSORQUANTIFIER._serialized_start=376
-  _TENSORQUANTIFIER._serialized_end=563
-  _TENSORSPEC._serialized_start=565
-  _TENSORSPEC._serialized_end=691
-  _PLAINTEXTTENSOR._serialized_start=693
-  _PLAINTEXTTENSOR._serialized_end=764
-  _CIPHERTEXTTENSOR._serialized_start=766
-  _CIPHERTEXTTENSOR._serialized_end=838
-  _MODEL._serialized_start=841
-  _MODEL._serialized_end=1121
-  _MODEL_VARIABLE._serialized_start=906
-  _MODEL_VARIABLE._serialized_end=1121
-  _FEDERATEDMODEL._serialized_start=1124
-  _FEDERATEDMODEL._serialized_end=1264
-  _OPTIMIZERCONFIG._serialized_start=1267
-  _OPTIMIZERCONFIG._serialized_end=1425
-  _OPTIMIZERCONFIG_PARAMSENTRY._serialized_start=1368
-  _OPTIMIZERCONFIG_PARAMSENTRY._serialized_end=1425
+  _DTYPE._serialized_end=342
+  _DTYPE_TYPE._serialized_start=152
+  _DTYPE_TYPE._serialized_end=274
+  _DTYPE_BYTEORDER._serialized_start=276
+  _DTYPE_BYTEORDER._serialized_end=342
+  _TENSORQUANTIFIER._serialized_start=345
+  _TENSORQUANTIFIER._serialized_end=486
+  _TENSORSPEC._serialized_start=488
+  _TENSORSPEC._serialized_end=581
+  _PLAINTEXTTENSOR._serialized_start=583
+  _PLAINTEXTTENSOR._serialized_end=642
+  _CIPHERTEXTTENSOR._serialized_start=644
+  _CIPHERTEXTTENSOR._serialized_end=704
+  _MODEL._serialized_start=707
+  _MODEL._serialized_end=924
+  _MODEL_VARIABLE._serialized_start=761
+  _MODEL_VARIABLE._serialized_end=924
+  _FEDERATEDMODEL._serialized_start=926
+  _FEDERATEDMODEL._serialized_end=1025
+  _OPTIMIZERCONFIG._serialized_start=1028
+  _OPTIMIZERCONFIG._serialized_end=1160
+  _OPTIMIZERCONFIG_PARAMSENTRY._serialized_start=1115
+  _OPTIMIZERCONFIG_PARAMSENTRY._serialized_end=1160
 # @@protoc_insertion_point(module_scope)

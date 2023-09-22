@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"metisfl/proto/service_common.proto\x12\x07metisfl\x1a\x1fgoogle/protobuf/timestamp.proto\"q\n\x03\x41\x63k\x12\x16\n\x06status\x18\x01 \x01(\x08R\x06status\x12\x38\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.TimestampR\ttimestamp\x12\x18\n\x07message\x18\x03 \x01(\tR\x07message\" \n\x1eGetServicesHealthStatusRequest\"\xcb\x01\n\x1fGetServicesHealthStatusResponse\x12\x65\n\x0fservices_status\x18\x01 \x03(\x0b\x32<.metisfl.GetServicesHealthStatusResponse.ServicesStatusEntryR\x0eservicesStatus\x1a\x41\n\x13ServicesStatusEntry\x12\x10\n\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n\x05value\x18\x02 \x01(\x08R\x05value:\x02\x38\x01\"\x11\n\x0fShutDownRequest\"2\n\x10ShutDownResponse\x12\x1e\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.AckR\x03\x61\x63kb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\"metisfl/proto/service_common.proto\x12\x07metisfl\x1a\x1fgoogle/protobuf/timestamp.proto\"U\n\x03\x41\x63k\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0f\n\x07message\x18\x03 \x01(\t\" \n\x1eGetServicesHealthStatusRequest\"\xaf\x01\n\x1fGetServicesHealthStatusResponse\x12U\n\x0fservices_status\x18\x01 \x03(\x0b\x32<.metisfl.GetServicesHealthStatusResponse.ServicesStatusEntry\x1a\x35\n\x13ServicesStatusEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x08:\x02\x38\x01\"\x11\n\x0fShutDownRequest\"-\n\x10ShutDownResponse\x12\x19\n\x03\x61\x63k\x18\x01 \x01(\x0b\x32\x0c.metisfl.Ackb\x06proto3')
 
 
 
@@ -74,15 +74,15 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._options = None
   _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._serialized_options = b'8\001'
   _ACK._serialized_start=80
-  _ACK._serialized_end=193
-  _GETSERVICESHEALTHSTATUSREQUEST._serialized_start=195
-  _GETSERVICESHEALTHSTATUSREQUEST._serialized_end=227
-  _GETSERVICESHEALTHSTATUSRESPONSE._serialized_start=230
-  _GETSERVICESHEALTHSTATUSRESPONSE._serialized_end=433
-  _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._serialized_start=368
-  _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._serialized_end=433
-  _SHUTDOWNREQUEST._serialized_start=435
-  _SHUTDOWNREQUEST._serialized_end=452
-  _SHUTDOWNRESPONSE._serialized_start=454
-  _SHUTDOWNRESPONSE._serialized_end=504
+  _ACK._serialized_end=165
+  _GETSERVICESHEALTHSTATUSREQUEST._serialized_start=167
+  _GETSERVICESHEALTHSTATUSREQUEST._serialized_end=199
+  _GETSERVICESHEALTHSTATUSRESPONSE._serialized_start=202
+  _GETSERVICESHEALTHSTATUSRESPONSE._serialized_end=377
+  _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._serialized_start=324
+  _GETSERVICESHEALTHSTATUSRESPONSE_SERVICESSTATUSENTRY._serialized_end=377
+  _SHUTDOWNREQUEST._serialized_start=379
+  _SHUTDOWNREQUEST._serialized_end=396
+  _SHUTDOWNRESPONSE._serialized_start=398
+  _SHUTDOWNRESPONSE._serialized_end=443
 # @@protoc_insertion_point(module_scope)

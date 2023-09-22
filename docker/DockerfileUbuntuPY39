@@ -21,13 +21,13 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.17.0/bazeli
 RUN chmod +x ./bazelisk-linux-amd64
 RUN mv ./bazelisk-linux-amd64 /usr/bin/bazelisk
 
-# Install and setup gcc
+# Install and setup gcc.
 RUN apt-get -y install build-essential gcc
 
 # Install Palisades dependencies.
 RUN apt-get -y install autoconf libomp-dev
 
-# Install and setup python3.9
+# Install and setup python3.9.
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get -y update

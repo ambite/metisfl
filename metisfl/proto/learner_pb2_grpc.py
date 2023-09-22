@@ -20,6 +20,11 @@ class LearnerServiceStub(object):
                 request_serializer=metisfl_dot_proto_dot_learner__pb2.EvaluateModelRequest.SerializeToString,
                 response_deserializer=metisfl_dot_proto_dot_learner__pb2.EvaluateModelResponse.FromString,
                 )
+        self.GetModel = channel.unary_unary(
+                '/metisfl.LearnerService/GetModel',
+                request_serializer=metisfl_dot_proto_dot_learner__pb2.GetModelRequest.SerializeToString,
+                response_deserializer=metisfl_dot_proto_dot_learner__pb2.GetModelResponse.FromString,
+                )
         self.GetServicesHealthStatus = channel.unary_unary(
                 '/metisfl.LearnerService/GetServicesHealthStatus',
                 request_serializer=metisfl_dot_proto_dot_service__common__pb2.GetServicesHealthStatusRequest.SerializeToString,
@@ -41,25 +46,37 @@ class LearnerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def EvaluateModel(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Receives a model and evaluates it at its
+        local dataset (any of [train, validation, test]).
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def GetModel(self, request, context):
+        """Unary RPC. Get learner's local model.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetServicesHealthStatus(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Replies with the health status (beat) of its internal services.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def RunTask(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Assigns task to be trained locally by the learner.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ShutDown(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary rpc. Shuts down all running services of the learner module.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -71,6 +88,11 @@ def add_LearnerServiceServicer_to_server(servicer, server):
                     servicer.EvaluateModel,
                     request_deserializer=metisfl_dot_proto_dot_learner__pb2.EvaluateModelRequest.FromString,
                     response_serializer=metisfl_dot_proto_dot_learner__pb2.EvaluateModelResponse.SerializeToString,
+            ),
+            'GetModel': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetModel,
+                    request_deserializer=metisfl_dot_proto_dot_learner__pb2.GetModelRequest.FromString,
+                    response_serializer=metisfl_dot_proto_dot_learner__pb2.GetModelResponse.SerializeToString,
             ),
             'GetServicesHealthStatus': grpc.unary_unary_rpc_method_handler(
                     servicer.GetServicesHealthStatus,
@@ -111,6 +133,23 @@ class LearnerService(object):
         return grpc.experimental.unary_unary(request, target, '/metisfl.LearnerService/EvaluateModel',
             metisfl_dot_proto_dot_learner__pb2.EvaluateModelRequest.SerializeToString,
             metisfl_dot_proto_dot_learner__pb2.EvaluateModelResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def GetModel(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/metisfl.LearnerService/GetModel',
+            metisfl_dot_proto_dot_learner__pb2.GetModelRequest.SerializeToString,
+            metisfl_dot_proto_dot_learner__pb2.GetModelResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

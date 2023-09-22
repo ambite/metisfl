@@ -1,11 +1,10 @@
 import signal
 import time
 
-from metisfl.proto.metis_pb2 import ControllerParams
-import metisfl.proto.metis_pb2 as metis_pb2
-
 # This imports the controller python module defined inside the `pybind/controller_pybind.cc` script.
 from metisfl.controller import controller
+
+from metisfl.proto.metis_pb2 import ControllerParams
 
 
 class Controller(object):

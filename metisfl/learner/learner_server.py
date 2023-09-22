@@ -1,17 +1,14 @@
-import threading
-
 import grpc
-from google.protobuf.timestamp_pb2 import Timestamp
+import threading
+import metisfl.common.config as config
 
-from metisfl import config
+from google.protobuf.timestamp_pb2 import Timestamp
+from metisfl.common.logger import MetisLogger
 from metisfl.grpc.grpc_services import GRPCServerMaxMsgLength
+from metisfl.learner.controller_client import GRPCControllerClient
+from metisfl.learner.learner_executor import LearnerExecutor
 from metisfl.proto import learner_pb2, learner_pb2_grpc, service_common_pb2
 from metisfl.proto.metis_pb2 import ServerEntity
-from metisfl.utils.logger import MetisLogger
-
-from .controller_client import GRPCControllerClient
-from .learner_executor import LearnerExecutor
-
 
 class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
 

@@ -1,4 +1,5 @@
 from typing import Dict
+
 from metisfl.encryption.encryption_scheme import EncryptionScheme
 
 

@@ -26,6 +26,7 @@ public:
   // Stops the gRPC service.
   virtual void StopService() = 0;
 
+  // Checks if a shutdown request has been triggered.
   virtual bool ShutdownRequestReceived() = 0;
 
 public:

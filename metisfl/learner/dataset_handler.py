@@ -1,12 +1,11 @@
-from inspect import signature
-
 import cloudpickle
+
+import metisfl.model.model_dataset as model_dataset
+
+from inspect import signature
 from pebble import ProcessPool
 
-from metisfl.utils.logger import MetisLogger
-from metisfl.models.model_dataset import (ModelDataset,
-                                          ModelDatasetClassification,
-                                          ModelDatasetRegression)
+from metisfl.common.logger import MetisLogger
 
 
 class LearnerDataset:
@@ -55,8 +54,10 @@ class LearnerDataset:
     def get_dataset_metadata(self):
         train_dataset_meta, validation_dataset_meta, test_dataset_meta \
             = self._load_datasets_metadata_subproc()
-        is_classification = train_dataset_meta[2] == ModelDatasetClassification
-        is_regression = train_dataset_meta[2] == ModelDatasetRegression
+        is_classification = train_dataset_meta[2] == \
+            model_dataset.ModelDatasetClassification
+        is_regression = train_dataset_meta[2] == \
+            model_dataset.ModelDatasetRegression
         return {
             "is_classification": is_classification,
             "is_regression": is_regression,
@@ -103,6 +104,7 @@ def create_model_dataset_helper(dataset_recipe_pkl, dataset_fp=None, default_cla
     else:
         dataset = default_class()
 
-    assert isinstance(dataset, ModelDataset), \
-        "The dataset needs to be an instance of: {}".format(ModelDataset.__name__)
+    assert isinstance(dataset, model_dataset.ModelDataset), \
+        "The dataset needs to be an instance of: {}".format(\
+            model_dataset.ModelDataset.__name__)
     return dataset

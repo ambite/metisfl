@@ -1,11 +1,12 @@
 import tensorflow as tf
 import numpy as np
 
-from metisfl import config
-from metisfl.models.keras.optimizers.fed_prox import FedProx
-from metisfl.models.metis_model import MetisModel
-from metisfl.models.types import ModelWeightsDescriptor
-from metisfl.utils.logger import MetisLogger
+import metisfl.config as config
+model
+from metisfl.modelkeras.optimizers.fed_prox import FedProx
+from metisfl.modelmetis_model import MetisModel
+from metisfl.model.types import ModelWeightsDescriptor
+from metisfl.common.logger import MetisLogger
 
 
 class MetisModelKeras(MetisModel):

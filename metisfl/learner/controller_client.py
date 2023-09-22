@@ -1,12 +1,13 @@
 import grpc
 
+import metisfl.config as config
+
 from typing import Dict, Any
 
-from metisfl import config
+from metisfl.common.logger import MetisLogger
 from metisfl.grpc.grpc_services import GRPCClient, SSLProtoHelper
 from metisfl.proto import controller_pb2, controller_pb2_grpc
 from metisfl.proto.metis_pb2 import ServerEntity
-from metisfl.utils.logger import MetisLogger
 from metisfl.proto.proto_messages_factory import MetisProtoMessages
 
 

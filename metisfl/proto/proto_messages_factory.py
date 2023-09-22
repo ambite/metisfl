@@ -3,7 +3,7 @@ import sys
 
 import numpy as np
 
-from metisfl.utils.logger import MetisLogger
+from metisfl.common.logger import MetisLogger
 from metisfl.proto import controller_pb2, learner_pb2, model_pb2, metis_pb2, service_common_pb2
 
 

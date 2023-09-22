@@ -3,7 +3,7 @@ import os
 import random
 
 from fhe import CKKS
-from metisfl.utils.metis_logger import MetisLogger
+from metisfl.common.logger import MetisLogger
 
 
 def encrypt(crypto_params_files, ckks_scheme, data):

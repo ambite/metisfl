@@ -1,8 +1,9 @@
 import abc
 
 from typing import Any, List
+
+from metisfl.common.logger import MetisLogger
 from metisfl.proto import metis_pb2
-from metisfl.utils.logger import MetisLogger
 
 
 class EncryptionScheme(object):

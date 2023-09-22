@@ -11,6 +11,9 @@ service LearnerService {
   // local dataset (any of [train, validation, test]).
   rpc EvaluateModel (EvaluateModelRequest) returns (EvaluateModelResponse) {}
 
+  // Unary RPC. Get learner's local model.
+  rpc GetModel (GetModelRequest) returns (GetModelResponse) {}
+
   // Unary RPC. Replies with the health status (beat) of its internal services.
   rpc GetServicesHealthStatus (GetServicesHealthStatusRequest) returns (GetServicesHealthStatusResponse) {}
 
@@ -62,3 +65,17 @@ message RunTaskRequest {
 message RunTaskResponse {
   Ack ack = 1;
 }
+
+message GetModelRequest {};
+
+message LearnerModel {
+
+  uint32 global_iteration = 1;
+
+  // The locally trained model.
+  Model model = 2;
+}
+
+message GetModelResponse {
+  LearnerModel learner_model = 1;
+};

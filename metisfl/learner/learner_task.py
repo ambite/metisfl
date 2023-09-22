@@ -1,22 +1,22 @@
+import metisfl.model.utils as model_utils
+
 from typing import Callable, List
 
-from metisfl.models.model_ops import ModelOps
-from metisfl.models.utils import construct_model_pb, get_completed_learning_task_pb, get_weights_from_model_pb
+from metisfl.common.formatting import DataTypeFormatter
+from metisfl.common.logger import MetisLogger
+from metisfl.learner.dataset_handler import LearnerDataset
+from metisfl.model.model_ops import ModelOps
 from metisfl.proto import learner_pb2, metis_pb2, model_pb2
-from metisfl.utils.formatting import DataTypeFormatter
-from metisfl.utils.logger import MetisLogger
-
-from .dataset_handler import LearnerDataset
 
 
 class LearnerTask(object):
 
-    def __init__(self,
-                 encryption_config_pb: metis_pb2.EncryptionConfig,
-                 learner_dataset: LearnerDataset,
+    def __init__(self,                 
                  learner_server_entity_pb: metis_pb2.ServerEntity,
+                 learner_dataset: LearnerDataset,
                  model_dir: str,
-                 model_ops_fn: Callable[[str], ModelOps]):
+                 model_ops_fn: Callable[[str], ModelOps],
+                 encryption_config_pb: metis_pb2.EncryptionConfig = None):
         """A class that executes training/evaluation/inference tasks. The tasks in this class are
             executed in a independent process, different from the process that created the object. 
             It is importart to call the init_model_backend() method before calling any other method. 
@@ -29,12 +29,12 @@ class LearnerTask(object):
             model_backend_fn (Callable[[str], model_ops.ModelOps]): A function that returns a model backend.
             model_dir (str): The directory where the model is stored.
         """
-        self._encryption_config_pb = encryption_config_pb
-        self._learner_dataset = learner_dataset
         self._learner_server_entity_pb = learner_server_entity_pb
+        self._learner_dataset = learner_dataset
         self._model_ops = None
         self._model_ops_fn = model_ops_fn
         self._model_dir = model_dir
+        self._encryption_config_pb = encryption_config_pb
 
     # @stripeli metrics_pb was not used anywhere, removed it
     def evaluate_model(self,
@@ -54,13 +54,13 @@ class LearnerTask(object):
 
             for dataset_to_eval in evaluation_dataset_pb:
                 if dataset_to_eval == learner_pb2.EvaluateModelRequest.dataset_to_eval.TRAINING:
-                    train_eval = self._model_ops.evaluate_model(
+                    train_eval = self._model_ops.evaluate(
                         train_dataset, batch_size, verbose)
                 if dataset_to_eval == learner_pb2.EvaluateModelRequest.dataset_to_eval.VALIDATION:
-                    validation_eval = self._model_ops.evaluate_model(
+                    validation_eval = self._model_ops.evaluate(
                         validation_dataset, batch_size, verbose)
                 if dataset_to_eval == learner_pb2.EvaluateModelRequest.dataset_to_eval.TEST:
-                    test_eval = self._model_ops.evaluate_model(
+                    test_eval = self._model_ops.evaluate(
                         test_dataset, batch_size, verbose)
 
             self._log(state="completed", task="evaluation")
@@ -85,9 +85,9 @@ class LearnerTask(object):
             train_dataset, validation_dataset, test_dataset = \
                 self._learner_dataset.load_model_datasets()
             inferred_res = {
-                "train": self._model_ops.infer_model(train_dataset, batch_size, verbose) if infer_train else None,
-                "valid": self._model_ops.infer_model(validation_dataset, batch_size, verbose) if infer_valid else None,
-                "test": self._model_ops.infer_model(test_dataset, batch_size, verbose) if infer_test else None
+                "train": self._model_ops.infer(train_dataset, batch_size, verbose) if infer_train else None,
+                "valid": self._model_ops.infer(validation_dataset, batch_size, verbose) if infer_valid else None,
+                "test": self._model_ops.infer(test_dataset, batch_size, verbose) if infer_test else None
             }
             return DataTypeFormatter.stringify_dict(inferred_res, stringify_nan=True)
 
@@ -100,20 +100,23 @@ class LearnerTask(object):
             self._set_weights_from_model_pb(model_pb)
             train_dataset, validation_dataset, test_dataset = self._learner_dataset.load_model_datasets()
             self._log(state="starts", task="learning")
-            model_weights_descriptor, learning_task_stats = self._model_ops.train_model(train_dataset,
-                                                                                        learning_task_pb,
-                                                                                        hyperparameters_pb,
-                                                                                        validation_dataset,
-                                                                                        test_dataset,
-                                                                                        verbose)
+            model_weights_descriptor, learning_task_stats = \
+                self._model_ops.train(train_dataset,
+                                      learning_task_pb,
+                                      hyperparameters_pb,
+                                      validation_dataset,
+                                      test_dataset,
+                                      verbose)
             self._log(state="completed", task="learning")
             return self._get_completed_learning_task_pb(model_weights_descriptor, learning_task_stats)
 
     def _get_completed_learning_task_pb(self, model_weights_descriptor, learning_task_stats):
-        model_pb = construct_model_pb(model_weights_descriptor, self._encryption_config_pb)
-        completed_learning_task_pb = get_completed_learning_task_pb(
-            model_pb=model_pb,
-            learning_task_stats=learning_task_stats)
+        model_pb = \
+            model_utils.construct_model_pb(model_weights_descriptor, self._encryption_config_pb)
+        completed_learning_task_pb = \
+            model_utils.get_completed_learning_task_pb(
+                model_pb=model_pb,
+                learning_task_stats=learning_task_stats)
         return completed_learning_task_pb
 
     def _get_metric_pb(self, metrics):
@@ -138,6 +141,7 @@ class LearnerTask(object):
                          .format(host_port, state, task))
 
     def _set_weights_from_model_pb(self, model_pb: model_pb2.Model):
-        model_weights_descriptor = get_weights_from_model_pb(model_pb, self._encryption_config_pb)
+        model_weights_descriptor = \
+            model_utils.get_weights_from_model_pb(model_pb, self._encryption_config_pb)
         if len(model_weights_descriptor.weights_values) > 0:
             self._model_ops.get_model().set_model_weights(model_weights_descriptor)

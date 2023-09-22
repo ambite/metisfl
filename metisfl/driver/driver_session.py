@@ -1,21 +1,21 @@
 import queue
 import time
 
+import metisfl.config as config
 import multiprocessing as mp
 
 from typing import Callable, List
 from pebble import ProcessPool
 
-from metisfl import config
-from metisfl.models.utils import construct_model_pb
-from metisfl.models.metis_model import MetisModel
-from metisfl.utils.fedenv import FederationEnvironment
-from metisfl.utils.logger import MetisASCIIArt, MetisLogger
+from metisfl.common.config import FederationEnvironment
+from metisfl.common.logger import MetisASCIIArt, MetisLogger
+from metisfl.model.metis_model import MetisModel
+from metisfl.model.utils import construct_model_pb
 
-from .controller_client import GRPCControllerClient
-from .learner_client import GRPCLearnerClient
-from .service_initializer import ServiceInitializer
-from .service_monitor import ServiceMonitor
+from metisfl.driver.controller_client import GRPCControllerClient
+from metisfl.driver.learner_client import GRPCLearnerClient
+from metisfl.driver.service_initializer import ServiceInitializer
+from metisfl.driver.service_monitor import ServiceMonitor
 
 
 class DriverSession(object):
@@ -36,7 +36,7 @@ class DriverSession(object):
             :param:`train_datset_fps`, :param:`validation_dataset_fps` and :param:`test_dataset_fps`. The dataset recipes given by
             :param:`train_dataset_recipe_fn`, :param:`validation_dataset_recipe_fn` and :param:`test_dataset_recipe_fn` are functions
             that will be used to create the datasets on the remote Learner machine. They must take a single argument, the dataset file path,
-            and return a :class: `metisfl.models.model_dataset.ModelDataset` instance. 
+            and return a :class: `metisfl.model.model_dataset.ModelDataset` instance. 
 
             To boostrap the training process, we ssh into the remote Controller and Learners host machines using the authorization
             credentials defined in the federation environment yaml file. The boostrapping process involves the following steps:

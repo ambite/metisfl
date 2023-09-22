@@ -7,9 +7,9 @@ from concurrent import futures
 from grpc._cython import cygrpc
 from pebble import ThreadPool
 
+from metisfl.common.logger import MetisLogger
 from metisfl.proto import controller_pb2_grpc, service_common_pb2
 from metisfl.proto.metis_pb2 import ServerEntity, SSLConfig, SSLConfigFiles, SSLConfigStream
-from metisfl.utils.logger import MetisLogger
 
 
 class SSLProtoHelper(object):

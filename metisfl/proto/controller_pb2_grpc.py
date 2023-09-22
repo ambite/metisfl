@@ -81,73 +81,89 @@ class ControllerServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def GetCommunityModelEvaluationLineage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Retrieves community models' metadata related to the models' evaluation.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetCommunityModelLineage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Controller replies with community models
+        (num_backtracks value 0:all, 1:last, 2:previous to last, etc...).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetLearnerLocalModelLineage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Retrieves most recent and historically trained learners local models
+        (num_backtracks value 0:all, 1:last, 2:previous to last, etc...).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetLocalTaskLineage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Retrieves learners local models' metadata related to the models'
+        evaluation (num_backtracks value 0:all, 1:last, 2:previous to last, etc...).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetRuntimeMetadataLineage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Replies with runtime metadata related to the
+        federation environment (e.g., number of community update requests).
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetParticipatingLearners(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Retrieves a collection of all participating learners in the federation.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def GetServicesHealthStatus(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Replies with the health status (beat) of its internal services.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def JoinFederation(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. A new participating learner asks the controller to join the federation.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def LeaveFederation(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. An existing learner informs the controller that it leaves the federation.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def MarkTaskCompleted(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Receives the local model of a learner when it completes its (locally) assigned task.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ReplaceCommunityModel(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Unary RPC. Receives a new model to replace the current community model.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
     def ShutDown(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Shuts down the controller service and clears any resources.
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')

@@ -1,30 +1,51 @@
-# MetisFL: The blazing-fast and developer-friendly federated learning framework.
-
 &nbsp;
 <div align="center">
- <img 
-    src="docs/img/logos/logo_icon_03.png" width="200px">
+
+# MetisFL: The Open Federated Learning Framework for Scalable, Efficient and Secure Federated Learning Workflows
+
+ <img src="docs/img/logos/metisfl_logo.png" width="300px">
+
+MetisFL - The First Open Federated Learning Framework implemented in C++ and Python3.
+
+[![BSD-3 License](https://badgen.net/badge/License/BSD-3-Clause/green?icon=github)](https://github.com/MetisFL-AI/MetisFL/blob/main/LICENSE)
+[![PyPI - Python Version](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)](https://pypi.org/project/metisfl/)
+[![Documentation](https://badgen.net/badge/Read/Documentation/orange?icon=buymeacoffee)](https://docs.metisfl.ai)
+[![Blog](https://badgen.net/badge/Mentions/Blog?icon=awesome)](https://blog.metisfl.ai)
+[![Slack Community](https://img.shields.io/badge/JoinSlack-@metisfl-brightgreen.svg?logo=slack)](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ)
+[![Citation](https://img.shields.io/badge/cite-citation-brightgreen)](https://arxiv.org/pdf/2205.05249.pdf)
+
 </div>
 &nbsp;
 
 MetisFL is a federated learning framework that allows developers to federate their machine learning workflows and train their models across distributed datasets without having to collect the data in a centralized location. Currently, the project is transitioning from a private, experimental version to a public, beta phase. We are actively encouraging developers, researchers and data scientists to experiment with the framework and contribute to the codebase.
 
 
-Homepage: https://nevron.ai/ \
-Github: https://github.com/NevronAI \
-Docs: https://docs.nevron.ai/ \
-Slack: [https://nevronai.slack.com](https://join.slack.com/t/nevronai/shared_invite/zt-1xyc308jq-FeNBbuF1UBBwhp4H~zHCww)
-
+Homepage: https://metisfl.ai/ \
+Github: https://github.com/MetisFL-AI \
+Docs: https://docs.metisfl.ai/ \
+Slack: [https://metisfl.slack.com](https://join.slack.com/t/metisfl/shared_invite/zt-233d3rg4x-9HNnRloTkyEh8_XPch9mfQ) \
+Contact: [support@metisfl.ai](support@metisfl.ai)
 
 MetisFL sprung up from the Information and Science Institute (ISI) in the University of Southern California (USC). It is backed by several years of Ph.D. and Post-Doctoral research and several publications in top-tier machine learning and system conferences. It is being developed with the following guiding principles in mind:
 
-* **Scalability**: MetisFL is the only federated learning framework with the core controller infrastructure developed solely on C++. This allows for the system to scale and support up to 100K+ learners!
+* **Scalability**: MetisFL is the only federated learning framework with the core controller infrastructure developed solely on C++. This allows for the system to scale and support thousands of learners!
 
-* **Speed**: The core operations at the controller as well as the controller-learner communication overhead has been optimized for efficiency. This allows MetisFL to achieve improvements of up to 1000x on the federation round time compared to other federated learning frameworks.
+* **Speed**: The core operations at the controller as well as the controller-learner communication overhead has been optimized for efficiency. This allows MetisFL to achieve improvements of up to 100x on the federation round time compared to other federated learning frameworks.
 
 * **Efficiency and Flexibility**: MetisFL supports synchronous, semi-synchronous and asynchronous protocols. The different choices make our framework flexible enough to adapt to the needs of each use-case. Additionally, the support of fully asynchronous protocol makes MetisFL a highly efficient solution for use-cases with high heterogeneity on the compute/communication capabilities of the learners.
 
-* **Strong Security**: MetisFL supports secure aggregations with fully homomorphic encryption using the [Palisade](https://gitlab.com/palisade/palisade-release) C++ cryptographic library.  This ensures that the weights of the produced models remain private and secure in transit.
+* **Strong Security**: MetisFL supports secure aggregations with fully homomorphic encryption using the [Palisade](https://gitlab.com/palisade/palisade-release) C++ cryptographic library. This ensures that the weights of the models remain secure and private during transmission and the controllers aggregates the weights in an ecnrypted space.  
+
+# Citation
+MetisFL has appeared in many research works related to federated learning algorithmic and system optimization. MetisFL has been originally applied in large-scale workflows in the neuroimaging domain. To cite the system in one of your works, please use the following reference:
+```
+@article{stripelis2022secure,
+  title={Secure Federated Learning for Neuroimaging},
+  author={Stripelis, Dimitris and Gupta, Umang and Saleem, Hamza and Dhinagar, Nikhil and Ghai, Tanmay and Sanchez, Rafael and Anastasiou, Chrysovalantis and Asghar, Armaghan and Steeg, Greg Ver and Ravi, Srivatsan and others},
+  journal={arXiv preprint arXiv:2205.05249},
+  year={2022}
+}
+```
 
 # Quickstart (coming soon)
 As an introductory example to quickly demonstrate the MetisFL framework in practice, we will run the `Hello World` example of deep learning. To get started, first ensure that your system meets the requirements:
@@ -41,30 +62,13 @@ pip install metisfl
 and then clone the repository on you local machine:
 
 ```Bash
-git clone https://github.com/NevronAI/metisfl.git
+git clone https://github.com/MetisFL-AI/metisfl.git
 ```
 Navigate on the root project folder and run:
 ```Bash
-python examples/keras/fashionmnist.py
+python examples/workflows/keras_fashionmnist/main.py
 ```
 Congratulations! You are now running your first federated learning experiment using MetisFL!
-
-# Development Environment
-Developers interested in making core contributions should set up their environment accordingly.
-There are currently 3 options for setting up your development environment:
-
-## Codespaces Container
-
-This is the fastest way for a developer to explore the codebase and make contributions.
-Simply navigate to the main page of the repository, chose the branch which you want to work on,
-click on the **Code** button and then on the **Codespaces** tab. Then pick the pre-configured container
-and spin up the Codespace. We have pre-configured a container with the Python 3.10 as well as all the
-dependencies installed. For the Codespaces container we include pre-compiled binaries for the C++ code.
-This option is ideal for someone who wants to quickly experiment with the Python side of the framework.
-
-## Local Container
-
-This is the recommended way if you are planning on compiling the C++ code as it will allow you to do so without modifying or relying on your host system. Start by cloning the repository on your local machine and making sure that you have the [Dev Containers](https://code.visualstudio.com/docs/devcontainers/containers) VS Code extension installed. The extension will pick up the configuration from the `.devcontainer` folder and setup the container for you. If you use a different IDE, you can manually build the docker dev image using the Dockerfile in the `.devcontainer` folder.
 
 ## Host Machine
 If you want to develop on your host machine, you need to ensure that it satisfies the requirement and that all needed packages are installed. Currently, the development environment mentioned bellow has been tested on Ubuntu OS and for the x86_64 architecture. It should, however, work for different Linux-like OS on the same architecture. Support for different architectures is under development. The requirements for compiling and testing the code on your local machine are:
@@ -88,7 +92,7 @@ Finally, the remaining requirements contain the compiler, autoconf and libomp (w
 apt-get -y install build-essential autoconf libomp-dev
 ```
 
-# Build Project
+## Build Project
 Whether you are in your host machine or inside the container, you can build MetisFL from source by running the following command:
 ```Bash 
 python setup.py 
@@ -100,26 +104,34 @@ The project uses a unified codebase for both the Python and C++ code. The C++ mo
 
     .
     ├── docker                # Docker files for packaging MetisFL in a docker container       
-    ├── examples              # Examples and use-cases for MetisF
-    ├── metisfl               # Main source code folder
-        ├── controller        # C++ implementation of the Controller/Aggregator
-        ├── driver            # Python library for the MetisFL Driver
-        ├── encryption        # C++ Palisade library
-        ├── learner           # Python Learner library 
-        ├── models            # Tensorflow & Pytorch backend support
-        ├── proto             # Protobuf definitions for communication
+    ├── examples              # Examples and use-cases for MetisFL
+    ├── metisfl               # Source code directory
+        ├── controller        # Federation Controller C++ library and Python bindings
+        ├── driver            # Federation Driver Python library
+        ├── encryption        # FHE/Masking and other related encryption bindings
+        ├── learner           # Federation Learner library 
+        ├── models            # Backend ML/DL engines (Tensorflow & Pytorch)
+        ├── proto             # Protobuff definitions
         ├── resources         # FHE/SSL related resource files and keys
-        ├── utils             # Utilities classes and functions      
-    ├── test                  # Testing folder (under construction)
+        ├── commons           # Common utility functions and classes
+    ├── test                  # Test cases (WIP)
+    |-- build_docker.sh       # Build docker container
+    ├── BUILD.bazel           # Bazel build file containing main Python target definitions    
+    |-- CODE_OF_CONDUCT.md    # Contributors covenant code of conduct
+    |-- CONTRIBUTING.md       # Contributors guide
     ├── LICENSE               # License file
-    ├── BUILD.bazel           # Bazel build file; contains main target definitions
     ├── setup.py              # Setup script; compiles and produces a Python Wheel
     ├── WORKSPACE             # Bazel workspace; contains external dependencies
 
 # Architecture Overview
 The architecture of MetisFL is inspired by Apache Spark. It consists of three main entities: the **Federation Controller**, the **Federation Learner** and the **Federation Driver**.
 
-![MetisFL Components](docs/img/MetisFL-Components-Overview.png "MetisFL Components.")
+<div align="center">
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="./docs/img/light/MetisFL-Components-Overview-02.png" width="700px">
+  <img alt="MetisFL Components Overview" src="./docs/img/dark/MetisFL-Components-Overview-01.png" width="700px">
+</picture>
+</div>
 
 ## Federation Controller
 The Federation Controller acts as the federation cluster manager, and it is responsible for selecting and delegating training and evaluating tasks to the federation learners (cluster nodes) and storing and
