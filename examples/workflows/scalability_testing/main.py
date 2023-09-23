@@ -86,7 +86,8 @@ def keras_dataset_recipe_fn(dataset_fp):
     if np.all((mode_counts == 1)):
         mode_val = np.max(prices)
     else:
-        mode_val = mode_values[0]    
+        mode_val = \
+            mode_values[0] if isinstance(mode_values, list) else mode_values
 
     model_dataset = ModelDatasetRegression(
         x=features, y=prices, size=len(prices),
@@ -103,7 +104,8 @@ def torch_dataset_recipe_fn(dataset_fp):
     if np.all((mode_counts == 1)):
         mode_val = np.max(prices)
     else:
-        mode_val = mode_values[0]    
+        mode_val = \
+            mode_values[0] if isinstance(mode_values, list) else mode_values
 
     features_tensor, prices_tensor = \
         torch.from_numpy(features).to(torch.float32), \

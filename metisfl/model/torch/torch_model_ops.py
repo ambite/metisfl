@@ -64,9 +64,10 @@ class TorchModelOps(ModelOps):
             MetisLogger.fatal("Provided `dataset` for evaluation is None.")
         MetisLogger.info("Starting model evaluation.")
         dataset = construct_dataset_pipeline(eval_dataset)
-        self._metis_model._backend_model.eval() # set model to evaluation mode
-        eval_res = self._metis_model._backend_model.evaluate(dataset)            
-        MetisLogger.info("::: EVAL RES ::: {}".format(eval_res))
+        eval_res = {}
+        if dataset is not None:
+            self._metis_model._backend_model.eval() # set model to evaluation mode
+            eval_res = self._metis_model._backend_model.evaluate(dataset)            
         MetisLogger.info("Model evaluation is complete.")
         metric_values = DataTypeFormatter.stringify_dict(eval_res, stringify_nan=True)
         return MetisProtoMessages.construct_model_evaluation_pb(metric_values)
