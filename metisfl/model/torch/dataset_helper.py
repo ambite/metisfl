@@ -11,5 +11,5 @@ def construct_dataset_pipeline(dataset: ModelDataset):
     elif _x:
         return _x
     else:
-        MetisLogger.error("Not a well-formatted input dataset: {}, {}".format(_x, _y))
+        MetisLogger.warning("Not a well-formatted input dataset: {}, {}".format(_x, _y))
         return None

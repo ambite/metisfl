@@ -6,6 +6,7 @@ from typing import Any, Dict, Tuple
 from metisfl.common.logger import MetisLogger
 from metisfl.common.formatting import DataTypeFormatter
 from metisfl.model.keras.keras_model import MetisModelKeras
+from metisfl.model.keras.dataset_helper import construct_dataset_pipeline
 from metisfl.model.keras.callbacks.step_counter import StepCounter
 from metisfl.model.keras.callbacks.performance_profiler import PerformanceProfiler
 from metisfl.model.model_dataset import ModelDataset
@@ -45,12 +46,12 @@ class KerasModelOps(ModelOps):
         # @stripeli why there are two batch sizes?
         epochs_num = get_num_of_epochs(
             dataset_size=dataset_size, batch_size=batch_size, total_steps=total_steps)
-        x_train, y_train = train_dataset.construct_dataset_pipeline(
-            batch_size=batch_size, is_train=True)
-        x_valid, y_valid = validation_dataset.construct_dataset_pipeline(
-            batch_size=batch_size, is_train=False)
-        x_test, y_test = test_dataset.construct_dataset_pipeline(
-            batch_size=batch_size, is_train=False)
+        x_train, y_train = construct_dataset_pipeline(
+            dataset=train_dataset, batch_size=batch_size, is_train=True)
+        x_valid, y_valid = construct_dataset_pipeline(
+            dataset=validation_dataset, batch_size=batch_size, is_train=False)
+        x_test, y_test = construct_dataset_pipeline(
+            dataset=test_dataset, batch_size=batch_size, is_train=False)
 
         # We assign x_valid, y_valid only if both values
         # are not None, else we assign x_valid (None or not None).
@@ -110,8 +111,8 @@ class KerasModelOps(ModelOps):
         if eval_dataset is None:
             MetisLogger.fatal("Provided `dataset` for evaluation is None.")
         MetisLogger.info("Starting model evaluation.")
-        x_eval, y_eval = eval_dataset.construct_dataset_pipeline(
-            batch_size=batch_size, is_train=False)
+        x_eval, y_eval = construct_dataset_pipeline(
+            dataset=eval_dataset, batch_size=batch_size, is_train=False)
         evaluation_metrics = dict()
         # x_eval, y_eval could be arrays - we just need to check if they are not None
         if x_eval is not None and y_eval is not None:
@@ -131,8 +132,8 @@ class KerasModelOps(ModelOps):
         MetisLogger.info("Starting model inference.")
         predictions = None
         if x_infer:
-            x_infer, _ = infer_dataset.construct_dataset_pipeline(
-                batch_size=batch_size, is_train=False)
+            x_infer, _ = construct_dataset_pipeline(
+                dataset=infer_dataset, batch_size=batch_size, is_train=False)
             if x_infer is not None:  # x_infer could be an array, we just need to check if it is not None
                 predictions = self._metis_model._backend_model.predict(
                     x_infer, batch_size)

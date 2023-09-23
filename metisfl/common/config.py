@@ -64,16 +64,19 @@ CANCEL_RUNNING_ON_SHUTDOWN = {
 
 class FederationEnvironment(object):
 
-    def __init__(self, fed_env_config_fp):
-        fstream = open(fed_env_config_fp).read()
-        self._yaml = yaml.load(fstream, Loader=yaml.SafeLoader)
-        self.controller = RemoteHost(self._yaml.get("Controller"))
-        self.learners = [RemoteHost(learner) for learner in self._yaml.get("Learners")]
+    def __init__(self, fed_env_config_fp=None, fed_env_config_dict=None):
+        if fed_env_config_fp:
+            fstream = open(fed_env_config_fp).read()
+            self._fed_env = yaml.load(fstream, Loader=yaml.SafeLoader)
+        elif fed_env_config_dict:
+            self._fed_env = fed_env_config_dict
+        self.controller = RemoteHost(self._fed_env.get("Controller"))
+        self.learners = [RemoteHost(learner) for learner in self._fed_env.get("Learners")]
         self._encryption_config_pb = self._setup_encryption_config()
 
     # Communication protocol - REQUIRED.
     def get_communication_protocol(self):
-        return self._yaml.get("CommunicationProtocol")
+        return self._fed_env.get("CommunicationProtocol")
 
     @property
     def communication_protocol(self):
@@ -89,7 +92,7 @@ class FederationEnvironment(object):
 
     # Termination signals - REQUIRED.
     def get_termination_signals(self):
-        return self._yaml.get("TerminationSignals")
+        return self._fed_env.get("TerminationSignals")
 
     @property
     def federation_rounds(self):
@@ -109,7 +112,7 @@ class FederationEnvironment(object):
 
     # Model store configurations - OPTIONAL.
     def get_model_store_config(self):
-        return self._yaml.get("ModelStoreConfig")
+        return self._fed_env.get("ModelStoreConfig")
 
     @property
     def model_store(self):
@@ -133,7 +136,7 @@ class FederationEnvironment(object):
 
     # Encryption scheme configurations - OPTIONAL. 
     def get_encryption_scheme(self):
-        return self._yaml.get("EncryptionScheme")
+        return self._fed_env.get("EncryptionScheme")
 
     @property
     def encryption_scheme_name(self):
@@ -195,7 +198,7 @@ class FederationEnvironment(object):
 
     # Global model configurations - REQUIRED.
     def get_global_model_config(self):
-        return self._yaml.get("GlobalModelConfig")
+        return self._fed_env.get("GlobalModelConfig")
 
     @property
     def aggregation_rule(self):
@@ -215,7 +218,7 @@ class FederationEnvironment(object):
 
     # Local model configurations - REQUIRED.
     def get_local_model_config(self):
-        return self._yaml.get("LocalModelConfig")
+        return self._fed_env.get("LocalModelConfig")
 
     @property
     def train_batch_size(self):

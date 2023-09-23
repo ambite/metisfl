@@ -22,7 +22,7 @@ class HousingMLP(object):
         model = tf.keras.models.Sequential()
         # This layer outputs 14x10, 14x100, 14x1000, etc...
         model.add(tf.keras.layers.Dense(self.params_per_layer,
-                                        input_shape=(13,),
+                                        input_shape=(8,),
                                         kernel_initializer='normal',
                                         activation='relu',
                                         dtype=self.data_type))

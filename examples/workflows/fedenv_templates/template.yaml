@@ -6,8 +6,8 @@ TerminationSignals:
   # conditions is satisifed then the federation exits.
   FederationRounds: 3 # this is only applicable in synchronous and semi-synchronous execution
   ExecutionCutoffTimeMins: null
-  EvaluationMetric: "accuracy"
-  EvaluationMetricCutoffScore: 1.0
+  EvaluationMetric: "mse"
+  EvaluationMetricCutoffScore: 100
 
 ModelStoreConfig:  # Example for In-Memory (HashMap) Model Store
   ModelStore: "InMemory" # Others are "InMemory", "Redis"

@@ -6,7 +6,7 @@ from typing import Any, Dict, Tuple
 from metisfl.model.model_dataset import ModelDataset
 from metisfl.model.model_ops import ModelOps
 from metisfl.model.utils import get_num_of_epochs
-from metisfl.model.torch.helper import construct_dataset_pipeline
+from metisfl.model.torch.dataset_helper import construct_dataset_pipeline
 from metisfl.model.torch.torch_model import MetisModelTorch
 from metisfl.model.types import LearningTaskStats, ModelWeightsDescriptor
 from metisfl.proto import metis_pb2
@@ -39,7 +39,6 @@ class TorchModelOps(ModelOps):
         dataset = construct_dataset_pipeline(train_dataset) # TODO: this is inconsistent with tf counterpart
         
         self._metis_model._backend_model.train() # set model to training mode
-        print(self._metis_model)
         train_res = self._metis_model._backend_model.fit(dataset, epochs=epochs_num)
         
         # TODO(@stripeli): Need to add the metrics for computing the execution time
@@ -66,7 +65,8 @@ class TorchModelOps(ModelOps):
         MetisLogger.info("Starting model evaluation.")
         dataset = construct_dataset_pipeline(eval_dataset)
         self._metis_model._backend_model.eval() # set model to evaluation mode
-        eval_res = self._metis_model.evaluate(dataset)            
+        eval_res = self._metis_model._backend_model.evaluate(dataset)            
+        MetisLogger.info("::: EVAL RES ::: {}".format(eval_res))
         MetisLogger.info("Model evaluation is complete.")
         metric_values = DataTypeFormatter.stringify_dict(eval_res, stringify_nan=True)
         return MetisProtoMessages.construct_model_evaluation_pb(metric_values)

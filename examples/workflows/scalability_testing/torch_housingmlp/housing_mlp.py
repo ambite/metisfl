@@ -24,7 +24,7 @@ class HousingMLP(torch.nn.Module):
             raise RuntimeError("Not a supported data type. Please pass float32 or float64")
 
         layers = list()
-        layers.append(torch.nn.Linear(13, self.params_per_layer, dtype=self.data_type))
+        layers.append(torch.nn.Linear(8, self.params_per_layer, dtype=self.data_type))
         layers.append(torch.nn.ReLU())
         for i in range(self.hidden_layers_num):
             layers.append(torch.nn.Linear(self.params_per_layer, self.params_per_layer, dtype=self.data_type))
@@ -42,7 +42,7 @@ class HousingMLP(torch.nn.Module):
         optimizer = SGD(self.parameters(), lr=0.01, momentum=0.9)
         # enumerate epochs
         for epoch in range(epochs):
-            print("MLP Epoch: ", epoch, flush=True)
+            print("MLP Epoch: ", epoch+1, flush=True)
             # enumerate mini batches
             for i, (inputs, targets) in enumerate(dataset):
                 # clear the gradients

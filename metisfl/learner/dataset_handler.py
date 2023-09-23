@@ -105,6 +105,6 @@ def create_model_dataset_helper(dataset_recipe_pkl, dataset_fp=None, default_cla
         dataset = default_class()
 
     assert isinstance(dataset, model_dataset.ModelDataset), \
-        "The dataset needs to be an instance of: {}".format(\
-            model_dataset.ModelDataset.__name__)
+        "The dataset needs to be an instance of: {}, but it was: {}".format(\
+            model_dataset.ModelDataset.__name__, type(dataset))
     return dataset

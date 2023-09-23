@@ -1,6 +1,3 @@
-import tensorflow as tf
-import torch
-
 from metisfl.common.logger import MetisLogger
 
 
@@ -18,10 +15,6 @@ class ModelDataset(object):
         """
         self._x = x
         self._y = y
-        if isinstance(x, tf.data.Dataset):
-            MetisLogger.info("Model dataset input is a tf.data.Dataset; ignoring y values.")
-        elif isinstance(x, torch.utils.data.DataLoader):
-            MetisLogger.info("Model dataset input is a torch.utils.data.DataLoader; ignoring y values.")            
         self._size = size
 
     def get_x(self):
@@ -32,17 +25,6 @@ class ModelDataset(object):
 
     def get_size(self):
         return self._size
-
-    def construct_dataset_pipeline(self, batch_size, is_train=False):
-        _x, _y = self._x, self._y
-        if isinstance(self._x, tf.data.Dataset):
-            if is_train:
-                # Shuffle all records only if dataset is used for training.
-                _x = _x.shuffle(self.get_size())
-            # If the input is of tf.Dataset we only need to return the input x,
-            # we do not need to set a value for target y.
-            _x, _y = _x.batch(batch_size), None
-        return _x, _y
 
 
 class ModelDatasetClassification(ModelDataset):

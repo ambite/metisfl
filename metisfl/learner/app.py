@@ -5,6 +5,7 @@ from metisfl.learner.learner import Learner
 from metisfl.learner.learner_server import LearnerServer
 from metisfl.learner.learner_executor import LearnerExecutor
 from metisfl.learner.learner_task import LearnerTask
+from metisfl.common.logger import MetisLogger
 from metisfl.model.utils import get_model_ops_fn
 
 def register_handlers(learner_server: LearnerServer):
@@ -19,7 +20,7 @@ def register_handlers(learner_server: LearnerServer):
     """
 
     def handler(signum, frame):
-        print("Received SIGTERM, leaving federation...")
+        MetisLogger.info("Received SIGTERM, leaving federation...")
         learner_server.ShutDown()
         exit(0)
 

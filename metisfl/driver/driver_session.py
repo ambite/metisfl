@@ -72,7 +72,7 @@ class DriverSession(object):
         """
         # Print welcome message.
         MetisASCIIArt.print()
-        self._federation_environment = FederationEnvironment(fed_env)
+        self._federation_environment = fed_env
         self._num_learners = len(self._federation_environment.learners)
         self._model = model
         self._encryption_config_pb = \
