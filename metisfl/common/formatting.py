@@ -50,7 +50,7 @@ class DataTypeFormatter:
                     tmp_v = DataTypeFormatter.__stringify_val(v)
             tmp_d[k] = tmp_v
         stringified = \
-            json.loads(json.dumps(tmp_d), parse_int=str, parse_float=str)
+            json.loads(json.dumps(tmp_d), parse_int=str, parse_float=str)      
         return stringified
 
     @classmethod

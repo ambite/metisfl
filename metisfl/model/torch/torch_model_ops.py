@@ -67,10 +67,9 @@ class TorchModelOps(ModelOps):
         eval_res = {}
         if dataset is not None:
             self._metis_model._backend_model.eval() # set model to evaluation mode
-            eval_res = self._metis_model._backend_model.evaluate(dataset)            
+        #     eval_res = self._metis_model._backend_model.evaluate(dataset)
         MetisLogger.info("Model evaluation is complete.")
-        metric_values = DataTypeFormatter.stringify_dict(eval_res, stringify_nan=True)
-        return MetisProtoMessages.construct_model_evaluation_pb(metric_values)
+        return eval_res
     
     def infer(self,
               infer_dataset: ModelDataset,
