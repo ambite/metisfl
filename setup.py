@@ -27,6 +27,10 @@ def get_python_version():
     """Returns the current Python version."""
     return ".".join(map(str, [sys.version_info.major, sys.version_info.minor]))
 
+def get_max_python_version():
+    """Returns the current Python version."""
+    return ".".join(map(str, [sys.version_info.major, sys.version_info.minor+1]))
+
 
 def copy_helper(src_path, dst):
     """Copies a file to the given destination. If the destination is a directory, the file is copied into it."""
@@ -86,8 +90,6 @@ setup(
     classifiers=[
             "Development Status :: 2 - Pre-Alpha",
             "Intended Audience :: Developers",
-            "License :: OSI Approved :: The Clear BSD License",
-            "Operating System :: UNIX",
             "Topic :: Software Development :: Testing",
             "Topic :: Software Development :: Libraries",
             "Programming Language :: Python",
@@ -111,4 +113,6 @@ setup(
         "pyfiglet>=0.8.post1",
         "loguru>=0.7.1",
     ],
+    python_requires=">={}, <{}".format(get_python_version(), get_max_python_version()),
+    pltforms="manylinux2014_x86_64",
 )
