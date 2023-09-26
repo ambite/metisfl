@@ -8,6 +8,7 @@ import sys
 
 from setuptools import setup, find_packages
 
+__version__ = "1.0.0"
 
 os.environ["PYTHON_BIN_PATH"] = sys.executable
 os.environ["PYTHON_LIB_PATH"] = site.getsitepackages()[0]
@@ -82,7 +83,7 @@ run_build()
 # TODO: add py version and arch to wheel name
 setup(
     name="metisfl",
-    version="0.1.0",
+    version=__version__,
     description="MetisFL: The developer-friendly federated learning framework",
     author="MetisFL Team",
     author_email="hello@nevron.ai",
