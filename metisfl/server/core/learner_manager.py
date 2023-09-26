@@ -33,9 +33,6 @@ class LearnerManager:
     last_train_results: Dict[str, controller_pb2.TrainResult] = {}
     num_training_examples: Dict[str, int] = {}
 
-    def __init__(self, learner):
-        self.learner = learner
-
     def add_learner(self, learner: controller_pb2.Learner) -> str:
         """Adds a learner to the controller.
 

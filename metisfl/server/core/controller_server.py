@@ -1,6 +1,6 @@
 
 import threading
-from typing import Any
+from typing import Any, Union
 import grpc
 from metisfl.common.formatting import get_timestamp
 from metisfl.common.logger import MetisLogger

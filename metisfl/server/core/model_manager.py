@@ -1,7 +1,7 @@
 
 import time
 from typing import Dict, List, Tuple
-from metisfl.common.types import GlobalTrainConfig
+from metisfl.common.types import ControllerConfig
 from metisfl.proto import controller_pb2, model_pb2
 from metisfl.common.utils import random_id_generator
 from metisfl.server.aggregation import Aggregator
@@ -17,7 +17,7 @@ class ModelManager:
 
     model: model_pb2.Model = None
     model_store: ModelStore = None
-    global_train_config: GlobalTrainConfig = None
+    controller_config: ControllerConfig = None
     metadata: controller_pb2.ModelMetadata = {}
     selector: ScheduledCardinality = None
     learner_manager: LearnerManager = None
@@ -25,7 +25,7 @@ class ModelManager:
 
     def __init__(
         self,
-        global_train_config: GlobalTrainConfig,
+        controller_config: ControllerConfig,
         learner_manager: LearnerManager,
         model_store: ModelStore,
     ) -> None:
@@ -35,13 +35,13 @@ class ModelManager:
         ----------
         learner_manager : LearnerManager
             The learner manager to be used.
-        global_train_config : GlobalTrainConfig
+        controller_config : ControllerConfig
             The global training configuration.
         model_store_config : ModelStoreConfig
             The model store configuration.
         """
         self.learner_manager = learner_manager
-        self.global_train_config = global_train_config
+        self.controller_config = controller_config
         self.model_store = model_store
 
     def set_initial_model(self, model: model_pb2.Model) -> None:
@@ -161,8 +161,8 @@ class ModelManager:
 
         stride_length = num_learners
 
-        if self.global_train_config.aggregation_rule == "FedStride":
-            fed_stride_length = self.global_train_config.stride_length
+        if self.controller_config.aggregation_rule == "FedStride":
+            fed_stride_length = self.controller_config.stride_length
             if fed_stride_length > 0:
                 stride_length = fed_stride_length
 
@@ -203,7 +203,7 @@ class ModelManager:
             The scaling factor for each learner.
         """
 
-        scaling_factor = self.global_train_config.scaling_factor
+        scaling_factor = self.controller_config.scaling_factor
 
         if scaling_factor == "NumCompletedBatches":
             num_completed_batches = self.learner_manager.get_num_completed_batches(
