@@ -12,17 +12,6 @@ class SynchronousScheduler(Scheduler):
 
     learner_ids: List[str] = []
     global_iteration: int = 0
-    num_learners: int = 0
-
-    def __init__(self, num_learners: int) -> None:
-        """Initializes the scheduler.
-
-        Parameters
-        ----------
-        num_learners : int
-            The number of learners.
-        """
-        self.num_learners = num_learners
 
     def schedule(
         self,

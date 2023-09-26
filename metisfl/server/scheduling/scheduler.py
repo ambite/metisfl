@@ -1,9 +1,19 @@
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import List
 
 
 class Scheduler(ABC):
+
+    num_learners: int = 0
+
+    def add_learner(self) -> None:
+        """Add a learner to the scheduler."""
+        self.num_learners += 1
+        
+    def remove_learner(self) -> None:
+        """Remove a learner from the scheduler."""
+        self.num_learners -= 1
 
     @abstractmethod
     def schedule(

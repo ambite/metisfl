@@ -45,6 +45,7 @@ class Controller:
         learner : controller_pb2.Learner
             The learner to be added.
         """
+        self.scheduler.add_learner()
         return self.learner_manager.add_learner(learner=learner)
 
     def remove_learner(self, learner_id: str) -> None:
@@ -55,6 +56,7 @@ class Controller:
         learner_id : str
             The learner id.
         """
+        self.scheduler.remove_learner()
         self.learner_manager.remove_learner(learner_id=learner_id)
 
     def set_initial_model(self, model: model_pb2.Model) -> None:
