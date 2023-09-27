@@ -121,7 +121,7 @@ class Server:
             MetisLogger.info("Server started. Listening on: {}:{} with SSL: {}".format(
                 self.server_params.hostname,
                 self.server_params.port,
-                "ENABLED" if self._is_ssl() else "DISABLED",
+                "ENABLED" if self.is_ssl() else "DISABLED",
             ))
             self.shutdown_event.wait()
         else:

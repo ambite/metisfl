@@ -7,6 +7,7 @@ from metisfl.server.core import (ControllerManager, ControllerServer,
                                  LearnerManager, ModelManager)
 from metisfl.server.scheduling import (AsynchronousScheduler, Scheduler,
                                        SynchronousScheduler)
+from metisfl.server.selection import ScheduledCardinality
 from metisfl.server.store import HashMapModelStore, ModelStore
 
 
@@ -23,9 +24,9 @@ def get_scheduler(controller_config: ControllerConfig) -> Scheduler:
     
     if controller_config.scheduler == "Synchronous" or \
         controller_config.scheduler == "SemiSynchronous":
-        return SynchronousScheduler(controller_config.num_learners)
+        return SynchronousScheduler()
     elif controller_config.scheduler == "Asynchronous":
-        return AsynchronousScheduler(controller_config.num_learners)
+        return AsynchronousScheduler()
     else:
         raise ValueError("Invalid scheduler")        
 
@@ -49,29 +50,31 @@ class Controller:
         model_store_config : ModelStoreConfig
             The model store configuration.
         """
-        self.server_params = server_params
-        self.controller_config = controller_config
-        self.model_store_config = model_store_config
                
         # Get dependencies 
-        self.learner_manager = LearnerManager()
-        self.model_store = get_model_store(model_store_config)
-        self.model_manager = ModelManager(
-            controller_config=self.controller_config,
-            learner_manager=self.learner_manager,
-            model_store=self.model_store,
+        
+        learner_manager = LearnerManager()
+        model_store = get_model_store(model_store_config)
+        model_manager = ModelManager(
+            controller_config=controller_config,
+            learner_manager=learner_manager,
+            model_store=model_store,
         )
+        selector = ScheduledCardinality()
+        scheduler = get_scheduler(controller_config)
         
         # Create the controller manager
-        self.controller_manager = ControllerManager(
-            leaner_manager=self.learner_manager,
-            model_manager=self.model_manager,
+        controller_manager = ControllerManager(
+            learner_manager=learner_manager,
+            model_manager=model_manager,
+            selector=selector,
+            scheduler=scheduler,
         )
         
         # Create the server
         self.server = ControllerServer(
-            server_params=self.server_params,
-            controller=self.controller_manager,
+            server_params=server_params,
+            controller_manager=controller_manager,
         )
     
     def start(self) -> None:

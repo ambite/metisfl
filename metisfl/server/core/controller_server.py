@@ -31,7 +31,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
             server_params=server_params,
             add_servicer_to_server_fn=controller_pb2_grpc.add_ControllerServiceServicer_to_server,
         )
-        self.controller_manager_manager = controller_manager
+        self.controller_manager = controller_manager
 
     def SetInitialModel(
         self,
@@ -123,14 +123,14 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
 
     def StartTraining(
         self,
-        _: controller_pb2.Empty,
+        _: service_common_pb2.Empty,
         context: Any
     ) -> service_common_pb2.Ack:
         """Starts the training process.
 
         Parameters
         ----------
-        request : controller_pb2.Empty
+        request : service_common_pb2.Empty
             The ProtoBuf object containing the empty request.
         context : Any
             The gRPC context of the request.
@@ -181,14 +181,14 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
 
     def GetLogs(
         self,
-        _: controller_pb2.Empty,
+        _: service_common_pb2.Empty,
         context: Any
     ) -> Union[controller_pb2.Logs, service_common_pb2.Ack]:
         """Gets the logs of the controller.
 
         Parameters
         ----------
-        request : controller_pb2.Empty
+        request : service_common_pb2.Empty
             The ProtoBuf object containing the empty request.
         context : Any
             The gRPC context of the request.

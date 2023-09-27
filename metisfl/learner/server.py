@@ -1,5 +1,5 @@
 
-
+import threading
 from typing import Any, Tuple
 
 from google.protobuf.json_format import MessageToDict
@@ -18,7 +18,7 @@ from metisfl.proto import (learner_pb2, learner_pb2_grpc, model_pb2,
                            service_common_pb2)
 
 
-class LearnerServer(Server, learner_pb2_grpc.LearnerServiceServicer):
+class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
 
     learner: Learner
     client: GRPCClient

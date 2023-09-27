@@ -22,15 +22,15 @@ class LearnerManager:
     learners: Dict[str, controller_pb2.Learner] = {}
     client_params: Dict[str, ClientParams] = {}
     train_params: learner_pb2.TrainParams = None
-    eval_params: learner_pb2.EvalParams = None
+    eval_params: learner_pb2.EvaluationParams = None
 
     # task_id -> {}
     tasks: Dict[str, learner_pb2.Task] = {}
-    train_results: Dict[str, controller_pb2.TrainResult] = {}
-    eval_results: Dict[str, learner_pb2.EvalResult] = {}
+    train_results: Dict[str, controller_pb2.TrainResults] = {}
+    eval_results: Dict[str, learner_pb2.EvaluationResults] = {}
 
     # learner_id -> {}
-    last_train_results: Dict[str, controller_pb2.TrainResult] = {}
+    last_train_results: Dict[str, controller_pb2.TrainResults] = {}
     num_training_examples: Dict[str, int] = {}
 
     def add_learner(self, learner: controller_pb2.Learner) -> str:

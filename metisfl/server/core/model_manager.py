@@ -247,7 +247,7 @@ class ModelManager:
         self,
         update_id: str,
         to_aggregate_block: List[List[Tuple[model_pb2.Model, float]]],
-    ) -> model_pb2.Modell:
+    ) -> model_pb2.Model:
         """Aggregates the models and keeps track of the aggregation time.
 
         Parameters
