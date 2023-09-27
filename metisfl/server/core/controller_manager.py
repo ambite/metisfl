@@ -1,13 +1,13 @@
 
 from typing import List
 from metisfl.proto import model_pb2, controller_pb2
-from metisfl.server.core.learner_manager import LearnerManager
-from metisfl.server.core.model_manager import ModelManager
-from metisfl.server.scheduling.scheduler import Scheduler
-from metisfl.server.selection.scheduled_cardinality import ScheduledCardinality
+from metisfl.server.core import LearnerManager
+from metisfl.server.core import ModelManager
+from metisfl.server.scheduling import Scheduler
+from metisfl.server.selection import ScheduledCardinality
 
 
-class Controller:
+class ControllerManager:
 
     learner_manager: LearnerManager = None
     model_manager: ModelManager = None
