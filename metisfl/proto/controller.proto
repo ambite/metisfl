@@ -54,7 +54,6 @@ message Logs {
   map<string, ModelMetadata> model_metadata = 6;
 }
 
-// TODO: consode AggregationMetadata as name
 message ModelMetadata {
   double selection_duration_ms = 1;
   double aggregation_duration_ms = 2;

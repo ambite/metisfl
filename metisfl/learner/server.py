@@ -1,7 +1,9 @@
 
+
 import threading
 from typing import Any, Tuple
 
+import grpc
 from google.protobuf.json_format import MessageToDict
 from loguru import logger
 
@@ -19,11 +21,6 @@ from metisfl.proto import (learner_pb2, learner_pb2_grpc, model_pb2,
 
 
 class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
-
-    learner: Learner
-    client: GRPCClient
-    message_helper: MessageHelper
-    task_manager: TaskManager
 
     def __init__(
         self,

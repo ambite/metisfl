@@ -214,11 +214,10 @@ def try_call_train(
                 raise ValueError(
                     f"Metric '{metrics}' not found in training metadata")
                 
-        for metadata in params.get('metadata', []):
-            if metadata not in train_res[2]:
+        for required_metadata in params.get('metadata', []):
+            if required_metadata not in metadata:
                 raise ValueError(
-                    f"Metadata '{metadata}' not found in training metadata")
-
+                    f"Metadata '{required_metadata}' not found in training metadata")
 
         return weights, metrics, metadata
 
