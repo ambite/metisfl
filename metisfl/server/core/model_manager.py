@@ -1,14 +1,16 @@
 
 import time
 from typing import Dict, List, Tuple
+
 from metisfl.common.types import ControllerConfig
-from metisfl.proto import controller_pb2, model_pb2
 from metisfl.common.utils import random_id_generator
+from metisfl.proto import controller_pb2, model_pb2
 from metisfl.server.aggregation import Aggregator
 from metisfl.server.core import LearnerManager
-from metisfl.server.selection.scheduled_cardinality import ScheduledCardinality
+from metisfl.server.scaling import (batches_scaling, dataset_scaling,
+                                    participants_scaling)
+from metisfl.server.selection import ScheduledCardinality
 from metisfl.server.store import ModelStore
-from metisfl.server.scaling import batches_scaling, participants_scaling, dataset_scaling
 
 
 class ModelManager:

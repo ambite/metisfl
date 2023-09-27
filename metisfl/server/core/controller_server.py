@@ -3,21 +3,20 @@ import threading
 from typing import Any, Union
 import grpc
 from metisfl.common.formatting import get_timestamp
-from metisfl.common.logger import MetisLogger
 from metisfl.common.server import Server
 from metisfl.common.types import ServerParams
 from metisfl.proto import model_pb2, controller_pb2, controller_pb2_grpc, service_common_pb2
-from metisfl.server.core.controller import Controller
+from metisfl.server.core import ControllerManager
 
 
 class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
 
-    controller: Controller = None
+    controller_manager: ControllerManager = None
 
     def __init__(
         self,
         server_params: ServerParams,
-        controller: Controller,
+        controller_manager: ControllerManager,
     ) -> None:
         """Initializes the Controller Server.
 
@@ -25,14 +24,14 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         ----------
         server_params : ServerParams
             The server parameters.
-        controller : Controller
-            The controller to be attached to the server.
+        controller_manager : ControllerManager
+            The controller manager to be attached to the server.
         """
         super().__init__(
             server_params=server_params,
             add_servicer_to_server_fn=controller_pb2_grpc.add_ControllerServiceServicer_to_server,
         )
-        self.controller = controller
+        self.controller_manager_manager = controller_manager
 
     def SetInitialModel(
         self,
@@ -57,7 +56,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        status = self.controller.set_initial_model(model=model)
+        status = self.controller_manager.set_initial_model(model=model)
 
         return service_common_pb2.Ack(
             status=status,
@@ -87,7 +86,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        learner_id = self.controller.add_learner(learner=learner)
+        learner_id = self.controller_manager.add_learner(learner=learner)
 
         return controller_pb2.LearnerId(
             learner_id=learner_id,
@@ -116,7 +115,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        self.controller.remove_learner(learner_id=learner_id.learner_id)
+        self.controller_manager.remove_learner(learner_id=learner_id.learner_id)
 
         return service_common_pb2.Ack(
             status=True
@@ -145,7 +144,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        self.controller.start_training()
+        self.controller_manager.start_training()
 
         return service_common_pb2.Ack(
             status=True
@@ -174,7 +173,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        self.controller.train_done(request=request)
+        self.controller_manager.train_done(request=request)
 
         return service_common_pb2.Ack(
             status=True
@@ -203,7 +202,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        logs = self.controller.get_logs()
+        logs = self.controller_manager.get_logs()
 
         return controller_pb2.Logs(
             logs=logs,
