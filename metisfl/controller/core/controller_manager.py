@@ -1,10 +1,10 @@
 
 from typing import List
 from metisfl.proto import model_pb2, controller_pb2
-from metisfl.server.core import LearnerManager
-from metisfl.server.core import ModelManager
-from metisfl.server.scheduling import Scheduler
-from metisfl.server.selection import ScheduledCardinality
+from metisfl.controller.core import LearnerManager
+from metisfl.controller.core import ModelManager
+from metisfl.controller.scheduling import Scheduler
+from metisfl.controller.selection import ScheduledCardinality
 
 
 class ControllerManager:

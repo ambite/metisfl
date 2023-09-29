@@ -2,7 +2,7 @@
 import numpy as np
 
 from metisfl.proto.model_pb2 import Model
-from metisfl.controller.common.TensorOps import TensorOps
+from metisfl.controller.aggregation.TensorOps import TensorOps
 
 class FederatedAverage:
     """

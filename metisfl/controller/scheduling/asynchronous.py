@@ -4,7 +4,7 @@
 
 from typing import List
 
-from metisfl.server.scheduling.scheduler import Scheduler
+from metisfl.controller.scheduling.scheduler import Scheduler
 
 
 class AsynchronousScheduler(Scheduler):

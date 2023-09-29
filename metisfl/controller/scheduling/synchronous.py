@@ -5,7 +5,7 @@
 from typing import List
 
 from metisfl.common.logger import MetisLogger
-from metisfl.server.scheduling.scheduler import Scheduler
+from metisfl.controller.scheduling.scheduler import Scheduler
 
 
 class SynchronousScheduler(Scheduler):

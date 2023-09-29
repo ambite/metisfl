@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple
 from metisfl.common.logger import MetisLogger
 import metisfl.proto.model_pb2 as model_pb2
-from metisfl.server.store.model_store import ModelStore
+from metisfl.controller.store.model_store import ModelStore
 
 
 class HashMapModelStore(ModelStore):

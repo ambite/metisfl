@@ -1,7 +1,7 @@
 
 import unittest
 
-from metisfl.server.store.hash_map import HashMapModelStore
+from metisfl.controller.store.hash_map import HashMapModelStore
 from metisfl.proto import model_pb2
 
 

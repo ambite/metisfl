@@ -5,12 +5,12 @@ from typing import Dict, List, Tuple
 from metisfl.common.types import ControllerConfig
 from metisfl.common.utils import random_id_generator
 from metisfl.proto import controller_pb2, model_pb2
-from metisfl.server.aggregation import Aggregator
-from metisfl.server.core import LearnerManager
-from metisfl.server.scaling import (batches_scaling, dataset_scaling,
+from metisfl.controller.aggregation import Aggregator
+from metisfl.controller.core import LearnerManager
+from metisfl.controller.scaling import (batches_scaling, dataset_scaling,
                                     participants_scaling)
-from metisfl.server.selection import ScheduledCardinality
-from metisfl.server.store import ModelStore
+from metisfl.controller.selection import ScheduledCardinality
+from metisfl.controller.store import ModelStore
 
 
 class ModelManager:

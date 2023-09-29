@@ -3,12 +3,12 @@
 import signal
 from metisfl.common.types import (ControllerConfig, ModelStoreConfig,
                                   ServerParams)
-from metisfl.server.core import (ControllerManager, ControllerServer,
+from metisfl.controller.core import (ControllerManager, ControllerServer,
                                  LearnerManager, ModelManager)
-from metisfl.server.scheduling import (AsynchronousScheduler, Scheduler,
+from metisfl.controller.scheduling import (AsynchronousScheduler, Scheduler,
                                        SynchronousScheduler)
-from metisfl.server.selection import ScheduledCardinality
-from metisfl.server.store import HashMapModelStore, ModelStore
+from metisfl.controller.selection import ScheduledCardinality
+from metisfl.controller.store import HashMapModelStore, ModelStore
 
 
 def get_model_store(model_store_config: ModelStoreConfig) -> ModelStore:
