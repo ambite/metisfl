@@ -6,6 +6,16 @@ from typing import Iterable, List, Optional, Tuple, Union
 import numpy as np
 import glob
 
+def random_id_generator() -> str:
+    """Generates a random id.
+
+    Returns
+    -------
+    str
+        The random id.
+    """
+    return str(random.randint(0, 1000000000))
+
 def iid_partition(
     x_train: Iterable,
     num_partitions: int,
