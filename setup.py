@@ -8,6 +8,7 @@ import sys
 
 from setuptools import setup, find_packages
 
+__version__ = "0.1.0"
 
 os.environ["PYTHON_BIN_PATH"] = sys.executable
 os.environ["PYTHON_LIB_PATH"] = site.getsitepackages()[0]
@@ -27,6 +28,10 @@ def get_python_version():
     """Returns the current Python version."""
     return ".".join(map(str, [sys.version_info.major, sys.version_info.minor]))
 
+def get_max_python_version():
+    """Returns the current Python version."""
+    return ".".join(map(str, [sys.version_info.major, sys.version_info.minor+1]))
+
 
 def copy_helper(src_path, dst):
     """Copies a file to the given destination. If the destination is a directory, the file is copied into it."""
@@ -38,7 +43,6 @@ def copy_helper(src_path, dst):
         os.remove(dst)
 
     shutil.copy(src_path, dst)
-
 
 def check_env():
     """Checks python version and PYTHON_LIB_PATH environment variable."""
@@ -75,9 +79,10 @@ def run_build():
 # Run build
 run_build()
 
+# TODO: add py version and arch to wheel name
 setup(
     name="metisfl",
-    version="0.1.0",
+    version=__version__,
     description="MetisFL: The developer-friendly federated learning framework",
     author="MetisFL Team",
     author_email="hello@nevron.ai",
@@ -85,8 +90,6 @@ setup(
     classifiers=[
             "Development Status :: 2 - Pre-Alpha",
             "Intended Audience :: Developers",
-            "License :: OSI Approved :: The Clear BSD License",
-            "Operating System :: UNIX",
             "Topic :: Software Development :: Testing",
             "Topic :: Software Development :: Libraries",
             "Programming Language :: Python",
@@ -108,5 +111,8 @@ setup(
         "protobuf>=4.23.4",
         "termcolor>=2.3.0",
         "pyfiglet>=0.8.post1",
+        "loguru>=0.7.1",
     ],
+    python_requires=">={}, <{}".format(get_python_version(), get_max_python_version()),
+    pltforms="manylinux2014_x86_64",
 )

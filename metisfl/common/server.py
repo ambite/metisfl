@@ -6,7 +6,7 @@ from typing import Any, Callable, Union
 import grpc
 from metisfl.common.logger import MetisLogger
 
-from metisfl.proto import controller_pb2_grpc, learner_pb2_grpc, service_common_pb2
+from metisfl.proto import learner_pb2_grpc, controller_pb2_grpc, service_common_pb2
 from metisfl.common.types import ServerParams
 from metisfl.common.formatting import get_endpoint, get_timestamp
 
