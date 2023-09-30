@@ -2,7 +2,6 @@
 """MetisFL Homomorphic Encryption Module using Palisade."""
 
 import numpy as np
-from metisfl.encryption import fhe
 from metisfl.encryption.scheme import EncryptionScheme
 
 
@@ -34,9 +33,8 @@ class HomomorphicEncryption(EncryptionScheme):
             The path to the private key file.
 
         """
-        self.ckks = fhe.CKKS(
-            batch_size, scaling_factor_bits, crypto_context_path, public_key_path, private_key_path
-        )
+        # TODO: Implement this
+        pass
 
     def decrypt(self, value: bytes, length: int) -> np.ndarray:
         """Decrypts the value.
