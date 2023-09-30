@@ -7,7 +7,7 @@ import grpc
 from metisfl.common.logger import MetisLogger
 
 from metisfl.proto import learner_pb2_grpc, controller_pb2_grpc, service_common_pb2
-from metisfl.common.types import ServerParams
+from metisfl.common.dtypes import ServerParams
 from metisfl.common.formatting import get_endpoint, get_timestamp
 
 GRPC_MAX_MESSAGE_LENGTH: int = 512 * 1024 * 1024

@@ -4,7 +4,7 @@
 from typing import Callable, Optional
 from metisfl.common.client import get_client
 from metisfl.proto import controller_pb2, controller_pb2_grpc, learner_pb2_grpc, model_pb2, service_common_pb2
-from metisfl.common.types import ClientParams
+from metisfl.common.dtypes import ClientParams
 
 
 class GRPCControllerClient(object):

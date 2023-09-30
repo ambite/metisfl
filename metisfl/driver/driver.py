@@ -3,7 +3,7 @@ from time import sleep
 from typing import Dict, List
 
 from metisfl.common.logger import MetisASCIIArt
-from metisfl.common.types import ClientParams, ServerParams, TerminationSingals
+from metisfl.common.dtypes import ClientParams, ServerParams, TerminationSingals
 from metisfl.driver.clients import GRPCControllerClient, GRPCLearnerClient
 from metisfl.driver.monitor import FederationMonitor
 from metisfl.proto import model_pb2

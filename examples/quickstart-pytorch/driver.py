@@ -7,7 +7,7 @@ import json
 from controller import controller_params
 from learner import get_learner_server_params
 
-from metisfl.common.types import TerminationSingals
+from metisfl.common.dtypes import TerminationSingals
 from metisfl.driver import DriverSession
 
 if __name__ == "__main__":

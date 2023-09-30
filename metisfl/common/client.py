@@ -10,7 +10,7 @@ import grpc
 from loguru import logger
 from pebble import ThreadPool
 
-from metisfl.common.types import ClientParams
+from metisfl.common.dtypes import ClientParams
 from metisfl.common.formatting import get_endpoint
 
 GRPC_MAX_MESSAGE_LENGTH: int = 512 * 1024 * 1024

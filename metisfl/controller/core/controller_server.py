@@ -4,7 +4,7 @@ from typing import Any, Union
 import grpc
 from metisfl.common.formatting import get_timestamp
 from metisfl.common.server import Server
-from metisfl.common.types import ServerParams
+from metisfl.common.dtypes import ServerParams
 from metisfl.proto import model_pb2, controller_pb2, controller_pb2_grpc, service_common_pb2
 from metisfl.controller.core import ControllerManager
 

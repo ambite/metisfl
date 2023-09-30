@@ -2,7 +2,7 @@
 import time
 from typing import Dict, List, Tuple
 
-from metisfl.common.types import ControllerConfig
+from metisfl.common.dtypes import ControllerConfig
 from metisfl.common.utils import random_id_generator
 from metisfl.proto import controller_pb2, model_pb2
 from metisfl.controller.aggregation import Aggregator
@@ -318,7 +318,7 @@ class ModelManager:
         start_time = time()
         selected_models = self.model_store.select(to_select_block)
         end_time = time()
-        self.metadata[update_id].selection_block_duration_ms.append(
+        self.metadata[update_id].selection_duration_ms.append(
             end_time - start_time
         )
 

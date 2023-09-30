@@ -1,6 +1,7 @@
 import os
 import yaml
 
+import numpy as np
 from dataclasses import dataclass
 from typing import List, Optional
 from metisfl.common.formatting import camel_to_snake_dict_keys
@@ -11,6 +12,10 @@ HE_SCHEMES = ["CKKS"]
 AGGREGATION_RULES = ["FedAvg", "FedRec", "FedStride", "SecAgg"]
 SCALING_FACTORS = ["NumTrainingExamples",
                    "NumCompletedBatches", "NumParticipants"]
+
+
+
+MODEL_WEIGHTS_DTYPE = np.float64
 
 #FIXME: if the protocol is asynchronous, the federation rounds are not defined
 # and we need a different termination signal, must validate that

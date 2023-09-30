@@ -4,7 +4,7 @@ from controller import controller_params
 from data import load_data
 from model import get_model
 
-from metisfl.common.types import ClientParams, ServerParams
+from metisfl.common.dtypes import ClientParams, ServerParams
 from metisfl.learner import Learner, app
 
 

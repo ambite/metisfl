@@ -2,7 +2,7 @@
 import signal
 from typing import Optional
 
-from metisfl.common.types import ClientParams, EncryptionConfig, ServerParams
+from metisfl.common.dtypes import ClientParams, EncryptionConfig, ServerParams
 from metisfl.learner.client import GRPCClient
 from metisfl.learner.learner import Learner, has_all
 from metisfl.learner.server import LearnerServer

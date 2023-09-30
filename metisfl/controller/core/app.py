@@ -1,7 +1,7 @@
 
 
 import signal
-from metisfl.common.types import (ControllerConfig, ModelStoreConfig,
+from metisfl.common.dtypes import (ControllerConfig, ModelStoreConfig,
                                   ServerParams)
 from metisfl.controller.core import (ControllerManager, ControllerServer,
                                  LearnerManager, ModelManager)
