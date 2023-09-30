@@ -115,7 +115,7 @@ class DriverSession(object):
         controller_future = self._executor.schedule(
             function=self._service_initilizer.init_controller)
         self._executor_controller_tasks_q.put(controller_future)
-        if self._driver_controller_grpc_client.check_health_status(request_retries=10, request_timeout=30, block=True):
+        if self._driver_controller_grpc_client.check_health_status(request_retries=100, request_timeout=1, block=True):
             self._ship_model_to_controller()
             for idx in range(self._num_learners):
                 learner_future = self._executor.schedule(
@@ -134,7 +134,7 @@ class DriverSession(object):
                 "Controller is not responsive. Cannot proceed with execution.")
 
     def monitor_federation(self):
-        self._service_monitor.monitor_federation()  # Blocking call.
+        self._service_monitor.monitor_federation(request_every_secs=1) # Blocking call.
 
     def run(self):
         self.initialize_federation()

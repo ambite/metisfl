@@ -41,16 +41,16 @@ class LearnerTask(object):
                        model_pb: model_pb2.Model,
                        batch_size: int,
                        evaluation_dataset_pb: List[int],
-                       verbose=False):
+                       verbose=False):        
+        MetisLogger.info("Learner {} starts evaluation task on requested datasets.".format(
+            self._host_port_identifier()))
         
+        train_eval = validation_eval = test_eval = dict()        
         with self._init_model_ops():
             self._set_weights_from_model_pb(model_pb)
 
             train_dataset, validation_dataset, test_dataset = \
                 self._learner_dataset.load_model_datasets()
-
-            train_eval = validation_eval = test_eval = dict()
-            self._log(state="starts", task="evaluation")
 
             for dataset_to_eval in evaluation_dataset_pb:
                 if dataset_to_eval == learner_pb2.EvaluateModelRequest.dataset_to_eval.TRAINING:
@@ -63,11 +63,12 @@ class LearnerTask(object):
                     test_eval = self._model_ops.evaluate(
                         test_dataset, batch_size, verbose)
 
-            self._log(state="completed", task="evaluation")
-            return metis_pb2.ModelEvaluations(
-                training_evaluation=self._get_metric_pb(train_eval),
-                validation_evaluation=self._get_metric_pb(validation_eval),
-                test_evaluation=self._get_metric_pb(test_eval))
+        MetisLogger.info("Learner {} completed evaluation task on requested datasets.".format(
+            self._host_port_identifier()))       
+        return metis_pb2.ModelEvaluations(
+            training_evaluation=self._get_metric_pb(train_eval),
+            validation_evaluation=self._get_metric_pb(validation_eval),
+            test_evaluation=self._get_metric_pb(test_eval))
 
     def infer_model(self,
                     model_pb: model_pb2.Model,
@@ -76,7 +77,10 @@ class LearnerTask(object):
                     infer_test=False,
                     infer_valid=False,
                     verbose=False):
+        MetisLogger.info("Learner {} starts inference task on requested datasets.".format(
+            self._host_port_identifier()))                    
         
+        inferred_res = {}
         with self._init_model_ops():
             # TODO infer model should behave similarly as the evaluate_model(), by looping over a
             #  similar learner_pb2.InferModelRequest.dataset_to_infer list.
@@ -89,17 +93,23 @@ class LearnerTask(object):
                 "valid": self._model_ops.infer(validation_dataset, batch_size, verbose) if infer_valid else None,
                 "test": self._model_ops.infer(test_dataset, batch_size, verbose) if infer_test else None
             }
-            return DataTypeFormatter.stringify_dict(inferred_res, stringify_nan=True)
+        
+        MetisLogger.info("Learner {} completed inference task on requested datasets.".format(
+            self._host_port_identifier()))                    
+        return DataTypeFormatter.stringify_dict(inferred_res, stringify_nan=True)
 
     def train_model(self,
                     model_pb: model_pb2.Model,
                     learning_task_pb,
                     hyperparameters_pb,
                     verbose=False):
+        MetisLogger.info("Learner {} starts learning task on requested datasets.".format(
+            self._host_port_identifier()))
+        
+        model_weights_descriptor, learning_task_stats = None, None
         with self._init_model_ops():
             self._set_weights_from_model_pb(model_pb)
             train_dataset, validation_dataset, test_dataset = self._learner_dataset.load_model_datasets()
-            self._log(state="starts", task="learning")
             model_weights_descriptor, learning_task_stats = \
                 self._model_ops.train(train_dataset,
                                       learning_task_pb,
@@ -107,8 +117,10 @@ class LearnerTask(object):
                                       validation_dataset,
                                       test_dataset,
                                       verbose)
-            self._log(state="completed", task="learning")
-            return self._get_completed_learning_task_pb(model_weights_descriptor, learning_task_stats)
+            
+        MetisLogger.info("Learner {} completed learning task on requested datasets.".format(
+            self._host_port_identifier()))
+        return self._get_completed_learning_task_pb(model_weights_descriptor, learning_task_stats)
 
     def _get_completed_learning_task_pb(self, model_weights_descriptor, learning_task_stats):
         model_pb = \
@@ -134,11 +146,6 @@ class LearnerTask(object):
         if not self._model_ops:
             self._model_ops = self._model_ops_fn(self._model_dir)
         return self._model_ops
-
-    def _log(self, state, task):
-        host_port = self._host_port_identifier()
-        MetisLogger.info("Learner {} {} {} task on requested datasets."
-                         .format(host_port, state, task))
 
     def _set_weights_from_model_pb(self, model_pb: model_pb2.Model):
         model_weights_descriptor = \

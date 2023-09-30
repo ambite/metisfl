@@ -112,7 +112,7 @@ def torch_dataset_recipe_fn(dataset_fp):
         torch.from_numpy(prices).to(torch.float32)
     tensor_dataset = torch.utils.data.TensorDataset(
         features_tensor, prices_tensor)
-    data_loader = torch.utils.data.DataLoader(tensor_dataset)
+    data_loader = torch.utils.data.DataLoader(tensor_dataset, drop_last=True)
 
     model_dataset = ModelDatasetRegression(
         x=data_loader, size=len(prices),
@@ -156,7 +156,6 @@ if __name__ == "__main__":
     parser.add_argument("--nn_params_per_layer", default=10, type=int)
     parser.add_argument("--nn_hidden_layers_num", default=0, type=int)
     parser.add_argument("--data_type", default="float32", type=str)
-    parser.add_argument("--template_filepath", default=None, type=str)
 
     args = parser.parse_args()
     print(args, flush=True)

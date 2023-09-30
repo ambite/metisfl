@@ -1,5 +1,6 @@
 name: 🙋 Question and Discussion
 description: Discuss or ask question about how to use MetisFL and what the best practice may be.
+labels: ["question"]
 
 body:
   - type: textarea

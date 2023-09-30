@@ -67,7 +67,7 @@ class TorchModelOps(ModelOps):
         eval_res = {}
         if dataset is not None:
             self._metis_model._backend_model.eval() # set model to evaluation mode
-        #     eval_res = self._metis_model._backend_model.evaluate(dataset)
+            eval_res = self._metis_model._backend_model.evaluate(dataset)
         MetisLogger.info("Model evaluation is complete.")
         return eval_res
     

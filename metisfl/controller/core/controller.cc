@@ -684,6 +684,8 @@ class ControllerDefaultImpl : public Controller {
               call->reply.evaluations().test_evaluation();
           (*community_evaluations_.at(call->comm_eval_ref_idx)
               .mutable_evaluations())[call->learner_id] = model_evaluations;
+          PLOG(INFO) << "EvaluateModel RPC request to learner: " << call->learner_id
+                      << " COMMUNITY EVALUATION REFERENCE: " << call->comm_eval_ref_idx;              
         } else {
           PLOG(ERROR) << "EvaluateModel RPC request to learner: " << call->learner_id
                       << " failed with error: " << call->status.error_message();

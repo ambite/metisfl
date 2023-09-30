@@ -22,14 +22,14 @@ class ServiceMonitor:
         self._evaluation_metric = self._federation_environment.evaluation_metric
         self._federation_statistics = dict()
 
-    def monitor_federation(self, request_every_secs=10):
+    def monitor_federation(self, request_every_secs):
         self._monitor_termination_signals(
             request_every_secs=request_every_secs)
 
     def get_federation_statistics(self):
         return self._federation_statistics
 
-    def _monitor_termination_signals(self, request_every_secs=10):
+    def _monitor_termination_signals(self, request_every_secs):
         # measuring elapsed wall-clock time
         st = datetime.datetime.now()
         terminate = False

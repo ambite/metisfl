@@ -1,0 +1,17 @@
+name: 
+
+on:
+  push:
+    branches:
+      - metisfl-v0.0.1-beta
+  pull_request:
+    types:
+    branches:
+      - metisfl-v0.0.1-beta
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    

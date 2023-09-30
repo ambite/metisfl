@@ -59,16 +59,15 @@ Install the `metisfl` Python package by running:
 pip install metisfl
 ```
 
-and then clone the repository on you local machine:
+<!-- and then clone the repository on you local machine:
 
 ```Bash
 git clone https://github.com/MetisFL-AI/metisfl.git
-```
+``` -->
 Navigate on the root project folder and run:
 ```Bash
 python examples/workflows/keras_fashionmnist/main.py
 ```
-Congratulations! You are now running your first federated learning experiment using MetisFL!
 
 ## Host Machine
 If you want to develop on your host machine, you need to ensure that it satisfies the requirement and that all needed packages are installed. Currently, the development environment mentioned bellow has been tested on Ubuntu OS and for the x86_64 architecture. It should, however, work for different Linux-like OS on the same architecture. Support for different architectures is under development. The requirements for compiling and testing the code on your local machine are:
@@ -83,7 +82,7 @@ The recommended way to install Bazel is to use the [Bazelisk](https://github.com
 The Python headers and distutils are needed so that the C++ controller and encryption code can be compiled as Python modules. On Ubuntu, they can be installed with the following command:
 
 ```Bash
-apt-get -y install python3.10-dev python3.10-distutils
+apt-get -y install python3.8-dev python3.8-distutils
 ```
 
 Finally, the remaining requirements contain the compiler, autoconf and libomp (which is used for parallelization). Please make sure that they are available in your system by running:

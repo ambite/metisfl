@@ -50,7 +50,7 @@ Controller:
     PublicCertificate: "/metisfl/metisfl/resources/ssl/server-cert.pem"
   GRPCServer:
     Hostname: "localhost"
-    Port: 50051
+    Port: 40051
 
 # Learners Configurations.
 Learners:
@@ -62,7 +62,7 @@ Learners:
       # OnLoginCommand: "source /etc/profile" # Optional
     GRPCServer:
       Hostname: "localhost"
-      Port: 50052
+      Port: 40052
     SSLConfig: # Optional
         PrivateKey: "/metisfl/metisfl/resources/ssl/server-key.pem"
         PublicCertificate: "/metisfl/metisfl/resources/ssl/server-cert.pem"

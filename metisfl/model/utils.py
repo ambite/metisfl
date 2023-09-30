@@ -75,11 +75,14 @@ def get_weights_from_model_pb(
 def get_completed_learning_task_pb(model_pb: model_pb2.Model,
                                    learning_task_stats: LearningTaskStats,
                                    aux_metadata=None):
-    task_execution_meta_pb = _construct_task_execution_metadata_pb(
-        learning_task_stats)
-    completed_learning_task_pb = metis_pb2.CompletedLearningTask(model=model_pb,
-                                                                 execution_metadata=task_execution_meta_pb,
-                                                                 aux_metadata=aux_metadata)
+    if model_pb and learning_task_stats:
+        task_execution_meta_pb = _construct_task_execution_metadata_pb(
+            learning_task_stats)
+        completed_learning_task_pb = metis_pb2.CompletedLearningTask(model=model_pb,
+                                                                     execution_metadata=task_execution_meta_pb,
+                                                                     aux_metadata=aux_metadata)
+    else:
+        completed_learning_task_pb = metis_pb2.CompletedLearningTask()
     return completed_learning_task_pb
 
 def get_model_ops_fn(nn_engine) -> ModelOps:
@@ -98,6 +101,9 @@ def get_num_of_epochs(dataset_size: int, batch_size: int, total_steps: int) -> i
     if total_steps > steps_per_epoch:
         epochs_num = int(np.ceil(np.divide(total_steps, steps_per_epoch)))
     return epochs_num
+
+def gen_empty_learning_task_stats_model_weights_descriptor():
+    return ModelWeightsDescriptor(), LearningTaskStats()
 
 def _construct_task_evaluation_pb(collection, completed_epochs):
     """
