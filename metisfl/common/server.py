@@ -4,8 +4,7 @@ import threading
 from typing import Any, Callable, Union
 
 import grpc
-from metisfl.common.logger import MetisLogger
-
+from loguru import logger
 from metisfl.proto import learner_pb2_grpc, controller_pb2_grpc, service_common_pb2
 from metisfl.common.dtypes import ServerParams
 from metisfl.common.formatting import get_endpoint, get_timestamp
@@ -118,7 +117,7 @@ class Server:
 
         if self._server:
             self.status = service_common_pb2.ServingStatus.SERVING
-            MetisLogger.info("Server started. Listening on: {}:{} with SSL: {}".format(
+            logger.info("Server started. Listening on: {}:{} with SSL: {}".format(
                 self.server_params.hostname,
                 self.server_params.port,
                 "ENABLED" if self.is_ssl() else "DISABLED",
@@ -126,7 +125,7 @@ class Server:
             self.shutdown_event.wait()
         else:
             # TODO: Should we raise an exception here?
-            MetisLogger.error("Server failed to start.")
+            logger.error("Server failed to start.")
 
     def GetHealthStatus(self) -> service_common_pb2.HealthStatusResponse:
         """Returns the health status of the server."""

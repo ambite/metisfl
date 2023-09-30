@@ -2,7 +2,6 @@ import os
 import argparse
 
 from typing import Optional
-from metisfl.encryption.fhe import CKKS
 
 
 def get_file_path(file_path: str, default_file_name: str) -> str:
@@ -43,10 +42,11 @@ def generate_keys(
     public_key_path = get_file_path(public_key_path, "public_key.txt")
     private_key_path = get_file_path(private_key_path, "private_key.txt")
 
-    CKKS.gen_crypto_params_files(batch_size, scaling_factor_bits,
-                                 crypto_context_path,
-                                 public_key_path,
-                                 private_key_path)
+    # TODO: Implement this function
+    # CKKS.gen_crypto_params_files(batch_size, scaling_factor_bits,
+    #                              crypto_context_path,
+    #                              public_key_path,
+    #                              private_key_path)
 
 
 if __name__ == "__main__":

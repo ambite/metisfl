@@ -4,7 +4,7 @@
 
 from typing import List
 
-from metisfl.common.logger import MetisLogger
+from loguru import logger
 from metisfl.controller.scheduling.scheduler import Scheduler
 
 
@@ -39,7 +39,7 @@ class SynchronousScheduler(Scheduler):
 
         to_schedule = self.learner_ids.copy()
 
-        MetisLogger.info(
+        logger.info(
             f"Starting Federation Round {self.global_iteration} with {len(to_schedule)} learners."
         )
 

@@ -1,8 +1,8 @@
 from typing import Dict, List, Tuple
-from metisfl.common.logger import MetisLogger
+
 import metisfl.proto.model_pb2 as model_pb2
 from metisfl.controller.store.model_store import ModelStore
-
+from loguru import logger
 
 class HashMapModelStore(ModelStore):
 
@@ -21,7 +21,7 @@ class HashMapModelStore(ModelStore):
         """
         self.lineage_length = lineage_length
 
-        MetisLogger.info(
+        logger.info(
             f"HashMapModelStore initialized with lineage length {lineage_length}")
 
     def expunge(self):
@@ -113,7 +113,7 @@ class HashMapModelStore(ModelStore):
 
             if num_models > history_length:
                 # TODO: check if continue is the right thing to do here. How about we return all the models we have?
-                MetisLogger.warn(
+                logger.warn(
                     f"Number of models requested ({num_models}) is greater than "
                     f"the number of models available ({history_length}) for "
                     f"learner id {learner_id}")
