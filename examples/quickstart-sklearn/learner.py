@@ -11,7 +11,7 @@ from sklearn.metrics import log_loss
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from metisfl.common.types import ClientParams, ServerParams
+from metisfl.common.dtypes import ClientParams, ServerParams
 from metisfl.common.utils import iid_partition
 from metisfl.learner import Learner, app
 

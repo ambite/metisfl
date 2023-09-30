@@ -9,7 +9,7 @@ from loguru import logger
 
 from metisfl.common.formatting import get_timestamp
 from metisfl.common.server import get_server
-from metisfl.common.types import ServerParams
+from metisfl.common.dtypes import ServerParams
 from metisfl.learner.client import GRPCClient
 from metisfl.learner.learner import (Learner, try_call_evaluate,
                                      try_call_get_weights,

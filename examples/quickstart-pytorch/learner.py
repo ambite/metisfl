@@ -8,7 +8,7 @@ from data import load_data
 from model import Model
 from torch.utils.data import DataLoader, TensorDataset
 
-from metisfl.common.types import ClientParams, ServerParams
+from metisfl.common.dtypes import ClientParams, ServerParams
 from metisfl.learner import Learner, app
 
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

@@ -1,8 +1,4 @@
 
-""" Controller package for MetisFL. """
+from .core.app import Controller
 
-from .controller_instance import Controller
-
-__all__ = [
-    "Controller",
-]
+__all__ = ["Controller"]

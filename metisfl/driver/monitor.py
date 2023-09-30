@@ -7,7 +7,7 @@ import numpy as np
 from google.protobuf.json_format import MessageToDict
 from loguru import logger
 
-from metisfl.common.types import TerminationSingals
+from metisfl.common.dtypes import TerminationSingals
 from metisfl.driver.clients import GRPCControllerClient
 from metisfl.proto import controller_pb2
 
