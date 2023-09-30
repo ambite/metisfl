@@ -3,7 +3,7 @@ import yaml
 
 import numpy as np
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Union
 from metisfl.common.formatting import camel_to_snake_dict_keys
 
 SCHEDULERS = ["Synchronous", "Asynchronous", "SemiSynchronous"]
@@ -290,7 +290,7 @@ class ClientParams(object):
 
     hostname: str
     port: int
-    root_certificate: Optional[str] = None
+    root_certificate: Optional[Union[str, bytes]] = None
 
     @classmethod
     def from_yaml(cls, yaml_dict: dict) -> 'ClientParams':
@@ -298,7 +298,9 @@ class ClientParams(object):
         return cls(**yaml_dict)
 
     def __post_init__(self):
-        if self.root_certificate is not None and not os.path.isfile(self.root_certificate):
+        if self.root_certificate is not None and\
+            isinstance(self.root_certificate, str) and\
+            not os.path.isfile(self.root_certificate):
             raise ValueError(
                 f"Root certificate file {self.root_certificate} does not exist")
 

@@ -50,10 +50,11 @@ class LearnerManager:
             raise ValueError(f"Learner {learner_id} already exists.")
 
         self.learners[learner_id] = learner
+        rt_bytes = bytes(learner.root_certificate_bytes, "utf-8")
         self.client_params[learner_id] = ClientParams(
             hostname=learner.hostname,
             port=learner.port,
-            root_certificate=learner.root_certificate_bytes,
+            root_certificate=rt_bytes,
         )
 
         return learner_id
