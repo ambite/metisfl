@@ -7,8 +7,8 @@ from metisfl.learner.message import MessageHelper
 class TestFederatedAverage(unittest.TestCase):
     
     def test_fedavg_1(self):
-        weights1 = np.random.rand(2,2)
-        weights2 = np.random.rand(2,2)
+        weights1 = np.ones((2,2))
+        weights2 = np.ones((2,2))
         model1 = MessageHelper().weights_to_model_proto([weights1])
         model2 = MessageHelper().weights_to_model_proto([weights2])
 
@@ -17,7 +17,47 @@ class TestFederatedAverage(unittest.TestCase):
             [(model2, 1)]
         ]
     
-        weights = FederatedAverage().Aggregate(pairs)
-    
-        assert np.allclose(weights[0], (weights1 + weights2) / 2)
-    
+        model = FederatedAverage().aggregate(pairs)
+        weights = MessageHelper().model_proto_to_weights(model)
+
+        for i in range(len(weights)):
+            assert np.allclose(weights[i], weights1 + weights2)
+
+    def test_fedavg_2(self):
+        weights1 = np.random.rand(20,20,20)
+        weights2 = np.random.rand(20,20,20)
+        
+        model1 = MessageHelper().weights_to_model_proto([weights1])
+        model2 = MessageHelper().weights_to_model_proto([weights2])
+        
+        
+        pairs = [
+            [(model1, 1)],
+            [(model2, 1)]
+        ]
+        
+        model = FederatedAverage().aggregate(pairs)
+        weights = MessageHelper().model_proto_to_weights(model)
+        
+        for i in range(len(weights)):
+            assert np.allclose(weights[i], (weights1 + weights2))
+        
+    def test_fedavg_3(self):
+        weights1 = np.random.rand(20,20,20)
+        weights2 = np.random.rand(20,20,20)
+        
+        model1 = MessageHelper().weights_to_model_proto([weights1])
+        model2 = MessageHelper().weights_to_model_proto([weights2])
+        sf1 = 10
+        sf2 = 1
+        
+        pairs = [
+            [(model1, sf1)],
+            [(model2, sf2)]
+        ]
+        
+        model = FederatedAverage().aggregate(pairs)
+        weights = MessageHelper().model_proto_to_weights(model)
+        
+        for i in range(len(weights)):
+            assert np.allclose(weights[i], (weights1*sf1 + weights2*sf2))
