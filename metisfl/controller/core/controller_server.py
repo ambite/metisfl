@@ -89,7 +89,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         learner_id = self.controller_manager.add_learner(learner=learner)
 
         return controller_pb2.LearnerId(
-            learner_id=learner_id,
+            id=learner_id,
         )
 
     def LeaveFederation(
