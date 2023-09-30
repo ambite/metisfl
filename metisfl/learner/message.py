@@ -6,6 +6,7 @@ from typing import List, Optional
 
 import numpy as np
 
+from metisfl.common.dtypes import MODEL_WEIGHTS_DTYPE
 from metisfl.encryption.scheme import EncryptionScheme
 from metisfl.proto import model_pb2
 
@@ -44,7 +45,7 @@ class MessageHelper:
             tensor = model.tensors.add()
             tensor.length = weight.size
             tensor.dimensions.extend(weight.shape)
-            weight = weight.astype(np.float64)
+            weight = weight.astype(MODEL_WEIGHTS_DTYPE)
 
             if self.scheme is not None:
                 model.encrypted = True
@@ -81,14 +82,14 @@ class MessageHelper:
                 weights.append(
                     np.array(
                         decrypted,
-                        dtype=np.float64
+                        dtype=MODEL_WEIGHTS_DTYPE
                     ).reshape(tensor.dimensions)
                 )
             else:
                 weights.append(
                     np.frombuffer(
                         buffer=tensor.value,
-                        dtype=np.float64,
+                        dtype=MODEL_WEIGHTS_DTYPE,
                         count=tensor.length
                     ).reshape(tensor.dimensions)
                 )
