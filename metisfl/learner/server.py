@@ -3,12 +3,11 @@
 import threading
 from typing import Any, Tuple
 
-import grpc
 from google.protobuf.json_format import MessageToDict
 from loguru import logger
 
-from metisfl.common.formatting import get_timestamp
-from metisfl.common.server import get_server
+from metisfl.common.utils import get_timestamp
+from metisfl.common.server import Server
 from metisfl.common.dtypes import ServerParams
 from metisfl.learner.client import GRPCClient
 from metisfl.learner.learner import (Learner, try_call_evaluate,
@@ -20,7 +19,7 @@ from metisfl.proto import (learner_pb2, learner_pb2_grpc, model_pb2,
                            service_common_pb2)
 
 
-class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
+class LearnerServer(Server, learner_pb2_grpc.LearnerServiceServicer):
 
     def __init__(
         self,
@@ -46,6 +45,10 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
             The server parameters of the Learner server.
 
         """
+        super().__init__(
+            server_params=server_params,
+            add_servicer_to_server_fn=learner_pb2_grpc.add_LearnerServiceServicer_to_server,
+        )
         self.learner = learner
         self.client = client
         self.message_helper = message_helper
@@ -54,31 +57,6 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
         self.status = service_common_pb2.ServingStatus.UNKNOWN
         self.shutdown_event = threading.Event()
         self.server_params = server_params
-
-        self.server = get_server(
-            server_params=server_params,
-            servicer=self,
-            add_servicer_to_server_fn=learner_pb2_grpc.add_LearnerServiceServicer_to_server,
-        )
-
-    def start(self):
-        """Starts the server. This is a blocking call and will block until the server is shutdown."""
-
-        self.server.start()  # TODO: anyway this could fail?
-        self.status = service_common_pb2.ServingStatus.SERVING
-        logger.success("Learner server started. Listening on: {}:{} with SSL: {}".format(
-            self.server_params.hostname,
-            self.server_params.port,
-            "ENABLED" if self.is_ssl() else "DISABLED",
-        ))
-        self.shutdown_event.wait()
-
-    def GetHealthStatus(self) -> service_common_pb2.HealthStatusResponse:
-        """Returns the health status of the server."""
-
-        return service_common_pb2.HealthStatusResponse(
-            status=self.status,
-        )
 
     def GetModel(
         self,
@@ -126,7 +104,7 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement.
+            The response containing the acknowledgement.
         """
 
         if not self.is_serving(context):
@@ -202,7 +180,7 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
         context: Any
     ) -> service_common_pb2.Ack:
         """Training endpoint. Training happens asynchronously in a seperate process. 
-            The Learner server responds with an acknoledgement after receiving the request.
+            The Learner server responds with an acknowledgement after receiving the request.
             When training is done, the client calls the TrainDone Controller endpoint.
 
         Parameters
@@ -215,7 +193,7 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement with the Status set to True.
+            The response containing the acknowledgement with the Status set to True.
 
         """
         if not self.is_serving(context):
@@ -257,31 +235,3 @@ class LearnerServer(learner_pb2_grpc.LearnerServiceServicer):
             status=True,
             timestamp=get_timestamp(),
         )
-
-    def ShutDown(
-        self,
-        _: service_common_pb2.Empty,
-        __: Any
-    ) -> service_common_pb2.Ack:
-        """Shuts down the server."""
-
-        self.status = service_common_pb2.ServingStatus.NOT_SERVING
-        self.shutdown_event.set()
-
-        return service_common_pb2.Ack(
-            status=True,
-            timestamp=get_timestamp(),
-        )
-
-    def is_serving(self, context) -> bool:
-        """Returns True if the server is serving, False otherwise."""
-
-        if self.status != service_common_pb2.ServingStatus.SERVING:
-            context.set_code(grpc.StatusCode.UNAVAILABLE)
-            return False
-        return True
-
-    def is_ssl(self) -> bool:
-        """Returns True if the server is using SSL, False otherwise."""
-
-        return self.server_params.root_certificate is not None

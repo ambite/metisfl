@@ -2,6 +2,7 @@
 
 from typing import Dict, List, Optional
 from metisfl.common.client import get_client
+from metisfl.common.utils import get_timestamp, random_id_generator
 from metisfl.common.dtypes import ClientParams
 
 from metisfl.proto import (controller_pb2, controller_pb2_grpc, learner_pb2, learner_pb2_grpc,
@@ -21,8 +22,8 @@ class LearnerManager:
     # learner_id -> {}
     learners: Dict[str, controller_pb2.Learner] = {}
     client_params: Dict[str, ClientParams] = {}
-    train_params: learner_pb2.TrainParams = None
-    eval_params: learner_pb2.EvaluationParams = None
+    train_params: learner_pb2.TrainParams = {}
+    eval_params: learner_pb2.EvaluationParams = {}
 
     # task_id -> {}
     tasks: Dict[str, learner_pb2.Task] = {}
@@ -50,7 +51,7 @@ class LearnerManager:
             raise ValueError(f"Learner {learner_id} already exists.")
 
         self.learners[learner_id] = learner
-        rt_bytes = bytes(learner.root_certificate_bytes, "utf-8")
+        rt_bytes = bytes(learner.root_certificate_bytes, "utf-8") if learner.root_certificate_bytes else None
         self.client_params[learner_id] = ClientParams(
             hostname=learner.hostname,
             port=learner.port,
@@ -71,67 +72,90 @@ class LearnerManager:
             raise ValueError(f"Learner {learner_id} does not exist.")
 
         self.learners.pop(learner_id)
-        self.clients.pop(learner_id)
+        self.client_params.pop(learner_id)
 
     def get_client(self, learner_id: str):
         return get_client(
-            stub_class=controller_pb2_grpc.ControllerServiceStub,
+            stub_class=learner_pb2_grpc.LearnerServiceStub,
             client_params=self.client_params[learner_id],
         )
 
     def schedule_train(
         self,
-        task: learner_pb2.Task,
+        learner_ids: List[str],
         model: model_pb2.Model,
-        train_params: learner_pb2.TrainParams,
         request_retries: Optional[int] = 1,
         request_timeout: Optional[int] = None,
         block: Optional[bool] = False
     ) -> service_common_pb2.Ack:
 
-        with self.get_client() as client:
+        print("schedule_train for learner_ids: ", learner_ids)
 
-            stub: learner_pb2_grpc.LearnerServiceStub = client[0]
-            schedule = client[1]
+        for learner_id in learner_ids:
+            
+            task = self.get_task(learner_id=learner_id)
+            train_params = self.train_params.get(learner_id, None)
+            
+            with self.get_client(learner_id=learner_id) as client:
+                
+                stub: learner_pb2_grpc.LearnerServiceStub = client[0]
+                schedule = client[1]
+                
+                print("schedule_train for learner_id: ", learner_id)
 
-            def _request(_timeout=None):
+                def _request(_timeout=None):
 
-                request = controller_pb2.TrainRequest(
-                    task=task,
-                    model=model,
-                    params=train_params
-                )
+                    request = learner_pb2.TrainRequest(
+                        task=task,
+                        model=model,
+                        params=train_params
+                    )
+                    
+                    return stub.Train(request, timeout=_timeout)
 
-                return stub.Train(request, timeout=_timeout)
-
-            return schedule(_request, request_retries, request_timeout, block)
+                return schedule(_request, request_retries, request_timeout, block)
 
     def schedule_evaluate(
         self,
-        task: learner_pb2.Task,
+        learner_ids: List[str],
         model: model_pb2.Model,
-        eval_params: learner_pb2.EvaluationParams,
         request_retries: Optional[int] = 1,
         request_timeout: Optional[int] = None,
         block: Optional[bool] = False
     ) -> service_common_pb2.Ack:
 
-        with self.get_client() as client:
+        for learner_id in learner_ids:
+            
+            task = self.get_task(learner_id=learner_id)
+            eval_params = self.eval_params.get(learner_id, None)
+            
+            with self.get_client(learner_id=learner_id) as client:
 
-            stub: learner_pb2_grpc.LearnerServiceStub = client[0]
-            schedule = client[1]
+                stub: learner_pb2_grpc.LearnerServiceStub = client[0]
+                schedule = client[1]
 
-            def _request(_timeout=None):
+                def _request(_timeout=None):
 
-                request = controller_pb2.EvaluateRequest(
-                    task=task,
-                    model=model,
-                    params=eval_params
-                )
+                    request = learner_pb2.EvaluateRequest(
+                        task=task,
+                        model=model,
+                        params=eval_params
+                    )
 
-                return stub.Evaluate(request, timeout=_timeout)
+                    return stub.Evaluate(request, timeout=_timeout)
 
-            return schedule(_request, request_retries, request_timeout, block)
+                return schedule(_request, request_retries, request_timeout, block)
+
+    def get_task(self, learner_id: str) -> learner_pb2.Task:
+        """ Gets a task for a learner. """
+        
+        task = learner_pb2.Task(
+            id=random_id_generator(),
+            learner_id=learner_id,
+            sent_at=get_timestamp(),
+        )
+        self.tasks[task.id] = task
+        return task
 
     def shutdown_client(self):
         """Shuts down the client."""
@@ -207,8 +231,17 @@ class LearnerManager:
         train_result : controller_pb2.TrainResults
             The train result of the task.
         """
+        
         task_id = task.id
+        
         self.train_results[task_id] = train_results
+        
         self.last_train_results[learner_id] = train_results
-        self.tasks[task_id].received_at = task.received_at
-        self.tasks[task_id].completed_at = task.completed_at
+
+        self.tasks[task_id] = learner_pb2.Task(
+            id=task_id,
+            learner_id=learner_id,
+            sent_at=self.tasks[task_id].sent_at,
+            received_at=task.received_at,
+            completed_at=task.completed_at,
+        )

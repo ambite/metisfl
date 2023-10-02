@@ -1,10 +1,27 @@
 """Common utilities for MetisFL."""
 
+import datetime
 import random, os, shutil
 from typing import Iterable, List, Optional, Tuple, Union
 
 import numpy as np
 import glob
+
+from google.protobuf.timestamp_pb2 import Timestamp
+
+
+def get_endpoint(hostname: str, port: int) -> str:
+    """Returns the endpoint string."""
+
+    return "{}:{}".format(hostname, port)
+
+
+def get_timestamp() -> Timestamp:
+    """Returns the current timestamp as a protobuf Timestamp object."""
+
+    return Timestamp(seconds=int(
+        datetime.datetime.now().timestamp()))
+    
 
 def random_id_generator() -> str:
     """Generates a random id.

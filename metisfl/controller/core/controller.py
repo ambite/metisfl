@@ -1,15 +1,26 @@
-
+""" Entrypoint for the controller. """
 
 import signal
+
 from metisfl.common.dtypes import (ControllerConfig, ModelStoreConfig,
-                                  ServerParams)
+                                   ServerParams)
+from metisfl.controller.aggregation.aggregation import Aggregator
+from metisfl.controller.aggregation.federated_average import FederatedAverage
 from metisfl.controller.core import (ControllerManager, ControllerServer,
-                                 LearnerManager, ModelManager)
+                                     LearnerManager, ModelManager)
 from metisfl.controller.scheduling import (AsynchronousScheduler, Scheduler,
-                                       SynchronousScheduler)
+                                           SynchronousScheduler)
 from metisfl.controller.selection import ScheduledCardinality
 from metisfl.controller.store import HashMapModelStore, ModelStore
 
+
+def get_aggregator(controller_config: ControllerConfig) -> Aggregator:
+    """Returns the aggregator."""
+    
+    if controller_config.aggregation_rule == "FedAvg":
+        return FederatedAverage()
+    else:
+        raise ValueError("Invalid aggregator")
 
 def get_model_store(model_store_config: ModelStoreConfig) -> ModelStore:
     """Returns the model store."""    
@@ -52,10 +63,11 @@ class Controller:
         """
                
         # Get dependencies 
-        
+        aggregator = get_aggregator(controller_config)
         learner_manager = LearnerManager()
         model_store = get_model_store(model_store_config)
         model_manager = ModelManager(
+            aggregator=aggregator,
             controller_config=controller_config,
             learner_manager=learner_manager,
             model_store=model_store,

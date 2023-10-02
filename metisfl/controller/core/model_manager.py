@@ -21,27 +21,20 @@ class ModelManager:
     model_store: ModelStore = None
     controller_config: ControllerConfig = None
     metadata: controller_pb2.ModelMetadata = {}
-    selector: ScheduledCardinality = None
+    selector: ScheduledCardinality = ScheduledCardinality()
     learner_manager: LearnerManager = None
     is_initialized: bool = False
 
     def __init__(
         self,
+        aggregator: Aggregator,
         controller_config: ControllerConfig,
         learner_manager: LearnerManager,
         model_store: ModelStore,
     ) -> None:
-        """Initializes the model manager.
-
-        Parameters
-        ----------
-        learner_manager : LearnerManager
-            The learner manager to be used.
-        controller_config : ControllerConfig
-            The global training configuration.
-        model_store_config : ModelStoreConfig
-            The model store configuration.
-        """
+        """Initializes the model manager."""
+        
+        self.aggregator = aggregator
         self.learner_manager = learner_manager
         self.controller_config = controller_config
         self.model_store = model_store

@@ -1,23 +1,8 @@
-import datetime
 import json
 import math
 import re
 
 import pandas as pd
-from google.protobuf.timestamp_pb2 import Timestamp
-
-
-def get_endpoint(hostname: str, port: int) -> str:
-    """Returns the endpoint string."""
-
-    return "{}:{}".format(hostname, port)
-
-
-def get_timestamp() -> Timestamp:
-    """Returns the current timestamp as a protobuf Timestamp object."""
-
-    return Timestamp(seconds=int(
-        datetime.datetime.now().timestamp()))
 
 
 def camel_to_snake(word):

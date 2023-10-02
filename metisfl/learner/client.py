@@ -6,7 +6,7 @@ import numpy as np
 from loguru import logger
 
 from metisfl.common.client import get_client
-from metisfl.common.formatting import get_timestamp
+from metisfl.common.utils import get_timestamp
 from metisfl.common.dtypes import ClientParams
 from metisfl.learner.message import MessageHelper
 from metisfl.proto import (controller_pb2, controller_pb2_grpc, learner_pb2,

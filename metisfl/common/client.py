@@ -11,7 +11,7 @@ from loguru import logger
 from pebble import ThreadPool
 
 from metisfl.common.dtypes import ClientParams
-from metisfl.common.formatting import get_endpoint
+from metisfl.common.utils import get_endpoint
 
 GRPC_MAX_MESSAGE_LENGTH: int = 512 * 1024 * 1024
 
@@ -106,7 +106,7 @@ def get_client(
         request,
         request_retries=1,
         request_timeout=None,
-        block=True
+        block=False
     ) -> Union[Any, None]:
         """Schedule a request with the given parameters.
 
@@ -119,7 +119,7 @@ def get_client(
         request_timeout : int, optional
             The timeout in seconds, by default None
         block : bool, optional
-            Whether to block until the request is completed, by default True
+            Whether to block until the request is completed, by default False
 
         Returns
         -------
@@ -129,7 +129,6 @@ def get_client(
         """
         future = executor.schedule(function=request_with_timeout,
                                    args=(request, request_timeout, request_retries))
-
         return future.result() if block else executor_pool.put(future)
 
     def shutdown():

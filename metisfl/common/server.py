@@ -1,13 +1,15 @@
 import concurrent.futures
-from pathlib import Path
 import threading
+from pathlib import Path
 from typing import Any, Callable, Union
 
 import grpc
 from loguru import logger
-from metisfl.proto import learner_pb2_grpc, controller_pb2_grpc, service_common_pb2
+
 from metisfl.common.dtypes import ServerParams
-from metisfl.common.formatting import get_endpoint, get_timestamp
+from metisfl.common.utils import get_endpoint, get_timestamp
+from metisfl.proto import (controller_pb2_grpc, learner_pb2_grpc,
+                           service_common_pb2)
 
 GRPC_MAX_MESSAGE_LENGTH: int = 512 * 1024 * 1024
 
@@ -104,7 +106,7 @@ class Server:
         self.shutdown_event = threading.Event()
         self.server_params = server_params
 
-        self._server = get_server(
+        self.server = get_server(
             server_params=server_params,
             servicer=self,
             add_servicer_to_server_fn=add_servicer_to_server_fn,
@@ -113,9 +115,9 @@ class Server:
     def start(self):
         """Starts the server. This is a blocking call and will block until the server is shutdown."""
 
-        self._server.start()
+        self.server.start()
 
-        if self._server:
+        if self.server:
             self.status = service_common_pb2.ServingStatus.SERVING
             logger.info("Server started. Listening on: {}:{} with SSL: {}".format(
                 self.server_params.hostname,

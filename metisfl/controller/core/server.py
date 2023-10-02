@@ -1,8 +1,8 @@
 
-import threading
 from typing import Any, Union
-import grpc
-from metisfl.common.formatting import get_timestamp
+
+from loguru import logger
+from metisfl.common.utils import get_timestamp
 from metisfl.common.server import Server
 from metisfl.common.dtypes import ServerParams
 from metisfl.proto import model_pb2, controller_pb2, controller_pb2_grpc, service_common_pb2
@@ -50,7 +50,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement.
+            The response containing the acknowledgement.
         """
 
         if not self.is_serving(context):
@@ -80,14 +80,16 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         Union[controller_pb2.LearnerId, service_common_pb2.Ack]
-            The response containing the learner id or a failure acknoledgement if the server is not serving.
+            The response containing the learner id or a failure acknowledgement if the server is not serving.
         """
 
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
         learner_id = self.controller_manager.add_learner(learner=learner)
-
+        
+        logger.info(f"Learner {learner_id} joined the federation.")
+        
         return controller_pb2.LearnerId(
             id=learner_id,
         )
@@ -109,13 +111,15 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement.
+            The response containing the acknowledgement.
         """
 
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        self.controller_manager.remove_learner(learner_id=learner_id.learner_id)
+        self.controller_manager.remove_learner(learner_id=learner_id.id)
+
+        logger.info(f"Learner {learner_id.id} left the federation.")
 
         return service_common_pb2.Ack(
             status=True
@@ -138,7 +142,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement.
+            The response containing the acknowledgement.
         """
 
         if not self.is_serving(context):
@@ -167,7 +171,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         service_common_pb2.Ack
-            The response containing the acknoledgement.
+            The response containing the acknowledgement.
         """
 
         if not self.is_serving(context):
@@ -196,7 +200,7 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         Returns
         -------
         Union[controller_pb2.Logs, service_common_pb2.Ack]
-            The response containing the logs or a failure acknoledgement if the server is not serving.
+            The response containing the logs or a failure acknowledgement if the server is not serving.
         """
 
         if not self.is_serving(context):
@@ -204,9 +208,6 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
 
         logs = self.controller_manager.get_logs()
 
-        return controller_pb2.Logs(
-            logs=logs,
-        )
-
-    def ShutDown(self, _: service_common_pb2.Empty, __: Any) -> service_common_pb2.Ack:
-        return super().ShutDown(_, __)
+        return controller_pb2.Logs()
+        
+        
