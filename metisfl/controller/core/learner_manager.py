@@ -180,6 +180,7 @@ class LearnerManager:
             num_training_examples[learner_id] = self.num_training_examples.get(
                 learner_id, 0
             )
+        return num_training_examples
 
     def get_num_completed_batches(self, learner_ids: List[str]) -> Dict[str, int]:
         """Gets the number of completed batches for the learners.
@@ -199,6 +200,7 @@ class LearnerManager:
             num_completed_batches[learner_id] = self.last_train_results.get(
                 learner_id, 0
             )  # FIXME: this is not correct
+        return num_completed_batches
 
     def get_learner_ids(self) -> List[str]:
         """Gets the learner ids.

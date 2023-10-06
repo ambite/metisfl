@@ -208,6 +208,6 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
 
         logs = self.controller_manager.get_logs()
 
-        return controller_pb2.Logs()
+        return controller_pb2.Logs(**logs)
         
         

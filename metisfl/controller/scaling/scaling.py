@@ -3,7 +3,7 @@
 from typing import Dict, List
 
 
-def dataset_scaling(num_training_examples: Dict[str, int]) -> Dict[str, int]:
+def dataset_scpaling(num_training_examples: Dict[str, int]) -> Dict[str, int]:
     """Computes the scaling factor for the given learners based on the number of training examples.
 
     Parameters

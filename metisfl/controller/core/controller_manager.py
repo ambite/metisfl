@@ -1,5 +1,5 @@
 
-from typing import List
+from typing import Any, Dict, List
 from metisfl.proto import model_pb2, controller_pb2
 from metisfl.controller.core import LearnerManager
 from metisfl.controller.core import ModelManager
@@ -94,9 +94,9 @@ class ControllerManager:
         """
 
         task = request.task
-        learner_id = self.learner_manager.get_learner_id(task=task)
+        learner_id = self.learner_manager.get_learner_id(task_id=task.id)
         model = request.model
-        train_results = request.train_result
+        train_results = request.results
 
         self.model_manager.insert_model(
             learner_id=learner_id,
@@ -129,3 +129,29 @@ class ControllerManager:
             learner_ids=to_schedule,
             model=self.model_manager.get_model(),
         )
+        
+    def get_logs(self) -> Dict[str, Any]:
+        """Gets the logs of the controller.
+
+        Returns
+        -------
+        Dict[str, Any]
+            A dictionary containing the following logs:
+            - tasks
+            - train_results
+            - evaluation_results
+            - model_metadata
+            - global_iteration (optional, if the scheduler has a global iteration)
+        """
+        
+        logs = {
+            "tasks": self.learner_manager.tasks,
+            "train_results": self.learner_manager.train_results,
+            "evaluation_results": self.learner_manager.eval_results,
+            "model_metadata": self.model_manager.metadata 
+        }
+        
+        if hasattr(self.scheduler, "global_iteration"):
+            logs["global_iteration"] = self.scheduler.global_iteration
+        
+        return logs
