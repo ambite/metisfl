@@ -4,7 +4,7 @@
 
 <div align="center">
  <img 
-    src="docs/img/logos/logo_icon_03.png" width="200px">
+    src="https://docs.nevron.ai/logos/logo_icon_03.png" width="200px">
 </div>
 &nbsp;
 
