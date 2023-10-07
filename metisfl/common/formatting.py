@@ -2,8 +2,6 @@ import json
 import math
 import re
 
-import pandas as pd
-
 
 def camel_to_snake(word):
     """
@@ -19,14 +17,6 @@ def camel_to_snake(word):
 
 def camel_to_snake_dict_keys(d):
     return {camel_to_snake(k): v for k, v in d.items()}
-
-
-def normalize_dict(d):
-    # Normalize dictionary to a flatten table.
-    normalized = pd.json_normalize(d, sep="_")
-    normalized = normalized.astype(str)
-    normalized = normalized.to_dict(orient="records")[0]
-    return normalized
 
 
 def stringify_dict(d, stringify_nan=True):

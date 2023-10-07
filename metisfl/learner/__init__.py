@@ -1,7 +1,7 @@
 
 """ MetisFL Learner Package """
 
-from .learner import Learner
 from .app import app
+from .learner import Learner
 
 __all__ = ("Learner", "app")

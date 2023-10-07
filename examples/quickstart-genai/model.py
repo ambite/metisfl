@@ -1,7 +1,8 @@
 
 from typing import Tuple
-import torch.nn as nn
+
 import config as cfg
+import torch.nn as nn
 
 
 def weights_init(m):

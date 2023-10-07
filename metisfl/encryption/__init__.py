@@ -1,9 +1,9 @@
 
 """ MetisFL Encryption package. """
 
-from .scheme import EncryptionScheme
-from .homomorphic import HomomorphicEncryption
 from ..helpers.ckks import generate_keys
+from .homomorphic import HomomorphicEncryption
+from .scheme import EncryptionScheme
 
 __all__ = [
     "EncryptionScheme",

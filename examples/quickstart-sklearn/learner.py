@@ -1,9 +1,8 @@
 import argparse
-from typing import Tuple
 import warnings
+from typing import Tuple
 
 import numpy as np
-
 from controller import controller_params
 from sklearn.datasets import fetch_openml
 from sklearn.linear_model import LogisticRegression

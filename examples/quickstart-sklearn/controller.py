@@ -1,7 +1,8 @@
 
 """ Controller for the sklearn quickstart example."""
 
-from metisfl.common.dtypes import ControllerConfig, ModelStoreConfig, ServerParams
+from metisfl.common.dtypes import (ControllerConfig, ModelStoreConfig,
+                                   ServerParams)
 from metisfl.controller import Controller
 
 # Parameters for the Controller server.

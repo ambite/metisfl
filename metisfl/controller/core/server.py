@@ -2,11 +2,13 @@
 from typing import Any, Union
 
 from loguru import logger
-from metisfl.common.utils import get_timestamp
-from metisfl.common.server import Server
+
 from metisfl.common.dtypes import ServerParams
-from metisfl.proto import model_pb2, controller_pb2, controller_pb2_grpc, service_common_pb2
+from metisfl.common.server import Server
+from metisfl.common.utils import get_timestamp
 from metisfl.controller.core import ControllerManager
+from metisfl.proto import (controller_pb2, controller_pb2_grpc, model_pb2,
+                           service_common_pb2)
 
 
 class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):

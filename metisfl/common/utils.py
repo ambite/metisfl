@@ -9,8 +9,21 @@ from typing import Iterable, List, Optional, Tuple, Union
 
 import numpy as np
 from google.protobuf.timestamp_pb2 import Timestamp
+from pyfiglet import figlet_format
+from termcolor import cprint
 
 
+class MetisASCIIArt(object):
+
+    @classmethod
+    def print(cls):
+        # Print 'METIS Federated Learning' on console as an ASCII-Art pattern.
+        cprint(figlet_format('METIS', font='greek'),
+               'blue', None, attrs=['bold'], flush=True)
+        cprint(figlet_format('Federated Learning Framework', width=150),
+               'blue', None, attrs=['bold'], flush=True)
+        
+        
 def get_endpoint(hostname: str, port: int) -> str:
     """Returns the endpoint string."""
 

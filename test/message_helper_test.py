@@ -1,9 +1,10 @@
 import unittest
+
 import numpy as np
 
-from metisfl.learner.message import MessageHelper
 from metisfl.encryption.homomorphic import HomomorphicEncryption
 from metisfl.helpers.ckks import generate_keys
+from metisfl.learner.message import MessageHelper
 
 
 class TestMessageHelper(unittest.TestCase):

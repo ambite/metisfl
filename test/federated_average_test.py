@@ -1,5 +1,7 @@
 import unittest
+
 import numpy as np
+
 from metisfl.controller.aggregation.federated_average import FederatedAverage
 from metisfl.learner.message import MessageHelper
 

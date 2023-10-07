@@ -1,5 +1,6 @@
-import tensorflow as tf
 from typing import Tuple
+
+import tensorflow as tf
 
 from metisfl.common.utils import iid_partition
 

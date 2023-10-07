@@ -1,10 +1,9 @@
+import config as cfg
 import torch
 import torch.nn.parallel
 import torch.utils.data
 import torchvision.datasets as dset
 import torchvision.transforms as transforms
-
-import config as cfg
 
 # We can use an image folder dataset the way we have it setup.
 # Create the dataset

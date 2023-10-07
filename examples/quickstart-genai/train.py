@@ -1,5 +1,5 @@
-import torch
 import config as cfg
+import torch
 import torch.nn as nn
 import torch.optim as optim
 from data import dataloader
