@@ -22,3 +22,5 @@ build/*
 /dist/
 /*.egg*
 *.jpg
+
+poetry.lock
