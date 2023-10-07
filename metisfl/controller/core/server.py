@@ -148,6 +148,8 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
+        logger.info("Starting federated training.")
+
         self.controller_manager.start_training()
 
         return service_common_pb2.Ack(
@@ -206,8 +208,6 @@ class ControllerServer(Server, controller_pb2_grpc.ControllerServiceServicer):
         if not self.is_serving(context):
             return service_common_pb2.Ack(status=False)
 
-        logs = self.controller_manager.get_logs()
-
-        return controller_pb2.Logs(**logs)
+        return self.controller_manager.get_logs()
         
         

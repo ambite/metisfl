@@ -4,7 +4,9 @@ import struct
 from typing import List
 
 from google.protobuf.text_format import Parse
+
 from metisfl.proto.model_pb2 import Tensor
+
 
 def deserialize_tensor(tensor: Tensor) -> List[float]:
     tensor_bytes = tensor.value

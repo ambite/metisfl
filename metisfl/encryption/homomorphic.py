@@ -2,6 +2,7 @@
 """MetisFL Homomorphic Encryption Module using Palisade."""
 
 import numpy as np
+
 from metisfl.encryption.scheme import EncryptionScheme
 
 

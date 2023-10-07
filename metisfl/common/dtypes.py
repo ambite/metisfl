@@ -1,9 +1,10 @@
 import os
-import yaml
-
-import numpy as np
 from dataclasses import dataclass
 from typing import List, Optional, Union
+
+import numpy as np
+import yaml
+
 from metisfl.common.formatting import camel_to_snake_dict_keys
 
 SCHEDULERS = ["Synchronous", "Asynchronous", "SemiSynchronous"]

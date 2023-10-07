@@ -5,7 +5,7 @@ from metisfl.common.client import get_client
 from metisfl.common.utils import get_timestamp, random_id_generator
 from metisfl.common.dtypes import ClientParams
 
-from metisfl.proto import (controller_pb2, controller_pb2_grpc, learner_pb2, learner_pb2_grpc,
+from metisfl.proto import (controller_pb2, learner_pb2, learner_pb2_grpc,
                            model_pb2, service_common_pb2)
 
 
@@ -32,7 +32,6 @@ class LearnerManager:
 
     # learner_id -> {}
     last_train_results: Dict[str, controller_pb2.TrainResults] = {}
-    num_training_examples: Dict[str, int] = {}
 
     def add_learner(self, learner: controller_pb2.Learner) -> str:
         """Adds a learner to the controller.
@@ -89,8 +88,6 @@ class LearnerManager:
         block: Optional[bool] = False
     ) -> service_common_pb2.Ack:
 
-        print("schedule_train for learner_ids: ", learner_ids)
-
         for learner_id in learner_ids:
             
             task = self.get_task(learner_id=learner_id)
@@ -101,8 +98,6 @@ class LearnerManager:
                 stub: learner_pb2_grpc.LearnerServiceStub = client[0]
                 schedule = client[1]
                 
-                print("schedule_train for learner_id: ", learner_id)
-
                 def _request(_timeout=None):
 
                     request = learner_pb2.TrainRequest(
@@ -113,7 +108,7 @@ class LearnerManager:
                     
                     return stub.Train(request, timeout=_timeout)
 
-                return schedule(_request, request_retries, request_timeout, block)
+                schedule(_request, request_retries, request_timeout, block)
 
     def schedule_evaluate(
         self,
@@ -144,7 +139,7 @@ class LearnerManager:
 
                     return stub.Evaluate(request, timeout=_timeout)
 
-                return schedule(_request, request_retries, request_timeout, block)
+                schedule(_request, request_retries, request_timeout, block)
 
     def get_task(self, learner_id: str) -> learner_pb2.Task:
         """ Gets a task for a learner. """
@@ -177,9 +172,12 @@ class LearnerManager:
         """
         num_training_examples = {}
         for learner_id in learner_ids:
-            num_training_examples[learner_id] = self.num_training_examples.get(
-                learner_id, 0
-            )
+            train_result = self.last_train_results.get(learner_id)
+            if not hasattr(train_result, "metadata") or not hasattr(train_result.metadata, "num_training_examples"):
+                num_training_examples[learner_id] = 1 # TODO: fix this
+            else:
+                num_training_examples[learner_id] = train_result.metadata.get("num_training_examples")
+            
         return num_training_examples
 
     def get_num_completed_batches(self, learner_ids: List[str]) -> Dict[str, int]:
@@ -197,9 +195,12 @@ class LearnerManager:
         """
         num_completed_batches = {}
         for learner_id in learner_ids:
-            num_completed_batches[learner_id] = self.last_train_results.get(
-                learner_id, 0
-            )  # FIXME: this is not correct
+            train_result = self.last_train_results.get(learner_id)
+            if not hasattr(train_result, "metadata") or not hasattr(train_result.metadata, "num_completed_batches"):
+                num_completed_batches[learner_id] = 1
+            else:
+                num_completed_batches[learner_id] = train_result.metadata.get("num_completed_batches")
+                
         return num_completed_batches
 
     def get_learner_ids(self) -> List[str]:

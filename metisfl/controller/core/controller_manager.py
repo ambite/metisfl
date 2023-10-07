@@ -1,5 +1,5 @@
 
-from typing import Any, Dict, List
+from loguru import logger
 from metisfl.proto import model_pb2, controller_pb2
 from metisfl.controller.core import LearnerManager
 from metisfl.controller.core import ModelManager
@@ -45,6 +45,7 @@ class ControllerManager:
         learner : controller_pb2.Learner
             The learner to be added.
         """
+        # FIXME: what if the learner is already in the controller?
         self.scheduler.add_learner()
         return self.learner_manager.add_learner(learner=learner)
 
@@ -56,6 +57,7 @@ class ControllerManager:
         learner_id : str
             The learner id.
         """
+        # FIXME: what if the learner is not in the controller?
         self.scheduler.remove_learner()
         self.learner_manager.remove_learner(learner_id=learner_id)
 
@@ -90,13 +92,15 @@ class ControllerManager:
         Parameters
         ----------
         request : controller_pb2.TrainDoneRequest
-            The request containing the learner id and the model.
+            The request containing the task, the model and the results.
         """
 
         task = request.task
         learner_id = self.learner_manager.get_learner_id(task_id=task.id)
         model = request.model
         train_results = request.results
+        
+        logger.info(f"Received results for train task {task.id} from learner {learner_id}.")
 
         self.model_manager.insert_model(
             learner_id=learner_id,
@@ -114,15 +118,14 @@ class ControllerManager:
             train_results=train_results,
         )
 
-        learner_ids = self.learner_manager.get_learner_ids()
-        to_schedule = self.scheduler.schedule(learner_id=learner_id)
+        to_schedule = self.scheduler.schedule(learner_id)
 
         if len(to_schedule) == 0:
             return
 
         self.model_manager.update_model(
             to_schedule=to_schedule,
-            learner_ids=learner_ids,
+            learner_ids=self.learner_manager.get_learner_ids()
         )
 
         self.learner_manager.schedule_train(
@@ -130,28 +133,19 @@ class ControllerManager:
             model=self.model_manager.get_model(),
         )
         
-    def get_logs(self) -> Dict[str, Any]:
+    def get_logs(self) -> controller_pb2.Logs:
         """Gets the logs of the controller.
 
         Returns
         -------
-        Dict[str, Any]
-            A dictionary containing the following logs:
-            - tasks
-            - train_results
-            - evaluation_results
-            - model_metadata
-            - global_iteration (optional, if the scheduler has a global iteration)
+        controller_pb2.Logs
+            The proto object containing the logs.
         """
-        
-        logs = {
-            "tasks": self.learner_manager.tasks,
-            "train_results": self.learner_manager.train_results,
-            "evaluation_results": self.learner_manager.eval_results,
-            "model_metadata": self.model_manager.metadata 
-        }
-        
-        if hasattr(self.scheduler, "global_iteration"):
-            logs["global_iteration"] = self.scheduler.global_iteration
-        
-        return logs
+            
+        return controller_pb2.Logs(
+            global_iteration=self.scheduler.global_iteration,
+            tasks=self.learner_manager.tasks.values(),
+            train_results=self.learner_manager.train_results,
+            evaluation_results=self.learner_manager.eval_results,
+            model_metadata=self.model_manager.metadata,
+        )

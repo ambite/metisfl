@@ -1,8 +1,10 @@
 from typing import Dict, List, Tuple
 
+from loguru import logger
+
 import metisfl.proto.model_pb2 as model_pb2
 from metisfl.controller.store.model_store import ModelStore
-from loguru import logger
+
 
 class HashMapModelStore(ModelStore):
 
@@ -54,7 +56,7 @@ class HashMapModelStore(ModelStore):
             The lineage length for the given learner id.
         """
 
-        if not learner_id in self.store_cache:
+        if learner_id not in self.store_cache:
             raise ValueError(f"No models found for learner id {learner_id}")
 
         return len(self.store_cache[learner_id])

@@ -1,6 +1,5 @@
-import os
 import argparse
-
+import os
 from typing import Optional
 
 

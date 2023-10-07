@@ -1,16 +1,16 @@
 
-import time
+from time import time
 from typing import Dict, List, Tuple
 
 from metisfl.common.dtypes import ControllerConfig
 from metisfl.common.utils import random_id_generator
-from metisfl.proto import controller_pb2, model_pb2
 from metisfl.controller.aggregation import Aggregator
 from metisfl.controller.core import LearnerManager
 from metisfl.controller.scaling import (batches_scaling, dataset_scaling,
-                                    participants_scaling)
+                                        participants_scaling)
 from metisfl.controller.selection import ScheduledCardinality
 from metisfl.controller.store import ModelStore
+from metisfl.proto import controller_pb2, model_pb2
 
 
 class ModelManager:
@@ -20,7 +20,7 @@ class ModelManager:
     model: model_pb2.Model = None
     model_store: ModelStore = None
     controller_config: ControllerConfig = None
-    metadata: controller_pb2.ModelMetadata = {}
+    metadata: Dict[str, controller_pb2.ModelMetadata] = {}
     selector: ScheduledCardinality = ScheduledCardinality()
     learner_manager: LearnerManager = None
     is_initialized: bool = False
@@ -64,6 +64,7 @@ class ModelManager:
         model : model_pb2.Model
             The model to be inserted.
         """
+        print("insert_model for learner_id: ", learner_id)
         self.model_store.insert(
             [(learner_id, model)],
         )
@@ -87,7 +88,7 @@ class ModelManager:
         stride_length = self.get_stride_length(len(learner_ids))
 
         update_id = self.init_metadata()
-        aggregation_start_time = time.time()
+        aggregation_start_time = time()
         
         to_select_block = []
         
@@ -106,8 +107,7 @@ class ModelManager:
                 )
                 
                 self.model = self.aggregate(update_id, to_aggregate_block)
-                self.model_store.re
-                # TODO: C++ had a "RecordBlockSize" methon; not sure if needed
+                # TODO: C++ had a "RecordBlockSize" method; not sure if needed
         
         self.record_aggregation_time(update_id, aggregation_start_time)
         self.aggregator.reset()        
@@ -138,7 +138,7 @@ class ModelManager:
         update_id = str(random_id_generator())
         self.metadata[update_id] = controller_pb2.ModelMetadata()
 
-        return
+        return update_id
 
     def get_stride_length(self, num_learners: int) -> int:
         """Returns the stride length.
@@ -311,8 +311,6 @@ class ModelManager:
         start_time = time()
         selected_models = self.model_store.select(to_select_block)
         end_time = time()
-        self.metadata[update_id].selection_duration_ms.append(
-            end_time - start_time
-        )
+        self.metadata[update_id].selection_duration_ms = end_time - start_time
 
         return selected_models

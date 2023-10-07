@@ -1,4 +1,4 @@
-
+""" The MetisFL gRPC Learner server. Impliments the LearnerServiceServicer endponits. """
 
 import threading
 from typing import Any, Tuple
@@ -6,9 +6,9 @@ from typing import Any, Tuple
 from google.protobuf.json_format import MessageToDict
 from loguru import logger
 
-from metisfl.common.utils import get_timestamp
-from metisfl.common.server import Server
 from metisfl.common.dtypes import ServerParams
+from metisfl.common.server import Server
+from metisfl.common.utils import get_timestamp
 from metisfl.learner.client import GRPCClient
 from metisfl.learner.learner import (Learner, try_call_evaluate,
                                      try_call_get_weights,

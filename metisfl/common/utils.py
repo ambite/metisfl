@@ -1,12 +1,13 @@
 """Common utilities for MetisFL."""
 
 import datetime
-import random, os, shutil
+import glob
+import os
+import random
+import shutil
 from typing import Iterable, List, Optional, Tuple, Union
 
 import numpy as np
-import glob
-
 from google.protobuf.timestamp_pb2 import Timestamp
 
 

@@ -3,12 +3,12 @@ import signal
 from typing import Optional
 
 from metisfl.common.dtypes import ClientParams, EncryptionConfig, ServerParams
+from metisfl.encryption import HomomorphicEncryption
 from metisfl.learner.client import GRPCClient
 from metisfl.learner.learner import Learner, has_all
-from metisfl.learner.server import LearnerServer
 from metisfl.learner.message import MessageHelper
+from metisfl.learner.server import LearnerServer
 from metisfl.learner.tasks import TaskManager
-from metisfl.encryption import HomomorphicEncryption
 
 
 def register_handlers(client: GRPCClient, server: LearnerServer):
