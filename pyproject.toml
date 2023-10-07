@@ -1,0 +1,37 @@
+[tool.poetry]
+name = "metisfl"
+version = "0.1.0"
+description = "MetisFL: The developer-friendly federated learning framework"
+authors = ["The MetisFL Team <kyriakis@nevron.ai>"]
+license = "The Clear BSD License"
+readme = "README.md"
+homepage = "https://nevron.ai"
+repository = "https://github.com/NevronAI/MetisFL"
+keywords = [
+    "metisfl",
+    "nevron",
+    "developer tool",
+    "federated learning",
+    "machine learning",
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Pebble = "^5.0.3"
+PyYAML = "^6.0.1"
+protobuf = "^4.24.4"
+loguru = "^0.7.2"
+grpcio = "^1.59.0"
+termcolor = "^2.3.0"
+pyfiglet = "^1.0.2"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.5.1"
+grpcio-tools = "^1.59.0"
+isort = "^5.12.0"
+twine = "^4.0.2"
+mypy-protobuf = "^3.5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
