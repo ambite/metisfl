@@ -6,11 +6,13 @@ from metisfl.common.dtypes import (ControllerConfig, ModelStoreConfig,
                                    ServerParams)
 from metisfl.controller.aggregation.aggregation import Aggregator
 from metisfl.controller.aggregation.federated_average import FederatedAverage
-from metisfl.controller.core import (ControllerManager, ControllerServer,
-                                     LearnerManager, ModelManager)
+from metisfl.controller.learners import LearnerManager
+from metisfl.controller.manager import ControllerManager
+from metisfl.controller.model import ModelManager
 from metisfl.controller.scheduling import (AsynchronousScheduler, Scheduler,
                                            SynchronousScheduler)
 from metisfl.controller.selection import ScheduledCardinality
+from metisfl.controller.server import ControllerServer
 from metisfl.controller.store import HashMapModelStore, ModelStore
 
 

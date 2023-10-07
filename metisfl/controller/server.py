@@ -6,7 +6,7 @@ from loguru import logger
 from metisfl.common.dtypes import ServerParams
 from metisfl.common.server import Server
 from metisfl.common.utils import get_timestamp
-from metisfl.controller.core import ControllerManager
+from metisfl.controller.manager import ControllerManager
 from metisfl.proto import (controller_pb2, controller_pb2_grpc, model_pb2,
                            service_common_pb2)
 

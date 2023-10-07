@@ -1,4 +1,4 @@
 
-from .core.controller import Controller
+from .controller import Controller
 
 __all__ = ["Controller"]

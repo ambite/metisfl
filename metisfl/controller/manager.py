@@ -1,7 +1,8 @@
 
 from loguru import logger
 
-from metisfl.controller.core import LearnerManager, ModelManager
+from metisfl.controller.learners import LearnerManager
+from metisfl.controller.model import ModelManager
 from metisfl.controller.scheduling import Scheduler
 from metisfl.controller.selection import ScheduledCardinality
 from metisfl.proto import controller_pb2, model_pb2

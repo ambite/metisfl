@@ -1,4 +1,4 @@
 
-from . import client, dtypes, formatting, logger, server, utils
+from . import client, dtypes, formatting, server, utils
 
-__all__ = ["client", "formatting", "logger", "server", "dtypes", "utils"]
+__all__ = ["client", "formatting", "server", "dtypes", "utils"]

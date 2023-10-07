@@ -5,7 +5,7 @@ from typing import Dict, List, Tuple
 from metisfl.common.dtypes import ControllerConfig
 from metisfl.common.utils import random_id_generator
 from metisfl.controller.aggregation import Aggregator
-from metisfl.controller.core import LearnerManager
+from metisfl.controller.learners import LearnerManager
 from metisfl.controller.scaling import (batches_scaling, dataset_scaling,
                                         participants_scaling)
 from metisfl.controller.selection import ScheduledCardinality
@@ -64,7 +64,6 @@ class ModelManager:
         model : model_pb2.Model
             The model to be inserted.
         """
-        print("insert_model for learner_id: ", learner_id)
         self.model_store.insert(
             [(learner_id, model)],
         )
