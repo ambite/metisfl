@@ -16,7 +16,7 @@ from metisfl.proto import (controller_pb2, controller_pb2_grpc, learner_pb2,
 def read_certificate(fp: str) -> bytes:
     if fp is None:
         return b""
-    with open(fp, "rb", encoding="utf-8") as f:
+    with open(fp, "rb") as f:
         return f.read()
 
 
