@@ -21,15 +21,7 @@ Github: https://github.com/NevronAI \
 Docs: https://docs.nevron.ai/ \
 Slack: [https://nevronai.slack.com](https://join.slack.com/t/nevronai/shared_invite/zt-1xyc308jq-FeNBbuF1UBBwhp4H~zHCww)
 
-MetisFL sprung up from the Information and Science Institute (ISI) in the University of Southern California (USC). It is backed by several years of Ph.D. and Post-Doctoral research and several publications in top-tier machine learning and system conferences. It is being developed with the following guiding principles in mind:
-
-- **Scalability**: MetisFL is the only federated learning framework with the core controller infrastructure developed solely on C++. This allows for the system to scale and support up to 100K+ learners!
-
-- **Speed**: The core operations at the controller as well as the controller-learner communication overhead has been optimized for efficiency. This allows MetisFL to achieve improvements of up to 1000x on the federation round time compared to other federated learning frameworks.
-
-- **Efficiency and Flexibility**: MetisFL supports synchronous, semi-synchronous and asynchronous protocols. The different choices make our framework flexible enough to adapt to the needs of each use-case. Additionally, the support of fully asynchronous protocol makes MetisFL a highly efficient solution for use-cases with high heterogeneity on the compute/communication capabilities of the learners.
-
-- **Strong Security**: MetisFL supports secure aggregations with fully homomorphic encryption using the [Palisade](https://gitlab.com/palisade/palisade-release) C++ cryptographic library. This ensures that the weights of the produced models remain private and secure in transit.
+MetisFL sprung up from the Information and Science Institute (ISI) in the University of Southern California (USC). It is backed by several years of Ph.D. and Post-Doctoral research and several publications in top-tier machine learning and system conferences. 
 
 # Quickstart (coming soon)
 
@@ -65,15 +57,26 @@ python driver.py
 
 The driver will initiate the federated training, monitor the controller and learners and terminate the experiment once 5 federated rounds have been completed. Congratulations! You are now running your first federated learning experiment using MetisFL!
 
+# Documentation and Examples
+
+When you are ready to dive deeper into the framework, check out the following resources:
+
+- [Documentation](https://docs.nevron.ai/)
+- [What is Federated Learning?](https://docs.nevron.ai/introduction/federated-learning)
+- [Install & Configure](https://docs.nevron.ai/quickstart/installation)
+- [MetisFL with PyTorch](https://docs.nevron.ai/quickstart/torch)
+- [MetisFL with Tensorflow](https://docs.nevron.ai/quickstart/tensorflow)
+- [MetisFL with SKLearn](https://docs.nevron.ai/quickstart/sklearn)
+
 # Project Structure Overview
 
-The project uses a unified codebase for both the Python and C++ code. The C++ modules, i.e., `controller` and `encryption`, have simple python bindings to expose their functionality to python code. The python bindings of the encryption module are directly used by the Learner for encrypting the weight before sending them to the controller.
+The project is organized as follows:
 
     .
     ├── examples              # Examples and use-cases for MetisFL
     ├── metisfl               # Main source code folder
         ├── common            # Common utilities and helper functions
-        ├── controller        # C++ implementation of the Controller/Aggregator
+        ├── controller        # The MetisFL Controller/Aggregator
         ├── driver            # Python library for the MetisFL Driver
         ├── encryption        # Fully Homomorphic Encryption (FHE) library
         ├── helpers           # Helper functions to generate encryption keys for FHE/SSL       
@@ -102,7 +105,6 @@ The Federation Controller is responsible for selecting and delegating training a
 
 - Aggregation Rules: Federated Average, Federated Recency, Federated Stride, Secure Aggregation
 - Schedulers: Synchronous, Semi-Synchronous, Asynchronous
-- Security: Fully Homomorphic Encryption (FHE) using the [Palisade](https://gitlab.com/palisade/palisade-release) C++ cryptographic library
 - Model Storage: In-memory, Redis (beta)
 - Secure gRPC communication using SSL/TLS
 
@@ -118,3 +120,7 @@ The main abstraction of the client is called MetisFL Learner. The MetisFL Learne
 ## Federation Driver
 
 The Driver orchestrates the training process by communicating with the Controller and the Learners. First, it initializes the model weights by requesting the initial values from a randomly selected learner and distributing to everyone else. Additionally, it monitors the federation for the termination signal(s) and shuts the learners/controller down once the signal is reached. Finally, it collects the training logs and metadata from the Controller and stores them in a local file.
+
+## Contributing
+We currently welcome contributions in the form of bug fixes, feature requests and documentation. If you are interested in contributing to the project, please check out our [contribution guidelines](
+  https://github.com/NevronAI/MetisFL/blob/main/CONTRIBUTING.md)
