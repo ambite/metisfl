@@ -33,12 +33,7 @@ MetisFL sprung up from the Information and Science Institute (ISI) in the Univer
 
 # Quickstart (coming soon)
 
-As an introductory example to quickly demonstrate the MetisFL framework in practice, we will run the `Hello World` example of deep learning. To get started, first ensure that your system meets the requirements:
-
-- Python 3.8 to 3.10
-- A x86_64 Linux distro (tested on Ubuntu Focal)
-
-Install the `metisfl` Python package by running:
+As an introductory example to quickly demonstrate the MetisFL framework in practice, we will run the `Hello World` example of deep learning. To get started, install the MetisFL python library using pip:
 
 ```Bash
 pip install metisfl
@@ -80,15 +75,15 @@ The project uses a unified codebase for both the Python and C++ code. The C++ mo
         ├── common            # Common utilities and helper functions
         ├── controller        # C++ implementation of the Controller/Aggregator
         ├── driver            # Python library for the MetisFL Driver
-        ├── encryption        # C++ Palisade library
+        ├── encryption        # Fully Homomorphic Encryption (FHE) library
+        ├── helpers           # Helper functions to generate encryption keys for FHE/SSL       
         ├── learner           # Python Learner library
-        ├── proto             # Protobuf definitions for communication
-        ├── resources         # FHE/SSL related resource files and keys
+        ├── proto             # Protobuf definitions 
     ├── test                  # Testing folder (under construction)
+    ├── CONTRIBUTING.md       # Contribution guidelines
     ├── LICENSE               # License file
-    ├── BUILD.bazel           # Bazel build file; contains main target definitions
-    ├── setup.py              # Setup script; compiles and produces a Python Wheel
-    ├── WORKSPACE             # Bazel workspace; contains external dependencies
+    ├── pyproject.toml        # Poetry configuration file
+    └── README.md             # This file
 
 # Architecture Overview
 
