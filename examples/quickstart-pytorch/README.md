@@ -14,7 +14,7 @@ This example shows how to use MetisFL to train a Pytorch model in a simulated fe
 
 It is recommended to run this example in an isolated Python environment. You can create a new environment using [conda](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) or [virtualenv](https://virtualenv.pypa.io/en/latest/).
 
-## ⚙️ Prerequisites
+##  Prerequisites
 
 Before running this example, please make sure you have installed the MetisFL package
 
@@ -28,7 +28,7 @@ The default installation of MetisFL does not include any backend. This example u
 pip install torch torchvision
 ```
 
-## 💾 Dataset
+##  Dataset
 
 The dataset we use is the CIFAR10 and the example is based on the model training example in the [Pytorch documentation](https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html). First, we load the dataset and split it into `num_learners` chunks.
 
@@ -62,7 +62,7 @@ def load_data(num_learners: int) -> Tuple:
 
 To split the dataset we user the `iid_partition` function from the `metisfl.common.utils` module. This function takes the dataset and splits it into `num_partitions` chunks. The optional `seed` parameter is used to control the randomness of the split and can be used to reproduce the same split. It produces independent and identically distributed (IID) chunks of the dataset. Note that the data are transformed channels first (NCHW) as expected by Pytorch.
 
-## 🧠 Model
+## Model
 
 The model used in this example is a simple CNN and is defined in the `model.py` file.
 
@@ -89,7 +89,7 @@ class Model(nn.Module):
         return x
 ```
 
-## 👨‍💻 MetisFL Learner
+##  MetisFL Learner
 
 The main abstraction of the client is called MetisFL Learner. The MetisFL Learner is responsible for training the model on the local dataset and communicating with the server. Following the [class](https://github.com/NevronAI/metisfl/blob/main/metisfl/learner/learner.py) that must be implemented by the learner, we first start by the `get_weights` and `set_weights` methods. These methods are used by the Controller to get and set the model parameters. The `get_weights` method returns a list of numpy arrays and the `set_weights` method takes a list of numpy arrays as input.
 
@@ -158,7 +158,7 @@ def evaluate(self, parameters, config):
     return {"accuracy": float(accuracy), "loss": float(loss)}
 ```
 
-## 🎛️ MetisFL Controller
+## MetisFL Controller
 
 The Controller is responsible for send training and evaluation tasks to the learners and for aggregating the model parameters. The entrypoint for the Controller is `Controller` class found [here](https://github.com/NevronAI/metisfl/blob/127ad7147133d25188fc07018f2d031d6ad1b622/metisfl/controller/controller_instance.py#L10). The `Controller` class is initialized with the parameters of the Learners and the global training configuration.
 
@@ -184,7 +184,7 @@ The ServerParams define the hostname and port of the Controller and the paths to
 
 For the full set of options in the ControllerConfig please have a look [here](https://github.com/NevronAI/metisfl/blob/127ad7147133d25188fc07018f2d031d6ad1b622/metisfl/common/types.py#L99). Finally, this example uses an "InMemory" model store with no eviction (`lineage_length=0`). A positive value for `lineage_length` means that the Controller will start dropping models from the model store after the given number of models, starting from the oldest.
 
-## 🚦 MetisFL Driver
+##  MetisFL Driver
 
 The MetisFL Driver is the main entry point to the MetisFL application. It will initialize the model weights by requesting the model weights from a random learner and then distributing the weights to all learners and the controller. Additionally, it monitor the federation and will stop the training process when the termination condition is met.
 
