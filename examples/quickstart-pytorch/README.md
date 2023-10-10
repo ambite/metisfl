@@ -209,7 +209,7 @@ logs = session.run()
 
 To see and experiment with the different termination conditions, please have a look at the TerminationsSignals class [here](https://github.com/NevronAI/metisfl/blob/127ad7147133d25188fc07018f2d031d6ad1b622/metisfl/common/types.py#L18).
 
-## 🎬 Running the example
+##  Running the example
 
 To run the example, you need to open one terminal for the Controller, one terminal for each Learner and one terminal for the Driver. First, start the Controller.
 
