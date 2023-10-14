@@ -15,4 +15,12 @@ To activate the virtual environment created by poetry, you can use the following
 poetry shell
 ```
 
-This is going to activate the virtual environment and you can now develop, run and test your contributions. After you have finished your work, you can start a PR to merge your changes into the [main](https://github.com/NevronAI/MetisFL/tree/main) branch.
+This is going to activate the virtual environment and you can now develop, run and test your contributions. Before starting your work, please make sure that you run the following command to compile the protobuf files:
+
+```
+python metis/proto/protoc.py
+```
+This is going to compile the protobuf files and generate the necessary python classes and pyi files under the `metis/proto` directory.
+
+
+After you have finished your work, you can start a PR to merge your changes into the [main](https://github.com/NevronAI/MetisFL/tree/main) branch.
