@@ -11,8 +11,8 @@ def test_fedavg_1():
     model2 = MessageHelper().weights_to_model_proto([weights2])
 
     pairs = [
-        [(model1, 1)],
-        [(model2, 1)]
+        (model1, 1),
+        (model2, 1)
     ]
 
     model = FederatedAverage().aggregate(pairs)
@@ -30,8 +30,8 @@ def test_fedavg_2():
     
     
     pairs = [
-        [(model1, 1)],
-        [(model2, 1)]
+        (model1, 1),
+        (model2, 1)
     ]
     
     model = FederatedAverage().aggregate(pairs)
@@ -50,8 +50,8 @@ def test_fedavg_3():
     sf2 = 1
     
     pairs = [
-        [(model1, sf1)],
-        [(model2, sf2)]
+        (model1, sf1),
+        (model2, sf2)
     ]
     
     model = FederatedAverage().aggregate(pairs)

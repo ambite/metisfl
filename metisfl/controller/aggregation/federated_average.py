@@ -12,11 +12,11 @@ from metisfl.proto.model_pb2 import Model
 class FederatedAverage(Aggregator):
     """Federated Average Aggregation Algorithm."""
 
-    def aggregate(self, pairs: List[List[Tuple[Model, float]]]) -> Model:
+    def aggregate(self, pairs: List[Tuple[Model, float]]) -> Model:
         
         model = Model()
 
-        sample_model = pairs[0][0][0]
+        sample_model = pairs[0][0]
         
         if sample_model.encrypted:
             raise RuntimeError("Cannot aggregate encrypted tensors using Federated Average.")
@@ -29,29 +29,20 @@ class FederatedAverage(Aggregator):
         for var_idx in range(total_tensors):
             var_num_values = model.tensors[var_idx].length
 
-            aggregated_tensor = self.aggregate_at_index(pairs, var_idx, var_num_values)
+            aggregated_tensor = np.zeros(var_num_values)
+            
+            for pair in pairs:
+                local_model = pair[0]
+                scaling_factor = pair[1]
+                local_tensor = local_model.tensors[var_idx]
+                
+                t2_r = np.frombuffer(local_tensor.value, dtype=MODEL_WEIGHTS_DTYPE) * scaling_factor
+                aggregated_tensor += t2_r
+                
             model.tensors[var_idx].value = serialize_tensor(aggregated_tensor)
 
         return model
 
-    def aggregate_at_index(
-        self,
-        pairs: List[List[Tuple[Model, float]]],
-        var_idx: int,
-        var_num_values: int
-    ) -> List[float]:
-        
-        aggregated_tensor = np.zeros(var_num_values)
-
-        for pair in pairs:
-            local_model = pair[0][0]
-            scaling_factor = pair[0][1]
-            local_tensor = local_model.tensors[var_idx]
-            
-            t2_r = np.frombuffer(local_tensor.value, dtype=MODEL_WEIGHTS_DTYPE) * scaling_factor
-            aggregated_tensor += t2_r
-                  
-        return aggregated_tensor
     
     def required_lineage_length(self) -> int:
         return 1

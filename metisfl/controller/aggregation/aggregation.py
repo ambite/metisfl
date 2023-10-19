@@ -1,6 +1,6 @@
 
 from abc import ABC, abstractmethod
-from typing import List, Tuple
+from typing import List, Tuple, Union
 
 from metisfl.proto import model_pb2
 
@@ -9,14 +9,24 @@ class Aggregator(ABC):
     name: str = None
 
     @abstractmethod
-    def aggregate(self, pairs: List[List[Tuple[model_pb2.Model, float]]]) -> model_pb2.Model:
+    def aggregate(
+        self, 
+        pairs: Union[ 
+            List[List[Tuple[model_pb2.Model, float]]],
+            List[Tuple[model_pb2.Model, float]]
+        ]    
+        ) -> model_pb2.Model:
         """Aggregates the models.
 
         Parameters
         ----------
-        pairs : List[List[Tuple[model_pb2.Model, float]]]
-            The models to be aggregated. The first dimension is the learners, and the second dimension is the (model, scaling_factor) pairs.
-
+        pairs: Union[List[List[Tuple[Model, float]]], List[Tuple[Model, float]]]
+            The models to aggregate. 
+            
+            If the input is a list of list of tuples, then the first list is the list of learners,
+            and the second list is the list of (model, scaling_factor) tuples for each learner.
+            If the input is a list of tuples, then the list is the list of (model, scaling_factor) tuples for each learner.
+            
         Returns
         -------
         Model
