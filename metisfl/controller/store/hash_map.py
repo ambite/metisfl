@@ -82,7 +82,7 @@ class HashMapModelStore(ModelStore):
             self.store_cache[learner_id].append(model)
 
             if self.lineage_length > 0:
-                if len(self.store_cache[learner_id]) > self.lineage_length:
+                if len(self.store_cache[learner_id]) >= self.lineage_length:
                     self.store_cache[learner_id].pop(0)
 
     def select(
