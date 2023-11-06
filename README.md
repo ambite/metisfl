@@ -2,24 +2,7 @@
 
 &nbsp;
 
-<div align="center">
- <img 
-    src="https://docs.nevron.ai/logos/logo_icon_03.png" width="200px">
-</div>
-&nbsp;
-
-<p align="center">
-    <a href="https://nevron.ai/"><img src="https://img.shields.io/badge/View%20Homepage-Homepage-green"></a>
-  <a href="https://docs.nevron.ai/"><img src="https://img.shields.io/badge/View%20Documentation-Docs-yellow"></a>
-  <a href="https://join.slack.com/t/nevronai/shared_invite/zt-1xyc308jq-FeNBbuF1UBBwhp4H~zHCww"><img src="https://img.shields.io/badge/Join%20our%20community-Slack-blue"></a>
-</p>
-
 MetisFL is a federated learning framework that allows developers to federate their machine learning workflows and train their models across distributed datasets without having to collect the data in a centralized location. Currently, the project is transitioning from a private, experimental version to a public, beta phase. We are actively encouraging developers, researchers and data scientists to experiment with the framework and contribute to the codebase.
-
-Homepage: https://nevron.ai/ \
-Github: https://github.com/NevronAI \
-Docs: https://docs.nevron.ai/ \
-Slack: [https://nevronai.slack.com](https://join.slack.com/t/nevronai/shared_invite/zt-1xyc308jq-FeNBbuF1UBBwhp4H~zHCww)
 
 MetisFL sprung up from the Information and Science Institute (ISI) in the University of Southern California (USC). It is backed by several years of Ph.D. and Post-Doctoral research and several publications in top-tier machine learning and system conferences. 
 
